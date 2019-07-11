@@ -1,0 +1,8 @@
+# Don't track content of these folders
+chambord-data-server/node_modules/
+
+# Don't track those files
+.idea/
+.vscode/
+*.pyc
+*/__pycache__/

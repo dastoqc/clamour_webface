@@ -1,0 +1,28 @@
+# CLAMOUR-SERVER
+
+#### This project is a complemetary project to the CLAMOUR (Collaborative Localization Adapted from Modular Onboard UWB Ranger) project.
+
+While the objective of CLAMOUR is to create a self-lacalizing audioguides for the Chambord Casle Museum's exposition (https://www.chambord.org/en/discovering/the-castle-visit/),
+this project is a complementatry server that will be used to automate the process of retrieving data from the localization system during the deployment of the technology in 2019-2020.
+
+One objective of this server is to offer an intuitive plateform for managing the audioguides used to deploy the CLAMOUR system.
+Another objective of this project is to automate the retrival of the data once the audio-guides reach the area covered by the network of a local router.
+Lastly, the objective of this project is to offer an interactive dashboard to better understand the data acquired and guide the interpretation that can be made from those data.
+
+This project is realized in collaboration by the following laboratories: MIST - Polytechnique, NXI Gestatio - UQAM, INIT Robots - ETS.
+
+### Organization
+
+This repository contains two sets of codes that are meant to be deployed differently. Those groups of codes are divided in two folders :
+
+#### 1. chambord-data-server
+
+This folder contains the implementation of the central server in charger of retreiving the data from the audio-guides and offering the client services to manage the audioguides
+through a web page accessible through a local connection. The code of this folder is meant to be installed in a central computer.
+
+#### 2. tag-services
+
+This folder contains code that is meant to be installed in the audio-guides (tags) that will be used. As the audioguides will behave as slaves of the central computer when
+they will be connected to the network, this folder mainly contains some scripts that will facilitate the interactions of the audioguides with the central server.
+
+
