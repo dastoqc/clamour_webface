@@ -11,18 +11,25 @@ Lastly, the objective of this project is to offer an interactive dashboard to be
 
 This project is realized in collaboration by the following laboratories: MIST - Polytechnique, NXI Gestatio - UQAM, INIT Robots - ETS.
 
-### Organization
+## Code Organization
 
 This repository contains two sets of codes that are meant to be deployed differently. Those groups of codes are divided in two folders :
 
-#### 1. chambord-data-server
+### 1. chambord-data-server
 
 This folder contains the implementation of the central server in charger of retreiving the data from the audio-guides and offering the client services to manage the audioguides
 through a web page accessible through a local connection. The code of this folder is meant to be installed in a central computer.
 
-#### 2. tag-services
+### 2. tag-services
 
 This folder contains code that is meant to be installed in the audio-guides (tags) that will be used. As the audioguides will behave as slaves of the central computer when
 they will be connected to the network, this folder mainly contains some scripts that will facilitate the interactions of the audioguides with the central server.
+
+## Development
+
+### Running the server for development :
+
+In order to run the server in a development environement (not for final deployment), run the following command :
+DEBUG=chambord-data-server:* npm run devstart
 
 
