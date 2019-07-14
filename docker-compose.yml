@@ -1,0 +1,76 @@
+version: '3'
+
+services:
+  database:
+    image: mysql:8.0.16
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: abc123
+      MYSQL_DATABASE: clamour_database
+    volumes:
+      - ~/clamour_data/mysql:/var/lib/mysql
+      - ./clamour_database/mysql_init:/docker-entrypoint-initdb.d
+    ports:
+      - 3306
+    networks:
+      - app_network
+
+  server:
+    build: ./clamour_server
+    image: alexmomo/clamour_server
+    depends_on:
+      - database
+    networks:
+      - app_network
+    ports: 
+      - 3000:3000
+    environment:
+      PORT: 3000
+      DATABASE_HOST: database
+      DATABASE_PASSWORD: abc123
+      # - EGG_SERVER_ENV=local
+      # - NODE_ENV=development
+networks:
+  app_network:
+
+
+
+
+#############################################################################
+
+#To Connect :
+# {
+#   "type": "mysql",
+#   "host": "database",
+#   "port": 3306,
+#   "username": "root",
+#   "password": "root",
+#   "database": "nest",
+#   "entities": ["src/**/*.entity{.ts,.js}"],
+#   "synchronize": true
+# }
+
+# version: "3"
+# services:
+#   db:
+#     image: mysql
+#     restart: always
+#     environment:
+#       MYSQL_ROOT_PASSWORD: root
+#       MYSQL_DATABASE: nest
+#       MYSQL_USER: root
+#       MYSQL_PASSWORD: root
+#     networks:
+#       - new
+#   nest:
+#     image: grimscythe/nest-sample
+#     depends_on:
+#       - db
+#     ports:
+#       - 3000:3000
+#     networks:
+#       - new
+# networks:
+#   new:
+
+# https://stackoverflow.com/questions/50437919/node-js-with-mysql-docker-container-network-setup

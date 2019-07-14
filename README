@@ -13,14 +13,16 @@ This project is realized in collaboration by the following laboratories: MIST - 
 
 ## Code Organization
 
-This repository contains two sets of codes that are meant to be deployed differently. Those groups of codes are divided in two folders :
+This repository contains two sets of codes that are meant to be deployed differently.
 
-### 1. chambord-data-server
+### 1. Code to install on the central server :
+#### 1.1 central-server folder
 
-This folder contains the implementation of the central server in charger of retreiving the data from the audio-guides and offering the client services to manage the audioguides
-through a web page accessible through a local connection. The code of this folder is meant to be installed in a central computer.
+This folder contains the implementation of the central server in charge of retreiving the data from the audio-guides and offering the client services to manage the audioguides
+through a web page accessible through a local connection.
 
-### 2. tag-services
+### 1.2 Code to install on the tags :
+#### 2. tag_api
 
 This folder contains code that is meant to be installed in the audio-guides (tags) that will be used. As the audioguides will behave as slaves of the central computer when
 they will be connected to the network, this folder mainly contains some scripts that will facilitate the interactions of the audioguides with the central server.
@@ -31,5 +33,8 @@ they will be connected to the network, this folder mainly contains some scripts 
 
 In order to run the server in a development environement (not for final deployment), run the following command :
 DEBUG=chambord-data-server:* npm run devstart
+
+docker-compose config
+docker-compose up -d
 
 
