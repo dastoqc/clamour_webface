@@ -27,7 +27,11 @@ services:
     environment:
       PORT: 3000
       DATABASE_HOST: database
+      DATABASE_USER: root
       DATABASE_PASSWORD: abc123
+      DATABASE_PORT: 3306
+      DATABASE_NAME: clamour_database
+      DEBUG: myapp:*                  # Comment this line to run the application in production mode
       # - EGG_SERVER_ENV=local
       # - NODE_ENV=development
 networks:

@@ -32,7 +32,7 @@ they will be connected to the network, this folder mainly contains some scripts 
 ### Running the server for development :
 
 In order to run the server in a development environement (not for final deployment), run the following command :
-DEBUG=chambord-data-server:* npm run devstart
+DEBUG=clamour-server:* npm run devstart
 
 docker-compose config
 docker-compose up -d
