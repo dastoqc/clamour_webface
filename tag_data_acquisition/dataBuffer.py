@@ -30,12 +30,14 @@ class DataBuffer:
         self.csv_writer.write_list_to_csv(self.rows_queue)
 
     """
-    Adds the initial row of the data acquisition to the rows queue
+    Adds the initial row of the data acquisition to the rows queue and write the row in
+    the csv immediately. The row in question is the following :
     ______________________________________
     | ID       | Date (Year-Month-Day)   |
     --------------------------------------
     | 0xXXXX   | YYYY-MM-DD              |
     --------------------------------------
+    It is to be noted that this row is not sent in case of TCP transmission.
     """
     def add_initial_row(self) :
         tag_data_getter = StaticDataProbe()
@@ -44,6 +46,12 @@ class DataBuffer:
 
     """
     Adds the current row to the rows queue and sets the current now anew
+    The expected format of the row once the acquisition is accomplished is the following :
+    __________________________________________________________________________________________________________________________________________
+    | Time of the day | Time since the beginning | Delta time  | x    | y    | Z    | x speed  | y speed  | z speed  | yaw   | yaw variation |
+    ------------------------------------------------------------------------------------------------------------------------------------------
+    | hh:mm:ss.mmmmmm | ss.mmmmmm                | ss.mmmmmm   | XXXX | XXXX | XXXX | XXXX     | XXXXX    | XXXX     | XXXXX | XXXX          |
+    ------------------------------------------------------------------------------------------------------------------------------------------
     """
     def add_row(self) :
         self.rows_queue.append(self.current_row[:])

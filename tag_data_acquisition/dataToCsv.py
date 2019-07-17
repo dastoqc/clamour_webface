@@ -1,14 +1,8 @@
 #!/usr/bin/env python
 
-"""
-
-"""
-
-#Imports 
 import os
 import csv
 from datetime import datetime
-
 from staticDataProbe import StaticDataProbe
 
 """

@@ -8,12 +8,14 @@ from pypozyx.structures.device_information import DeviceDetails
 
 
 #TODO: PUT those values in a configuation file
-X_POSSITION_INDEX = 0
-Y_POSSITION_INDEX = 2
-Z_POSSITION_INDEX = 4
-X_SPEED_INDEX     = 1
-Y_SPEED_INDEX     = 3
-Z_SPEED_INDEX     = 5
+X_POSSITION_INDEX   = 0
+Y_POSSITION_INDEX   = 2
+Z_POSSITION_INDEX   = 4
+X_SPEED_INDEX       = 1
+Y_SPEED_INDEX       = 3
+Z_SPEED_INDEX       = 5
+YAW_INDEX           = 6
+YAW_VARIATION_INDEX = 7
 
 """
 The data probe is in charge of retreiving the data from every part of the code in order to
@@ -45,11 +47,11 @@ class RealTimeDataProbe:
     situation where the transcription of data would not slow the localization process.
 
     The format of the row once the acquisition is accomplished is the following :
-    ___________________________________________________________________________________________________________________________
-    | Time of the day | Time since the beginning | Delta time  | x    | y    | Z    | x speed  | y speed  | z speed  | Volume |
-    ---------------------------------------------------------------------------------------------------------------------------
-    | hh:mm:ss.mmmmmm | ss.mmmmmm                | ss.mmmmmm   | XXXX | XXXX | XXXX | XXXX     | XXXXX    | XXXX     | XXXXX  |
-    ---------------------------------------------------------------------------------------------------------------------------
+    __________________________________________________________________________________________________________________________________________
+    | Time of the day | Time since the beginning | Delta time  | x    | y    | Z    | x speed  | y speed  | z speed  | yaw   | yaw variation |
+    ------------------------------------------------------------------------------------------------------------------------------------------
+    | hh:mm:ss.mmmmmm | ss.mmmmmm                | ss.mmmmmm   | XXXX | XXXX | XXXX | XXXX     | XXXXX    | XXXX     | XXXXX | XXXX          |
+    ------------------------------------------------------------------------------------------------------------------------------------------
     """
     def full_sample_acquisition(self, state_vector) :
         self.fetch_time_data()
@@ -71,9 +73,11 @@ class RealTimeDataProbe:
     This includes three dimensional location and speed.
     """
     def fetch_localization_data(self, state_vector) :
-        self.data_buffer.take_element(state_vector[X_POSSITION_INDEX]) # x coordinate
-        self.data_buffer.take_element(state_vector[Y_POSSITION_INDEX]) # y coordinate
-        self.data_buffer.take_element(state_vector[Z_POSSITION_INDEX]) # z coordinate
-        self.data_buffer.take_element(state_vector[X_SPEED_INDEX    ]) # x speed
-        self.data_buffer.take_element(state_vector[Y_SPEED_INDEX    ]) # y speed
-        self.data_buffer.take_element(state_vector[Z_SPEED_INDEX    ]) # z speed
+        self.data_buffer.take_element(state_vector[X_POSSITION_INDEX    ]) # x coordinate
+        self.data_buffer.take_element(state_vector[Y_POSSITION_INDEX    ]) # y coordinate
+        self.data_buffer.take_element(state_vector[Z_POSSITION_INDEX    ]) # z coordinate
+        self.data_buffer.take_element(state_vector[X_SPEED_INDEX        ]) # x speed
+        self.data_buffer.take_element(state_vector[Y_SPEED_INDEX        ]) # y speed
+        self.data_buffer.take_element(state_vector[Z_SPEED_INDEX        ]) # z speed
+        self.data_buffer.take_element(state_vector[YAW_INDEX            ]) # yaw coordinate
+        self.data_buffer.take_element(state_vector[YAW_VARIATION_INDEX  ]) # yaw variation
