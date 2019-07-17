@@ -11,4 +11,8 @@ router.get('/ssh', management.get_ssh_csv);
 // First download from of sftp connection
 router.get('/sftp', management.download_csv);
 
+// First download from of tcp connection
+router.get('/tcp', management.receive_data_stream);
+
+
 module.exports = router; 
