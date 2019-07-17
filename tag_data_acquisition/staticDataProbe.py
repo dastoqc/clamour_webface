@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 from datetime import datetime
-
 from pypozyx import get_first_pozyx_serial_port, PozyxSerial, POZYX_SUCCESS
 from pypozyx.structures.device_information import DeviceDetails
 
@@ -22,11 +21,11 @@ class StaticDataProbe :
     """
     Function to write the fist line of a CSV file.
     The content of the first line is the following :
-    ______________________________________
-    | ID       | Date (Year-Month-Day)   |
-    --------------------------------------
-    | 0xXXXX   | YYYY-MM-DD              |
-    --------------------------------------
+    ________________________________________________________________________
+    | ID       | Date (Year-Month-Day)   | Realtime test (R) or Visit (V)  |
+    ------------------------------------------------------------------------
+    | 0xXXXX   | YYYY-MM-DD              | R or V                          |
+    ------------------------------------------------------------------------
     """
     def fetch_first_data_row(self) :
         # Fetching the informations necessary to print the first line

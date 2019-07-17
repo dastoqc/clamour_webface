@@ -2,6 +2,13 @@
 
 import socket
 
+# Parsing data according to the configuration file and
+from json import load
+with open('config.json') as config_file:
+    config = load(config_file)
+DEFAULT_HOST = config['default_connection']['host']
+DEFAULT_PORT = config['default_connection']['port']
+
 """
 This class is meant to transfer the data received to it's TCP socket in order to allow real-time
 data transmission.
@@ -10,11 +17,10 @@ class TcpSender :
     """
     Constructor
     """
-    def __init__(self, remote_host=1, remote_port=2) :
+    def __init__(self, remote_host=DEFAULT_HOST, remote_port=DEFAULT_PORT) :
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.remote_host = remote_host
         self.remote_port = remote_port
-        self.max_response_byte_size = 1024
         self.is_tcp_connected = False
 
     """
@@ -47,5 +53,5 @@ class TcpSender :
     """
     Function to create CSV file name
     """
-    def write_list_to_csv(self, data) :
+    def send_data(self, data) :
         self.socket.send(data)

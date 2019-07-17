@@ -5,16 +5,19 @@ from datetime import datetime
 from pypozyx import get_first_pozyx_serial_port, PozyxSerial, POZYX_SUCCESS
 from pypozyx.structures.device_information import DeviceDetails
 
-
-#TODO: PUT those values in a configuation file
-X_POSSITION_INDEX   = 0
-Y_POSSITION_INDEX   = 2
-Z_POSSITION_INDEX   = 4
-X_SPEED_INDEX       = 1
-Y_SPEED_INDEX       = 3
-Z_SPEED_INDEX       = 5
-YAW_INDEX           = 6
-YAW_VARIATION_INDEX = 7
+# Parsing data according to the configuration file and
+# Setting the indexes according to their values in the config file
+from json import load
+with open('config.json') as config_file:
+    config = load(config_file)
+X_POSSITION_INDEX   = config['row_index']['x_coordinate' ]
+Y_POSSITION_INDEX   = config['row_index']['y_coordinate' ]
+Z_POSSITION_INDEX   = config['row_index']['z_coordinate' ]
+X_SPEED_INDEX       = config['row_index']['x_speed'      ]
+Y_SPEED_INDEX       = config['row_index']['y_speed'      ]
+Z_SPEED_INDEX       = config['row_index']['z_speed'      ]
+YAW_INDEX           = config['row_index']['yaw'          ]
+YAW_VARIATION_INDEX = config['row_index']['yaw_variation']
 
 """
 The data probe is in charge of retreiving the data from every part of the code in order to
