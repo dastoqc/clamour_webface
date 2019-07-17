@@ -1,0 +1,26 @@
+{
+    "max_rows" : 
+    {
+        "data_buffer" :     2000,
+        "socket_transfer" : 50
+    },
+
+    "row_indexes" : 
+    {
+        "x_coordinate" :    0,
+        "y_coordinate" :    0,
+        "z_coordinate" :    0,
+        "x_speed" :         0,
+        "y_speed" :         0,
+        "z_speed" :         0,
+        "x_yaw" :           0,
+        "x_yaw_variation" : 0
+    },
+
+    "default_network" :
+    {
+        "port" : 3001,
+        "host" : "127.0.0.1"
+    }
+
+}

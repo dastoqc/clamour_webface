@@ -2,7 +2,6 @@
 
 from dataBuffer import global_data_buffer
 from datetime import datetime
-
 from pypozyx import get_first_pozyx_serial_port, PozyxSerial, POZYX_SUCCESS
 from pypozyx.structures.device_information import DeviceDetails
 
