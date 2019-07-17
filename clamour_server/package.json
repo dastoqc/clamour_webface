@@ -14,7 +14,8 @@
     "morgan": "~1.9.1",
     "mysql": "^2.17.1",
     "pug": "2.0.0-beta11",
-    "ssh2": "^0.8.5"
+    "ssh2": "^0.8.5",
+    "ssh2-sftp-client": "^2.5.0"
   },
   "devDependencies": {
     "nodemon": "^1.19.1"

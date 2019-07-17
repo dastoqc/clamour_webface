@@ -40,8 +40,15 @@ exports.get_csv_list = function (req, res, next) {
 }
 
 exports.download_csv = function (req, res, next) {
-    var conn = new Client();
-
+    let sftp = new Client();
+    sftp.connect({
+        host: '192.168.2.101',
+        port: '22',
+        username: 'pi',
+        password: 'calypso2017'
+    }).then(() => {
+        sftp.fastGet(`~/clamour_data/csv_buffer`, `~/clamour_data/csv_buffer`);
+    });
 }
 
 function find_csv_names_from_ssh_output(ssh_output_string) {

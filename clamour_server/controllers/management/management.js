@@ -10,3 +10,8 @@ exports.get_ssh_csv = function (req, res, next) {
     ssh_manager.get_csv_list();
     res.redirect('/management');
 }
+
+exports.download_csv = function (req, res, next) {
+    ssh_manager.download_csv();
+    res.redirect('/management');
+}
