@@ -1,8 +1,9 @@
 # Don't track content of these folders
-clamour_server/node_modules/
+*/node_modules/
+*/testDir/
+*/__pycache__/
 
 # Don't track those files
 .idea/
 .vscode/
 *.pyc
-*/__pycache__/
