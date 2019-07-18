@@ -11,24 +11,18 @@ exploration.
 """
 class CsvWriter :
     
-    """
-    Constructor
-    """
+    """ Constructor """
     def __init__(self) :
         self.path       = self.create_folder()
         self.csv_name   = self.generate_csv_file_name()
         self.csv_file   = open(path.join(self.path, self.csv_name), 'w+')
         self.csv_writer = csv.writer(self.csv_file, delimiter = ',', )
 
-    """
-    Destructor
-    """
+    """ Destructor """
     def __del__(self) :
         self.csv_file.close()
 
-    """
-    Creation of the folder to contain the data
-    """
+    """ Creation of the folder to contain the data """
     def create_folder(self) -> str:
         csv_path = path.join(path.expanduser('~'), 'clamour_data/csv_buffer')
         if not path.exists(csv_path) :
@@ -36,9 +30,7 @@ class CsvWriter :
             print("The {} folder was created in order to contain the acquired data".format(csv_path))
         return csv_path
 
-    """
-    Function to create CSV file name
-    """
+    """ Function to create CSV file name """
     def generate_csv_file_name(self) -> str:
         # Acquisition of the ID and the date
         tag_information_seeker = StaticDataProbe()
@@ -52,8 +44,6 @@ class CsvWriter :
         print('Data file {} was successfully created'.format(name_string))
         return name_string
 
-    """
-    Function to create CSV file name
-    """
+    """ Function to create CSV file name """
     def write_list_to_csv(self, list) :
         self.csv_writer.writerows(list)

@@ -17,9 +17,8 @@ This global data rows buffer is filled by the help of the different probes
 When the data Rows Buffer receives a certain cue, it writes down all of its data in the csv file
 """
 class DataBuffer:
-    """
-    Constructor
-    """
+    
+    """ Constructor """
     def __init__(self) :
         # Parameters for TCP connection
         self.tcp_sender     = TcpSender() 
@@ -32,9 +31,7 @@ class DataBuffer:
         self.rows_queue     = []
         self.add_initial_row()
 
-    """
-    Destructor
-    """
+    """ Destructor """
     def __del__(self) :
         self.pour_data_in_csv()
 
@@ -80,9 +77,7 @@ class DataBuffer:
         if self.tcp_enabled and (len(self.rows_queue) % SOCKET_MAX_ROWS) == 0 :
             self.transfer_data_to_tcp_server()
         
-    """
-    Takes an element (time data or localization data) and adds it to the current row
-    """
+    """ Takes an element (time data or localization data) and adds it to the current row """
     def take_element(self, element) :
         self.current_row.append(element)
 
@@ -101,9 +96,7 @@ class DataBuffer:
         
         self.rows_queue.clear()
 
-    """
-    Transfers the data to the tcp server
-    """
+    """ Transfers the data to the tcp server """
     def transfer_data_to_tcp_server(self, tag=TAG_DATA, reset_cursor=False) :
         for i in range(self.tcp_row_cursor, len(self.rows_queue)) :
             self.tcp_sender.send_data(self.rows_queue[i], tag=tag)
@@ -111,6 +104,3 @@ class DataBuffer:
             self.tcp_row_cursor = 0
         else :
             self.tcp_row_cursor = len(self.rows_queue)
-        
-# Declaration of a global databuffer to be used by all real-time data probes
-global_data_buffer = DataBuffer()

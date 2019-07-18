@@ -18,15 +18,11 @@ and transfering it to a TCP server.
 """
 class StaticDataProbe :
     
-    """
-    Constructor
-    """
-    def __init__(self) :
-        pass
+    """ Constructor """
+    def __init__(self, pozyx_lock=None) :
+        self.pozyx_lock = pozyx_lock
 
-    """
-    Destructor
-    """
+    """ Destructor """
     def __del__(self) :
         pass
     
@@ -47,26 +43,26 @@ class StaticDataProbe :
         data_buffer_row.append(self.fetch_tag_mode()       ) # Mode of operation
         return data_buffer_row
 
-    """
-    Function to get the ID of the pozyx device connected
-    """
+    """ Function to get the ID of the pozyx device connected """
     def fetch_pozyx_id(self) -> int:
         serial_port = get_first_pozyx_serial_port()
         if serial_port is None:
             print("No Pozyx connected. There might be a problem with the USB cable or the driver.")
             return 0x0000
+        
+        #self.pozyx_lock.LOCK
         pozyx = PozyxSerial(serial_port)
         system_details = DeviceDetails()
         status = pozyx.getDeviceDetails(system_details, remote_id=None)
+        #self.pozyx_lock.RELEASE
+
         if status == POZYX_SUCCESS :
             return system_details.id
         else :
             print("A problem occured when reading the POZYX's system details. ID 0x0000 is returned for this data aquisition.")
             return 0x0000
     
-    """
-    Function to get the date and time of the system
-    """
+    """ Function to get the date and time of the system """
     def fetch_tag_date(self) -> datetime :
         return datetime.today()
 

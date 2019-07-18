@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from dataBuffer import global_data_buffer
+from dataBuffer import DataBuffer
 from datetime import datetime
 from pypozyx import get_first_pozyx_serial_port, PozyxSerial, POZYX_SUCCESS
 from pypozyx.structures.device_information import DeviceDetails
@@ -28,17 +28,13 @@ csv file.
 """
 class RealTimeDataProbe:
 
-    """
-    Constructor
-    """
+    """ Constructor """
     def __init__(self) :
-        self.data_buffer   = global_data_buffer
+        self.data_buffer   = DataBuffer()
         self.start_time    = datetime.now()
         self.previous_time = self.start_time
 
-    """
-    Destructor
-    """
+    """ Destructor """
     def __del__(self) :
         pass
 
@@ -60,9 +56,7 @@ class RealTimeDataProbe:
         self.fetch_localization_data(state_vector)
         self.data_buffer.add_row()
 
-    """
-    Fetchsing of the time stamps
-    """
+    """ Fetching of the time stamps """
     def fetch_time_data(self) :
         acquisition_time = datetime.now()
         self.data_buffer.take_element( acquisition_time.time()                               ) # Time of the day 
@@ -70,10 +64,7 @@ class RealTimeDataProbe:
         self.data_buffer.take_element((acquisition_time - self.previous_time).total_seconds()) # Delta time
         self.previous_time = acquisition_time
 
-    """
-    Function to acquire the location informations.
-    This includes three dimensional location and speed.
-    """
+    """ Function to acquire the location informations. This includes three dimensional location and speed. """
     def fetch_localization_data(self, state_vector) :
         self.data_buffer.take_element(state_vector[X_POSSITION_INDEX    ]) # x coordinate
         self.data_buffer.take_element(state_vector[Y_POSSITION_INDEX    ]) # y coordinate
