@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-from dataToCsv import CsvWriter
-from dataToTcp import TcpSender, TAG_HEADER, TAG_DATA
-from staticDataProbe import StaticDataProbe
+from bufferToCsv import BufferToCsv
+from bufferToTcp import BufferToTcp, TAG_HEADER, TAG_DATA
+from headerToBuffer import HeaderToBuffer
 from json import load
 
 # Parsing data according to the configuration file
@@ -21,12 +21,12 @@ class DataBuffer:
     """ Constructor """
     def __init__(self) :
         # Parameters for TCP connection
-        self.tcp_sender     = TcpSender() 
+        self.tcp_sender     = BufferToTcp() 
         self.tcp_row_cursor = 0
         self.tcp_enabled    = self.tcp_sender.succed_connection()
         
         # Parameters for data buffer
-        self.csv_writer     = CsvWriter()
+        self.csv_writer     = BufferToCsv()
         self.current_row    = []
         self.rows_queue     = []
         self.add_initial_row()
@@ -46,7 +46,7 @@ class DataBuffer:
     """
     def add_initial_row(self) :
         # Grabbing the informations on the tag
-        tag_data_getter = StaticDataProbe()
+        tag_data_getter = HeaderToBuffer()
         first_row = tag_data_getter.fetch_first_data_row()
         
         # Sending the data to the csv and tcp server if applicable

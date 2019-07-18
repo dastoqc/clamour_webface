@@ -26,7 +26,7 @@ cocerning : time, localization, volume.
 The retrieved data is transfered to the data buffer, which takes care of writting the data in a
 csv file.
 """
-class RealTimeDataProbe:
+class DataToBuffer:
 
     """ Constructor """
     def __init__(self) :

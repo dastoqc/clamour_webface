@@ -18,7 +18,7 @@ TAG_DATA   = 'd'
 This class is meant to transfer the data received to it's TCP socket in order to allow real-time
 data transmission.
 """
-class TcpSender :
+class BufferToTcp :
 
     """
     Constructor

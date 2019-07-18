@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 from multiprocessing import Process, Queue
-from realTimeDataProbe import RealTimeDataProbe
+from dataToBuffer import DataToBuffer
 import random
 
 INDEX_FLAG    = 0
@@ -55,7 +55,7 @@ class DataProbe :
     """
     def data_management_method(self, multiprocessing_queue, pozyx_lock=None):
         # Variable required for the management of the data
-        dataManager = RealTimeDataProbe()
+        dataManager = DataToBuffer()
         queue_element = None
         must_continue = True
 
@@ -68,21 +68,10 @@ class DataProbe :
                     dataManager.full_sample_acquisition(queue_element[INDEX_CONTENT])
                 
                 elif queue_element[INDEX_FLAG] == FLAG_DATA :
-                    pass
+                    pass #TODO: Send to tcp server and maybe store in log file.
 
                 elif queue_element[INDEX_FLAG] == FLAG_END :
                     must_continue = False
 
 
-if __name__ == "__main__":
-    data_manager = DataProbe()
-
-    state_vector = []
-    for i in range(10) :
-        for j in range(8) :
-            state_vector.append(random.randint(0,20000))
-        data_manager.get_state_vector_data(state_vector)
-        state_vector.clear()
-    
-    data_manager.end()
 

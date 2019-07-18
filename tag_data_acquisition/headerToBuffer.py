@@ -16,7 +16,7 @@ cocerning : The ID of the pozyx, the date, the mode.
 The retrieved data is used by the data buffer, which takes care of writting the data in a csv file
 and transfering it to a TCP server.
 """
-class StaticDataProbe :
+class HeaderToBuffer :
     
     """ Constructor """
     def __init__(self, pozyx_lock=None) :

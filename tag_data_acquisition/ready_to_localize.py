@@ -18,9 +18,9 @@ from pypozyx.tools.version_check import perform_latest_version_check
 
 
 #################### Inclusion for testing if it works ######################################
-from realTimeDataProbe import RealTimeDataProbe
-from staticDataProbe import StaticDataProbe
-data_probe = RealTimeDataProbe()
+from dataToBuffer import DataToBuffer
+from headerToBuffer import HeaderToBuffer
+data_probe = DataToBuffer()
 ##############################################################################################
 
 class ReadyToLocalize(object):

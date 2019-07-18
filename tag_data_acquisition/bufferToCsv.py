@@ -3,13 +3,13 @@
 from os import path, makedirs
 import csv
 from datetime import datetime
-from staticDataProbe import StaticDataProbe
+from headerToBuffer import HeaderToBuffer
 
 """
 This class manages the formatted creation and writting of csv files to contain the data of every
 exploration. 
 """
-class CsvWriter :
+class BufferToCsv :
     
     """ Constructor """
     def __init__(self) :
@@ -33,7 +33,7 @@ class CsvWriter :
     """ Function to create CSV file name """
     def generate_csv_file_name(self) -> str:
         # Acquisition of the ID and the date
-        tag_information_seeker = StaticDataProbe()
+        tag_information_seeker = HeaderToBuffer()
         id   = tag_information_seeker.fetch_pozyx_id()
         date = tag_information_seeker.fetch_tag_date()
 
