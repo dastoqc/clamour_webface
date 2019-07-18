@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from dataToCsv import CsvWriter
-from dataToTcp import TcpSender
+from dataToTcp import TcpSender, TAG_HEADER, TAG_DATA
 from staticDataProbe import StaticDataProbe
 from json import load
 
@@ -36,7 +36,7 @@ class DataBuffer:
     Destructor
     """
     def __del__(self) :
-        self.transfer_data_to_csv()
+        self.pour_data_in_csv()
 
     """
     Adds the initial row of the data acquisition to the rows queue and write the row in
@@ -48,12 +48,15 @@ class DataBuffer:
     -------------------------------------------------------------------------------
     """
     def add_initial_row(self) :
+        # Grabbing the informations on the tag
         tag_data_getter = StaticDataProbe()
         first_row = tag_data_getter.fetch_first_data_row()
-        first_row.append(False)
+        
+        # Sending the data to the csv and tcp server if applicable
         self.rows_queue.append(first_row)
-        self.transfer_data_to_csv()
-
+        self.transfer_data_to_tcp_server(tag=TAG_HEADER,reset_cursor=True)
+        self.pour_data_in_csv(send_remains_to_tcp=False)
+        
     """
     Adds the current row to the rows queue and sets the current now anew
     The expected format of the row once the acquisition is accomplished is the following :
@@ -64,12 +67,13 @@ class DataBuffer:
     ------------------------------------------------------------------------------------------------------------------------------------------
     """
     def add_row(self) :
+        # Pushes the current row to the rows queue
         self.rows_queue.append(self.current_row[:])
         self.current_row.clear()
         
         # Pours the data in the csv file if the buffer reached the buffer limit
         if len(self.rows_queue) >= DATA_BUFFER_MAX_ROWS :
-            self.transfer_data_to_csv()
+            self.pour_data_in_csv()
 
         # Sends the data to the TCP server if a connection was established and
         # if the buffer reached a multiple of the socket transfer limit
@@ -83,13 +87,15 @@ class DataBuffer:
         self.current_row.append(element)
 
     """
-    Transfers the data in the csv file and empties the data buffer
+    Transfers the data in the csv file and empties the data buffer.
+    Before emptying the data buffer, the remaining data if sent to the
+    TCP server if it is asked to.
     """
-    def transfer_data_to_csv(self) :
+    def pour_data_in_csv(self, send_remains_to_tcp=True) :
         self.csv_writer.write_list_to_csv(self.rows_queue)
         
-        # TCP transfer, if enabled
-        if self.tcp_enabled :
+        # TCP transfer, if enabled and required
+        if send_remains_to_tcp and self.tcp_enabled :
             self.transfer_data_to_tcp_server()
             self.tcp_row_cursor = 0
         
@@ -98,10 +104,13 @@ class DataBuffer:
     """
     Transfers the data to the tcp server
     """
-    def transfer_data_to_tcp_server(self) :
+    def transfer_data_to_tcp_server(self, tag=TAG_DATA, reset_cursor=False) :
         for i in range(self.tcp_row_cursor, len(self.rows_queue)) :
-            self.tcp_sender.send_data(self.rows_queue[i])
-        self.tcp_row_cursor = len(self.rows_queue)
+            self.tcp_sender.send_data(self.rows_queue[i], tag=tag)
+        if reset_cursor :
+            self.tcp_row_cursor = 0
+        else :
+            self.tcp_row_cursor = len(self.rows_queue)
         
 # Declaration of a global databuffer to be used by all real-time data probes
 global_data_buffer = DataBuffer()
