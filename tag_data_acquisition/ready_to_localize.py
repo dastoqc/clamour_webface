@@ -16,12 +16,13 @@ from pythonosc.udp_client import SimpleUDPClient
 
 from pypozyx.tools.version_check import perform_latest_version_check
 
+from dataManager import data_manager
 
-#################### Inclusion for testing if it works ######################################
-from dataToBuffer import DataToBuffer
-from headerToBuffer import HeaderToBuffer
-data_probe = DataToBuffer()
-##############################################################################################
+# #################### Inclusion for testing if it works ######################################
+# from dataToBuffer import DataToBuffer
+# from headerToBuffer import HeaderToBuffer
+# data_probe = DataToBuffer()
+# ##############################################################################################
 
 class ReadyToLocalize(object):
     """Continuously calls the Pozyx positioning function and prints its position."""
@@ -63,7 +64,7 @@ class ReadyToLocalize(object):
             position, self.dimension, self.height, self.algorithm, remote_id=self.remote_id)
         if status == POZYX_SUCCESS:
             self.printPublishPosition(position)
-            data_probe.full_sample_acquisition(position)
+            data_manager.get_state_vector_data(position)
             
             self.printPublishErrorCode("positioning")
 

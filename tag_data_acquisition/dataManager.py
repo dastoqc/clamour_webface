@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from multiprocessing import Process, Queue
+from multiprocessing import Process, Queue, Lock
 from dataToBuffer import DataToBuffer
 import random
 
@@ -12,10 +12,10 @@ FLAG_HEADER = 'h'
 FLAG_INFO   = 'i'
 FLAG_END    = 'e'
 
-class DataProbe :
+class DataManager :
 
     """ Constructor """
-    def __init__(self, pozyx_lock=None) :
+    def __init__(self, pozyx_lock=Lock()) :
         self.data_to_manage_queue = Queue()
         self.dataManaging_process = Process(target=self.data_management_method, \
                                             args=((self.data_to_manage_queue), pozyx_lock))
@@ -73,5 +73,6 @@ class DataProbe :
                 elif queue_element[INDEX_FLAG] == FLAG_END :
                     must_continue = False
 
-
+# Global data manager
+data_manager = DataManager()
 

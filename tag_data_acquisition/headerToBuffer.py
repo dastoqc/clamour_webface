@@ -3,6 +3,7 @@
 from datetime import datetime
 from pypozyx import get_first_pozyx_serial_port, PozyxSerial, POZYX_SUCCESS
 from pypozyx.structures.device_information import DeviceDetails
+from multiprocessing import Lock
 
 # Constants 
 MODE_REAL_TIME_TEST = 'R'
@@ -19,7 +20,7 @@ and transfering it to a TCP server.
 class HeaderToBuffer :
     
     """ Constructor """
-    def __init__(self, pozyx_lock=None) :
+    def __init__(self, pozyx_lock=Lock()) :
         self.pozyx_lock = pozyx_lock
 
     """ Destructor """
@@ -49,12 +50,12 @@ class HeaderToBuffer :
         if serial_port is None:
             print("No Pozyx connected. There might be a problem with the USB cable or the driver.")
             return 0x0000
-        
-        #self.pozyx_lock.LOCK
+
+        self.pozyx_lock.acquire()
         pozyx = PozyxSerial(serial_port)
         system_details = DeviceDetails()
         status = pozyx.getDeviceDetails(system_details, remote_id=None)
-        #self.pozyx_lock.RELEASE
+        self.pozyx_lock.release()
 
         if status == POZYX_SUCCESS :
             return system_details.id
