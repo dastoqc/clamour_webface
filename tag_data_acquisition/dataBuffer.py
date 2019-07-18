@@ -36,7 +36,7 @@ class DataBuffer:
     Destructor
     """
     def __del__(self) :
-        self.csv_writer.write_list_to_csv(self.rows_queue)
+        self.transfer_data_to_csv()
 
     """
     Adds the initial row of the data acquisition to the rows queue and write the row in
@@ -87,9 +87,12 @@ class DataBuffer:
     """
     def transfer_data_to_csv(self) :
         self.csv_writer.write_list_to_csv(self.rows_queue)
+        
+        # TCP transfer, if enabled
         if self.tcp_enabled :
             self.transfer_data_to_tcp_server()
             self.tcp_row_cursor = 0
+        
         self.rows_queue.clear()
 
     """

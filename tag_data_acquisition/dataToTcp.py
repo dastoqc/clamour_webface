@@ -10,6 +10,10 @@ with open('config.json') as config_file:
 DEFAULT_HOST = config['default_connection']['host']
 DEFAULT_PORT = config['default_connection']['port']
 
+# Constant definition
+TAG_HEADER = 'h'
+TAG_DATA   = 'd'
+
 """
 This class is meant to transfer the data received to it's TCP socket in order to allow real-time
 data transmission.
@@ -54,15 +58,15 @@ class TcpSender :
     """
     Function to send data to socket
     """
-    def send_data(self, data) :
+    def send_data(self, data, tag=TAG_DATA) :
         """
         Default serialization rule for types not supported by json.dumps()
         """
-        def serialization_rule(element):
+        def serialization_rules(element):
             if isinstance(element, date):
                 return element.__str__()
             if isinstance(element, time):
                 return element.__str__()
         
-        serialized_data = dumps(data, default=serialization_rule)
+        serialized_data = dumps([tag, data], default=serialization_rules)
         self.socket.send(serialized_data.encode())
