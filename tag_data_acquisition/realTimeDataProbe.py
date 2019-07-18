@@ -9,14 +9,14 @@ from json import load
 # Parsing data according to the configuration file
 with open('config.json') as config_file:
     config = load(config_file)
-X_POSSITION_INDEX   = config['row_index']['x_coordinate' ]
-Y_POSSITION_INDEX   = config['row_index']['y_coordinate' ]
-Z_POSSITION_INDEX   = config['row_index']['z_coordinate' ]
-X_SPEED_INDEX       = config['row_index']['x_speed'      ]
-Y_SPEED_INDEX       = config['row_index']['y_speed'      ]
-Z_SPEED_INDEX       = config['row_index']['z_speed'      ]
-YAW_INDEX           = config['row_index']['yaw'          ]
-YAW_VARIATION_INDEX = config['row_index']['yaw_variation']
+X_POSSITION_INDEX   = 0#config['row_index']['x_coordinate' ]
+Y_POSSITION_INDEX   = 1#config['row_index']['y_coordinate' ]
+Z_POSSITION_INDEX   = 2#config['row_index']['z_coordinate' ]
+X_SPEED_INDEX       = 0#config['row_index']['x_speed'      ]
+Y_SPEED_INDEX       = 0#config['row_index']['y_speed'      ]
+Z_SPEED_INDEX       = 0#config['row_index']['z_speed'      ]
+YAW_INDEX           = 0#config['row_index']['yaw'          ]
+YAW_VARIATION_INDEX = 0#config['row_index']['yaw_variation']
 
 """
 The data probe is in charge of retreiving the data from every part of the code in order to

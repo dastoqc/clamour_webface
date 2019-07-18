@@ -20,7 +20,7 @@ from pypozyx.tools.version_check import perform_latest_version_check
 #################### Inclusion for testing if it works ######################################
 from realTimeDataProbe import RealTimeDataProbe
 from staticDataProbe import StaticDataProbe
-data_probe = RealTimeDataProbe
+data_probe = RealTimeDataProbe()
 ##############################################################################################
 
 class ReadyToLocalize(object):
@@ -63,9 +63,8 @@ class ReadyToLocalize(object):
             position, self.dimension, self.height, self.algorithm, remote_id=self.remote_id)
         if status == POZYX_SUCCESS:
             self.printPublishPosition(position)
-            #data_probe.full_sample_acquisition(position)
+            data_probe.full_sample_acquisition(position)
             
-        else:
             self.printPublishErrorCode("positioning")
 
     def printPublishPosition(self, position):
