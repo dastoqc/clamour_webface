@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os
+from os import path, makedirs
 import csv
 from datetime import datetime
 from staticDataProbe import StaticDataProbe
@@ -10,13 +10,14 @@ This class manages the formatted creation and writting of csv files to contain t
 exploration. 
 """
 class CsvWriter :
+    
     """
     Constructor
     """
     def __init__(self) :
         self.path       = self.create_folder()
         self.csv_name   = self.generate_csv_file_name()
-        self.csv_file   = open(os.path.join(self.path, self.csv_name), 'w+')
+        self.csv_file   = open(path.join(self.path, self.csv_name), 'w+')
         self.csv_writer = csv.writer(self.csv_file, delimiter = ',', )
 
     """
@@ -29,11 +30,11 @@ class CsvWriter :
     Creation of the folder to contain the data
     """
     def create_folder(self) -> str:
-        path = os.path.join(os.path.expanduser('~'), 'clamour_data/csv_buffer')
-        if not os.path.exists(path) :
-            os.makedirs(path, mode=0o777, exist_ok=True)
-            print("The {} folder was created in order to contain the acquired data".format(path))
-        return path
+        csv_path = path.join(path.expanduser('~'), 'clamour_data/csv_buffer')
+        if not path.exists(csv_path) :
+            makedirs(path, mode=0o777, exist_ok=True)
+            print("The {} folder was created in order to contain the acquired data".format(csv_path))
+        return csv_path
 
     """
     Function to create CSV file name

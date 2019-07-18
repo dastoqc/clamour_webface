@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 
-import socket
+from socket import socket, AF_INET, SOCK_STREAM
+from json import load, dumps
 
-# Parsing data according to the configuration file and
-from json import load
+import pickle
+
+# Parsing data according to the configuration file
 with open('config.json') as config_file:
     config = load(config_file)
 DEFAULT_HOST = config['default_connection']['host']
@@ -14,11 +16,12 @@ This class is meant to transfer the data received to it's TCP socket in order to
 data transmission.
 """
 class TcpSender :
+
     """
     Constructor
     """
     def __init__(self, remote_host=DEFAULT_HOST, remote_port=DEFAULT_PORT) :
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket = socket(AF_INET, SOCK_STREAM)
         self.remote_host = remote_host
         self.remote_port = remote_port
         self.is_tcp_connected = False
@@ -34,14 +37,14 @@ class TcpSender :
     """
     def succed_connection(self, remote_host=None, remote_port=None) -> bool:
         # Setting attributes as default values
-        if remote_host is None:
+        if remote_host is not None:
             self.remote_host = remote_host
-        if remote_port is None:
+        if remote_port is not None:
             self.remote_port = remote_port
         
         # Attempting a connection
         try :
-            socket.connect((remote_host, remote_port))
+            self.socket.connect((self.remote_host, self.remote_port))
         except :
             print('TCP connection to {}:{} failed'.format(self.remote_host, self.remote_port))
         else : 
@@ -54,4 +57,5 @@ class TcpSender :
     Function to create CSV file name
     """
     def send_data(self, data) :
-        self.socket.send(data)
+        a = pickle.dumps(data)
+        self.socket.send(a)

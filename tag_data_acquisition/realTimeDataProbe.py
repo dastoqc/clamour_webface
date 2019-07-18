@@ -4,10 +4,9 @@ from dataBuffer import global_data_buffer
 from datetime import datetime
 from pypozyx import get_first_pozyx_serial_port, PozyxSerial, POZYX_SUCCESS
 from pypozyx.structures.device_information import DeviceDetails
-
-# Parsing data according to the configuration file and
-# Setting the indexes according to their values in the config file
 from json import load
+
+# Parsing data according to the configuration file
 with open('config.json') as config_file:
     config = load(config_file)
 X_POSSITION_INDEX   = config['row_index']['x_coordinate' ]
@@ -28,6 +27,7 @@ The retrieved data is transfered to the data buffer, which takes care of writtin
 csv file.
 """
 class RealTimeDataProbe:
+
     """
     Constructor
     """

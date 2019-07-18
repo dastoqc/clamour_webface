@@ -1,8 +1,8 @@
 {
     "max_rows" : 
     {
-        "data_buffer" :     2000,
-        "socket_transfer" : 50
+        "data_buffer" :     10,
+        "socket_transfer" : 3
     },
 
     "row_index" : 

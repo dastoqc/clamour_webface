@@ -3,10 +3,9 @@
 from dataToCsv import CsvWriter
 from dataToTcp import TcpSender
 from staticDataProbe import StaticDataProbe
-
-# Parsing data according to the configuration file and
-# Setting the indexes according to their values in the config file
 from json import load
+
+# Parsing data according to the configuration file
 with open('config.json') as config_file:
     config = load(config_file)
 DATA_BUFFER_MAX_ROWS = config['max_rows']['data_buffer'    ]
@@ -91,6 +90,7 @@ class DataBuffer:
         self.csv_writer.write_list_to_csv(self.rows_queue)
         if self.tcp_enabled :
             self.transfer_data_to_tcp_server()
+            self.tcp_row_cursor = 0
         self.rows_queue.clear()
 
     """

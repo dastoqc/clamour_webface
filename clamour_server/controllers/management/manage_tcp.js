@@ -12,7 +12,7 @@ exports.listen_to_data_stream = function (req, res, next) {
 
 function handleTcpConnection(socket) {
     var remoteAddress = socket.remoteAddress + ':' + socket.remotePort;
-    console.log("new client connection from %s".green, remoteAddress);
+    console.log("TCP new client connection from %s".green, remoteAddress);
 
     // socket.on  ("ready",    onReady);  
     // socket.on  ("timeout",  onTimeOut);
