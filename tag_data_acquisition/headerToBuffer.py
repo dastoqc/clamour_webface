@@ -4,10 +4,7 @@ from datetime import datetime
 from pypozyx import get_first_pozyx_serial_port, PozyxSerial, POZYX_SUCCESS
 from pypozyx.structures.device_information import DeviceDetails
 from multiprocessing import Lock
-
-# Constants 
-MODE_REAL_TIME_TEST = 'R'
-MODE_VISIT          = 'V'
+from argumentParser import MODE
 
 """
 The data probe is in charge of retreiving the data from every part of the code in order to
@@ -30,11 +27,11 @@ class HeaderToBuffer :
     """
     Function to write the fist line of a CSV file.
     The content of the first line is the following :
-    ______________________________________________________________
-    | ID       | Date (Year-Month-Day)   | Test (T) or Visit (V) |
-    --------------------------------------------------------------
-    | 0xXXXX   | YYYY-MM-DD              | R or V                |
-    --------------------------------------------------------------
+    __________________________________________________________
+    | ID       | Date (Year-Month-Day)   | "test" or "visit" |
+    ----------------------------------------------------------
+    | 0xXXXX   | YYYY-MM-DD              | "test" or "visit" |
+    ----------------------------------------------------------
     """
     def fetch_first_data_row(self) :
         # Fetching the informations necessary to print the first line
@@ -75,4 +72,4 @@ class HeaderToBuffer :
                         be used for further data analysis
     """
     def fetch_tag_mode(self) -> str:
-        return "T" #TODO: Implement a real method to acquire the mode
+        return MODE #TODO: Implement a real method to acquire the mode

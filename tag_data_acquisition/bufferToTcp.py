@@ -1,14 +1,9 @@
 #!/usr/bin/env python
 
 from socket import socket, AF_INET, SOCK_STREAM
-from json import load, dumps
 from datetime import date, time
-
-# Parsing data according to the configuration file
-with open('config.json') as config_file:
-    config = load(config_file)
-DEFAULT_HOST = config['default_connection']['host']
-DEFAULT_PORT = config['default_connection']['port']
+from argumentParser import TCP_ENABLED, HOST, PORT
+from json import dumps
 
 # Constant definition
 TAG_HEADER = 'h'
@@ -23,7 +18,7 @@ class BufferToTcp :
     """
     Constructor
     """
-    def __init__(self, remote_host=DEFAULT_HOST, remote_port=DEFAULT_PORT) :
+    def __init__(self, remote_host=HOST, remote_port=PORT) :
         self.socket = socket(AF_INET, SOCK_STREAM)
         self.remote_host = remote_host
         self.remote_port = remote_port
