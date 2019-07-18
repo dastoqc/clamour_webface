@@ -2,8 +2,7 @@
 
 from socket import socket, AF_INET, SOCK_STREAM
 from json import load, dumps
-
-import pickle
+from datetime import date, time
 
 # Parsing data according to the configuration file
 with open('config.json') as config_file:
@@ -52,10 +51,18 @@ class TcpSender :
             print('TCP connection sucessful to {}:{}'.format(self.remote_host, self.remote_port))
         return self.is_tcp_connected
 
-
     """
-    Function to create CSV file name
+    Function to send data to socket
     """
     def send_data(self, data) :
-        a = pickle.dumps(data)
-        self.socket.send(a)
+        """
+        Default serialization rule for types not supported by json.dumps()
+        """
+        def serialization_rule(element):
+            if isinstance(element, date):
+                return element.__str__()
+            if isinstance(element, time):
+                return element.__str__()
+        
+        serialized_data = dumps(data, default=serialization_rule)
+        self.socket.send(serialized_data.encode())

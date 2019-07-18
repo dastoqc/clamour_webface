@@ -46,7 +46,6 @@ class DataBuffer:
     -------------------------------------------------------------------------------
     | 0xXXXX   | YYYY-MM-DD              | False or True                          |
     -------------------------------------------------------------------------------
-    It is to be noted that this first row is not sent in case of TCP transmission.
     """
     def add_initial_row(self) :
         tag_data_getter = StaticDataProbe()

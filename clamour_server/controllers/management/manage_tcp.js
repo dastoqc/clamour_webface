@@ -16,12 +16,13 @@ function handleTcpConnection(socket) {
 
     // socket.on  ("ready",    onReady);  
     // socket.on  ("timeout",  onTimeOut);
-    socket.on  ("data",     onEventData);
-    socket.once("close",    onEventClose);
-    socket.on  ("error",    onEventError);
+    socket.on("data", onEventData);
+    socket.once("close", onEventClose);
+    socket.on("error", onEventError);
 
     function onEventData(data) {
-        console.log(`TCP connection data from ${remoteAddress}: ${data.toString("ascii")}`.cyan);
+            console.log(`TCP connection data from ${remoteAddress}: ${data.toString("ascii")}`.cyan);
+
     }
 
     function onEventClose() {

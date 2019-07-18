@@ -1,5 +1,6 @@
 var Client = require('ssh2').Client;
 
+//TODO: ========================== HANDLE SSH CONNECTION ERROR ================================
 exports.get_csv_list = function (req, res, next) {
 
     var conn = new Client();
