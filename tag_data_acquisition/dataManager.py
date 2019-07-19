@@ -14,6 +14,8 @@ FLAG_HEADER   = 'h'
 FLAG_INFO     = 'i'
 FLAG_END      = 'e'
 
+TIMEOUT_LOOKUP_NUMBER = 10
+
 """
 This class manages the the data acquired throughout the main clamour program. The data, managed
 by this class fit into three main categories : data, info
@@ -36,6 +38,7 @@ class DataManager :
         if not self.dataManaging_process == None :
             self.end()
             self.dataManaging_process.join()
+            print('Destructor called')
 
     """ 
     Method to acquire a state vector.
@@ -59,7 +62,7 @@ class DataManager :
     The pozyx_lock is requiered as the data managing process fetches the I.D of the pozyx in
     order to write the name and the header of the csv file that it generates.
     """
-    def start(self, system_arguments="", pozyx_lock=Lock()) :
+    def start(self, pozyx_lock=Lock()) :
         self.dataManaging_process = Process(target=self.data_management_method, \
                                             args=((self.data_to_manage_queue), argv, pozyx_lock))
         self.dataManaging_process.start()
@@ -74,19 +77,22 @@ class DataManager :
     the flag of each data bundle.
     """
     def data_management_method(self, multiprocessing_queue, system_arguments="", pozyx_lock=Lock()):
-        # Variable required for the management of the data
-        print('Prints something here for some reason...')
+        # Initializtion of the data management process according to the sys.argv
         argument_manager = ArgumentParser(system_arguments)
         argument_manager.manage_arguments()
+
+        # Variable required for the management of the data
         data_manager = DataToBuffer()
         queue_element = None
         must_continue = True
 
-        # Data management
+        # Verifying the queue for data to manage until timeout
         while must_continue :
             if not multiprocessing_queue.empty() :
+
+                # Fetches the data from the queue and manages it according to its flag
                 queue_element = multiprocessing_queue.get()
-                
+
                 if  queue_element[INDEX_FLAG] == FLAG_DATA :
                     data_manager.full_sample_acquisition(queue_element[INDEX_CONTENT])
                 
@@ -95,6 +101,7 @@ class DataManager :
 
                 elif queue_element[INDEX_FLAG] == FLAG_END :
                     must_continue = False
+        
 
-# Global data manager
+# ==================== # Global data manager # ==================== #
 data_manager = DataManager()

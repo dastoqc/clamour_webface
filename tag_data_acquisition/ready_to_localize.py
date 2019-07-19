@@ -18,8 +18,6 @@ from pypozyx.tools.version_check import perform_latest_version_check
 
 from dataManager import data_manager
 
-data_manager.start()
-
 # #################### Inclusion for testing if it works ######################################
 # from dataToBuffer import DataToBuffer
 # from headerToBuffer import HeaderToBuffer
@@ -155,6 +153,8 @@ class ReadyToLocalize(object):
 
 
 if __name__ == "__main__":
+    data_manager.start()
+    
     # Check for the latest PyPozyx version. Skip if this takes too long or is not needed by setting to False.
     check_pypozyx_version = True
     if check_pypozyx_version:
