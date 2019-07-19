@@ -2,7 +2,7 @@
 
 from socket import socket, AF_INET, SOCK_STREAM
 from datetime import date, time
-from argumentParser import TCP_ENABLED, HOST, PORT
+from argumentParser import TCP_ENABLED, TCP_HOST, TCP_PORT
 from json import dumps
 
 # Constant definition
@@ -18,7 +18,7 @@ class BufferToTcp :
     """
     Constructor
     """
-    def __init__(self, remote_host=HOST, remote_port=PORT) :
+    def __init__(self, remote_host=TCP_HOST, remote_port=TCP_PORT) :
         self.socket = socket(AF_INET, SOCK_STREAM)
         self.remote_host = remote_host
         self.remote_port = remote_port

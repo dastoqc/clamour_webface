@@ -18,6 +18,8 @@ from pypozyx.tools.version_check import perform_latest_version_check
 
 from dataManager import data_manager
 
+data_manager.start()
+
 # #################### Inclusion for testing if it works ######################################
 # from dataToBuffer import DataToBuffer
 # from headerToBuffer import HeaderToBuffer

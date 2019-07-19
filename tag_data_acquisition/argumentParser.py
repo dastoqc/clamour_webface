@@ -46,17 +46,17 @@ class ArgumentParser :
     acquisition and to initialize the data manager accordingly
     """
     def manage_arguments(self):
-        for arg in argv:
+        for arg in self.arguments:
             if ARG_MODE in arg:
                 self.set_mode(arg)
 
-            if ARG_TCP  in arg:
+            elif ARG_TCP  in arg:
                 self.set_tcp_enabling(arg)
                 
-            if ARG_HOST   in arg:
+            elif ARG_HOST in arg:
                 self.set_host(arg)
 
-            if ARG_PORT in arg:
+            elif ARG_PORT in arg:
                 self.set_port(arg)
 
     """ Sets the mode to 'test' or 'visit' """
