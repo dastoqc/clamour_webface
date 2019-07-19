@@ -102,8 +102,3 @@ class ArgumentParser :
             print('The value "{}" of the "{}" argument was not recognized.'.format(value, ARG_PORT))
             return
         print('The port for TCP transmission was set to "{}"'.format(value))
-
-argument_parser = ArgumentParser(argv)
-argument_parser.manage_arguments()
-print('End of this script')
-print(argv)

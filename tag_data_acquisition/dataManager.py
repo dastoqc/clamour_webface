@@ -35,10 +35,11 @@ class DataManager :
 
     """ Destructor """
     def __del__(self) :
-        if not self.dataManaging_process == None :
-            self.end()
+        try :
             self.dataManaging_process.join()
-            print('Destructor called')
+            self.end()
+        except :
+            pass
 
     """ 
     Method to acquire a state vector.
