@@ -1,28 +1,29 @@
 {
     "max_rows" : 
     {
-        "data_buffer" :     10,
+        "data_buffer"     : 10,
         "socket_transfer" : 3
     },
 
     "row_index" : 
     {
-        "x_coordinate" :    0,
-        "y_coordinate" :    2,
-        "z_coordinate" :    4,
-        "x_speed" :         1,
-        "y_speed" :         3,
-        "z_speed" :         5,
-        "yaw" :             6,
-        "yaw_variation" :   7
+        "x_coordinate"  : 0,
+        "y_coordinate"  : 2,
+        "z_coordinate"  : 4,
+        "x_speed"       : 1,
+        "y_speed"       : 3,
+        "z_speed"       : 5,
+        "yaw"           : 6,
+        "yaw_variation" : 7
     },
 
     "default_connection" :
     {
-        "enabled" : true,
-        "host"    : "127.0.0.1",
-        "port"    : 3001
+        "enabled"  : true,
+        "host"     : "127.0.0.1",
+        "port"     : 3001
     },
 
-    "default_mode" : "test"
+    "default_mode" : "test",
+    "repository"   : "~/clamour_data"
 }

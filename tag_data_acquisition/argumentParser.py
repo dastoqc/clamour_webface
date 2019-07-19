@@ -1,5 +1,6 @@
 from sys import argv
 from json import load, dumps
+from re import compile, match
 
 # Parsing data according to the configuration file
 with open('config.json') as config_file:
@@ -8,14 +9,19 @@ with open('config.json') as config_file:
 # Control parameters
 MODE        = config['default_mode']
 TCP_ENABLED = config['default_connection']['enabled']
-HOST        = config['default_connection']['host'   ]
-PORT        = config['default_connection']['port'   ]
+TCP_HOST    = config['default_connection']['host'   ]
+TCP_PORT    = config['default_connection']['port'   ]
 
-# Constants
-MODE_ARG = 'mode:'
-IP_ARG   = 'ip:'
-PORT_ARG = 'port:'
-TCP_ARG  = 'tcp:'
+# Argument syntaxical constants
+ARG_MODE = 'mode:'
+ARG_TCP  = 'tcp:'
+ARG_HOST = 'host:'
+ARG_PORT = 'port:'
+ARG_MODE_VALUE_VISIT        = 'visit'
+ARG_MODE_VALUE_TEST         = 'test'
+ARG_TCP_VALUE_ENABLED       = 'enabled'
+ARG_TCP_VALUE_DISABLED      = 'disabled'
+ARG_HOST_REGULAR_EXPRESSION = compile(r"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b")
 
 """
 This class is meant to take the excecution parameters and configure the data
@@ -31,61 +37,73 @@ class ArgumentParser :
     def __del__(self):
         pass
 
+    """ Method to add a parameter to the list of parameters """
+    def add_argument(self, argument):
+        self.arguments + argument
+
     """ 
     Method to take the parameters sent during the initialization of the data
     acquisition and to initialize the data manager accordingly
     """
-    def management_arguments(self, arguments=None):
-        self.arguments.append(arguments)
-        for arg in argv:    
-            if TCP_ARG  in arg:
-                print('TCP communication enabled (if connexion succesful)') 
+    def manage_arguments(self):
+        for arg in argv:
+            if ARG_MODE in arg:
+                self.set_mode(arg)
 
-            if MODE_ARG in arg:
-                print('Change the mode for this mode')
+            if ARG_TCP  in arg:
+                self.set_tcp_enabling(arg)
+                
+            if ARG_HOST   in arg:
+                self.set_host(arg)
 
-            if IP_ARG   in arg:
-                print('Change the default IP adress for this IP adress')
+            if ARG_PORT in arg:
+                self.set_port(arg)
 
-            if PORT_ARG in arg:
-                print ('Change the default port for this port')
-
-    """ Sets th mode to 'test' or 'visit' """
+    """ Sets the mode to 'test' or 'visit' """
     def set_mode(self, argument):
-        value = argument.replace(MODE_ARG, '')
-        if value == 'visit' :
-            MODE = 'visit'
-        elif value == 'test' :
-            MODE = 'test'
+        value = argument.replace(ARG_MODE, '')
+        if value == ARG_MODE_VALUE_VISIT  :
+            MODE = ARG_MODE_VALUE_VISIT
+        elif value == ARG_MODE_VALUE_TEST :
+            MODE = ARG_MODE_VALUE_TEST
         else :
-            print('The value {} of the {} argument was not recognized.'.format(argument, MODE_ARG))
+            print('The value "{}" of the "{}" argument was not recognized.'.format(value, ARG_MODE))
             return
-        print('The mode was set to {}'.format(argument))
+        print('The mode was set to "{}"'.format(value))
 
-    """ Enable or disable the tcp transmission """
+    """ Enables or disable the tcp transmission """
     def set_tcp_enabling(self, argument):
-        value = argument.replace(TCP_ARG, '')
-        if value == 'visit' :
-            MODE = 'visit'
-        elif value == 'test' :
-            pass
+        value = argument.replace(ARG_TCP, '')
+        if value == ARG_TCP_VALUE_ENABLED :
+            TCP_ENABLED = True
+        elif value == ARG_TCP_VALUE_DISABLED :
+            TCP_ENABLED = False
+        else :
+            print('The value "{}" of the "{}" argument was not recognized.'.format(value, ARG_TCP))
+            return
+        print('The TCP transmission was set to "{}"'.format(value))
 
-    """ Set the IP address """
-    def set_ip_adress(self, argument):
-        argument.replace(MODE_ARG, '')
-        if argument == 'visit' :
-            MODE = 'visit'
-        elif argument == 'test' :
-            pass
+    """ Sets the IP address """
+    def set_host(self, argument):
+        value = argument.replace(ARG_HOST, '')
+        if bool(ARG_HOST_REGULAR_EXPRESSION.match(value)):
+            TCP_HOST = value
+        else :
+            print('The value "{}" of the "{}" argument was not recognized.'.format(value, ARG_HOST))
+            return
+        print('The host for TCP transmission was set to {}'.format(value))
 
-    """ Set the port """
+    """ Sets the port """
     def set_port(self, argument):
-        argument.replace(MODE_ARG, '')
-        if argument == 'visit' :
-            MODE = 'visit'
-        elif argument == 'test' :
-            pass
+        value = argument.replace(ARG_PORT, '')
+        if value.isdigit() and int(value) > 0 and int(value) < 0xFFFF :
+            TCP_PORT = int(value)
+        else :
+            print('The value "{}" of the "{}" argument was not recognized.'.format(value, ARG_PORT))
+            return
+        print('The port for TCP transmission was set to "{}"'.format(value))
 
 argument_parser = ArgumentParser(argv)
+argument_parser.manage_arguments()
 print('End of this script')
 print(argv)
