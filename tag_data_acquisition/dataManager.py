@@ -78,8 +78,8 @@ class DataManager :
     """
     def data_management_method(self, multiprocessing_queue, pozyx_lock=Lock()):
         # Initializtion of the data management process according to the sys.argv
-        argument_manager = ArgumentParser()
-        argument_manager.manage_arguments()
+        # argument_manager = ArgumentParser()
+        # argument_manager.manage_arguments()
 
         # Variable required for the management of the data
         data_manager = DataToBuffer()
