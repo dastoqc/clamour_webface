@@ -38,11 +38,11 @@ class DataBuffer:
     """
     Adds the initial row of the data acquisition to the rows queue and write the row in
     the csv immediately. The row in question is the following :
-    _______________________________________________________________________________
-    | ID       | Date (Year-Month-Day)   | Realtime test (False) or Visit (True)  |
-    -------------------------------------------------------------------------------
-    | 0xXXXX   | YYYY-MM-DD              | False or True                          |
-    -------------------------------------------------------------------------------
+    ___________________________________________________________________________
+    | ID       | Date (Year-Month-Day)   | Time of the day | Test or Visit    |
+    ---------------------------------------------------------------------------
+    | 0xXXXX   | YYYY-MM-DD              | hh:mm:ss.mmmmmm | "test" or "visit |
+    --------------------------------------------------------------------------- 
     """
     def add_initial_row(self) :
         # Grabbing the informations on the tag

@@ -27,17 +27,18 @@ class HeaderToBuffer :
     """
     Function to write the fist line of a CSV file.
     The content of the first line is the following :
-    __________________________________________________________
-    | ID       | Date (Year-Month-Day)   | "test" or "visit" |
-    ----------------------------------------------------------
-    | 0xXXXX   | YYYY-MM-DD              | "test" or "visit" |
-    ----------------------------------------------------------
+    ____________________________________________________________________________
+    | ID       | Date (Year-Month-Day)   | Time of the day | Test or Visit     |
+    ----------------------------------------------------------------------------
+    | 0xXXXX   | YYYY-MM-DD              | hh:mm:ss.mmmmmm | "test" or "visit" |
+    ----------------------------------------------------------------------------
     """
     def fetch_first_data_row(self) :
         # Fetching the informations necessary to print the first line
         data_buffer_row = []
         data_buffer_row.append(self.fetch_pozyx_id()       ) # ID 
         data_buffer_row.append(self.fetch_tag_date().date()) # Date
+        data_buffer_row.append(self.fetch_tag_date().time()) # Date
         data_buffer_row.append(self.fetch_tag_mode()       ) # Mode of operation
         return data_buffer_row
 
