@@ -4,6 +4,7 @@ from os import path, makedirs
 import csv
 from datetime import datetime
 from headerToBuffer import HeaderToBuffer
+from argumentParser import MODE
 
 """
 This class manages the formatted creation and writting of csv files to contain the data of every
@@ -40,7 +41,7 @@ class BufferToCsv :
         # Formatting of the ID and the date for the name of the file and returning the file
         str_id      = "0x{:02x}".format(id)
         str_date    = datetime.strftime(date, '%Y-%m-%d-%H:%M')
-        name_string = '{}_{}.csv'.format(str_id, str_date)
+        name_string = '{}_{}_{}.csv'.format(MODE, str_id, str_date)
         print('Data file {} was successfully created'.format(name_string))
         return name_string
 
