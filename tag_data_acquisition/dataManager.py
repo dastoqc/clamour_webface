@@ -37,7 +37,6 @@ class DataManager :
     def __del__(self) :
         try :
             self.dataManaging_process.join()
-            self.end()
         except :
             pass
 
@@ -65,7 +64,7 @@ class DataManager :
     """
     def start(self, pozyx_lock=Lock()) :
         self.dataManaging_process = Process(target=self.data_management_method, \
-                                            args=((self.data_to_manage_queue), argv, pozyx_lock))
+                                            args=((self.data_to_manage_queue), pozyx_lock))
         self.dataManaging_process.start()
 
     """ Method to end the process. """
@@ -77,9 +76,9 @@ class DataManager :
     This method takes the data stored in the data_to_manage_queue and manages it according to
     the flag of each data bundle.
     """
-    def data_management_method(self, multiprocessing_queue, system_arguments="", pozyx_lock=Lock()):
+    def data_management_method(self, multiprocessing_queue, pozyx_lock=Lock()):
         # Initializtion of the data management process according to the sys.argv
-        argument_manager = ArgumentParser(system_arguments)
+        argument_manager = ArgumentParser()
         argument_manager.manage_arguments()
 
         # Variable required for the management of the data

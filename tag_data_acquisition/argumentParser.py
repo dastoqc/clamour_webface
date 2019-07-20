@@ -30,8 +30,8 @@ management accordingly
 class ArgumentParser :
 
     """ Constructor"""
-    def __init__(self, arguments = []):
-        self.arguments = arguments
+    def __init__(self):
+        self.arguments = argv
 
     """ Destructor """
     def __del__(self):

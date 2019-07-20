@@ -19,6 +19,8 @@ class BufferToTcp :
     Constructor
     """
     def __init__(self, remote_host=TCP_HOST, remote_port=TCP_PORT) :
+        print("Tcp port is : ", TCP_PORT)
+        print("Tcp host is : ", TCP_HOST)
         self.socket = socket(AF_INET, SOCK_STREAM)
         self.remote_host = remote_host
         self.remote_port = remote_port
