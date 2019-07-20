@@ -1,6 +1,7 @@
 var Client = require('ssh2').Client;
-var color = require('colors')
-
+var color = require('colors');
+var path = require('path');
+var dir = require('../../configuration/directories')
 
 exports.get_csv_list = function (req, res, next) {
 
@@ -37,7 +38,10 @@ exports.get_csv_list = function (req, res, next) {
 
         // Opening a shell command line
         ssh_client.shell(function (err, stream) {
-            if (err) throw err;
+            if (err) {
+                console.log(`An error occured while trying start a shell command command line to get a list of csv files :\n ${err}`.red);
+                return;
+            }
 
             // Bash commands sent to the tag
             stream.end(`${bash_command_cd}${bash_command_ls}exit\n`, function () {
@@ -87,7 +91,9 @@ exports.download_csv = function (req, res, next) {
                 return;
             }
             // Downloading the csv file
-            sftp_client.fastGet('/home/pi/clamour_data/csv_buffer/abc123.csv', '/home/alexandre/clamour_data/csv_buffer/abc123.csv', function (err) {
+            console.log(path.join(dir.remote_path.csv_buffer, 'abc123.csv'));
+            console.log(path.join(dir.local_path.csv_buffer, 'great_success.csv'));
+            sftp_client.fastGet(path.join(dir.remote_path.csv_buffer, 'abc123.csv'), path.join(dir.local_path.csv_buffer, 'great_success.csv'), function (err) {
                 if (err) {
                     console.log(`An error occured while trying to download a csv file :\n ${err}`.red);
                     return;
