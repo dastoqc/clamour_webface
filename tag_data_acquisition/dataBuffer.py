@@ -90,7 +90,7 @@ class DataBuffer:
         self.csv_writer.write_list_to_csv(self.rows_queue)
         
         # TCP transfer, if enabled and required
-        if send_remains_to_tcp and self.tcp_enabled :
+        if send_remains_to_tcp :
             self.transfer_data_to_tcp_server()
             self.tcp_row_cursor = 0
         
@@ -98,9 +98,10 @@ class DataBuffer:
 
     """ Transfers the data to the tcp server """
     def transfer_data_to_tcp_server(self, tag=TAG_DATA, reset_cursor=False) :
-        for i in range(self.tcp_row_cursor, len(self.rows_queue)) :
-            self.tcp_sender.send_data(self.rows_queue[i], tag=tag)
-        if reset_cursor :
-            self.tcp_row_cursor = 0
-        else :
-            self.tcp_row_cursor = len(self.rows_queue)
+        if self.tcp_enabled :
+            for i in range(self.tcp_row_cursor, len(self.rows_queue)) :
+                self.tcp_sender.send_data(self.rows_queue[i], tag=tag)
+            if reset_cursor :
+                self.tcp_row_cursor = 0
+            else :
+                self.tcp_row_cursor = len(self.rows_queue)
