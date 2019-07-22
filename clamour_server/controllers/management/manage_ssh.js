@@ -61,7 +61,6 @@ exports.get_csv_list = function (req, res, next) {
                 console.log(`${error_stream}`.red)
             });
 
-
             // End of the Shell session and end of the ssh client
             stream.on('close', function () {
                 console.log(`SSH Client :: List of csv files found on the tag : ${csv_list}`.magenta);
@@ -90,9 +89,6 @@ exports.download_csv = function (req, res, next) {
                 console.log(`An error occured while trying start an sftp client to download a csv file :\n ${err}`.red);
                 return;
             }
-            // Downloading the csv file
-            console.log(path.join(dir.remote_path.csv_buffer, 'abc123.csv'));
-            console.log(path.join(dir.local_path.csv_buffer, 'great_success.csv'));
             sftp_client.fastGet(path.join(dir.remote_path.csv_buffer, 'abc123.csv'), path.join(dir.local_path.csv_buffer, 'great_success.csv'), function (err) {
                 if (err) {
                     console.log(`An error occured while trying to download a csv file :\n ${err}`.red);
@@ -102,17 +98,6 @@ exports.download_csv = function (req, res, next) {
             });
         });
     });
-
-
-
-    // then(() => {
-    //     sftp.fastGet(`~/clamour_data/csv_buffer/abc123`, `~/clamour_data/csv_buffer/abc123`);
-    // });
-
-
-
-
-
 }
 
 function find_csv_names_from_ssh_output(ssh_output_string) {
