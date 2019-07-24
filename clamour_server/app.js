@@ -20,9 +20,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Main routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/management', managementRouter);
+
+// Database connection
+var db = require('./database/models/index');
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
