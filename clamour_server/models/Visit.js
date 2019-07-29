@@ -1,5 +1,5 @@
 const Sequelize = require("sequelize");
-const index = require("./index").sequelize;
+const index = require("./index");
 
 module.exports = index.define("Visit", {
     visit_number : {
