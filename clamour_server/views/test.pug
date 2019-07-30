@@ -1,0 +1,27 @@
+doctype html
+html
+    head
+    body
+        include includes/navigation_bar
+        h1#pageTitle Welcome to clamour interface
+        p.big-paragraph.
+            This is a test paragraph
+            So let's see how well it works.
+        ul
+            li This is an item 1
+            li This is an item 2
+            li This is an item 3
+        .display-box
+        #myOnlyDiv
+
+        imput(type="password" name="inpPwd" data-js=`${ 5 > 2 ? "OK" : "NOT OK"}`)
+
+        - const myClasses = ["class1", "class2", "class3"]
+        div.my-div(class=myClasses)
+
+        - const myStyles = {"color": "red", "background-color": "blue"}
+        div(style=myStyles)
+
+        - const myAttributes = {"src": "myPhoto.png", "alt": "This is my photo"}
+        img&attributes(myAttributes)
+
