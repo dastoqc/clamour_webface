@@ -14,5 +14,8 @@ router.get('/sftp', management.download_csv);
 // First download from of tcp connection
 router.get('/tcp', management.receive_data_stream);
 
+// First download from of tcp connection
+router.get('/network', management.scan_network);
+
 
 module.exports = router; 
