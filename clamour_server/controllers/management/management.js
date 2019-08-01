@@ -24,5 +24,5 @@ exports.receive_data_stream = function (req, res, next) {
 
 exports.scan_network = function (req, res, next) {
     network_manager.scan_for_tag_ip_address(req, res);
-    res.redirect('/management');
+    // res.redirect('/management');
 }
