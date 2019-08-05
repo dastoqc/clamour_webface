@@ -4,7 +4,8 @@ var network_manager = require('./network/manage_network')
 
 
 exports.get_test = function (req, res, next) {
-    res.render('landing', { title: 'Management Route successfully created' });
+    res.render('management');
+    // res.render('landing', { title: 'Management Route successfully created' });
 }
 
 exports.get_ssh_csv = function (req, res, next) {

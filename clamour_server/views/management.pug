@@ -1,9 +1,13 @@
 extends layout
 
 block scripts
-  script(src='../public/javascripts/vue.js')
+  script(src='/javascripts/vue.js')
 
 block content
   div#vue-network
-  input#button_network_scan(type='button')
-  script(src="../public/javascripts/app.js")
+    input#button_network_scan(type="button" v-on:click="scan_network" value="Scan network")
+    p#text {{id[0]}}
+      option()
+
+block vue_instance
+    script(src="/javascripts/tag.js")
