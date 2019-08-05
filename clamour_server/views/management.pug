@@ -1,15 +1,15 @@
 extends layout
 
 block scripts
-  script(src="/javascripts/vue.js")
-  script(src="/javascripts/axios.js")
+  script(src="/javascripts/vue.min.js")
+  script(src="/javascripts/axios.min.js")
 
 block content
   div#vue-network
     input#button_network_scan(type="button" v-on:click="scan_network" value="Scan network")
-    p#text {{ip_addresses[0]}}
+    p#text {{selected}}
     select(v-model="selected" id="ip_addresses_list")
-      option(v-for="address in ip_addresses" v-bind:value="scan_done") {{address}}
+      option(v-for="address in ip_addresses" v-bind:value="selected") {{address}}
 
 block vue_instance
     script(src="/javascripts/tag.js")

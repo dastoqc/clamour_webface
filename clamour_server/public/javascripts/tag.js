@@ -2,22 +2,25 @@
 var network = new Vue({
     el:'#vue-network',
     data: {
-        scan_done: false,
-        ip_addresses: ["123", "456", "678", "910"],
-        selected: ""
+        is_scanning: false,
+        ip_addresses: [],
+        selected: "Select network"
     },
     
     methods: {
         scan_network: function() {
-            this.ip_addresses = ["abc", "def", "ghi", "jkl"];
-            this.scan_done = true;
+            this.is_scanning = true;
             axios.get("management/network")
                 .then((res) => {
                     this.ip_addresses=res.data;
                     console.log(res);
                 })
                 .catch((err) => {
-                    console.warn('error during http call', err);
+                    alert('Error during http call :', err)
+                    console.warn('Error during http call :', err);
+                })
+                .finally(() => {
+                   this.is_scanning = false;
                 });
         }
     }
