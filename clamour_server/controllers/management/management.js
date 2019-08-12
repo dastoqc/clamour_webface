@@ -1,4 +1,4 @@
-var ssh_manager = require('./manage_ssh')
+var ssh_manager = require('./ssh/manage_ssh')
 var tcp_manager = require('./manage_tcp')
 var network_manager = require('./network/manage_network')
 
@@ -8,7 +8,7 @@ exports.get_test = function (req, res, next) {
 }
 
 exports.get_ssh_csv = function (req, res, next) {
-    ssh_manager.get_csv_list();
+    ssh_manager.list_csv_in_tag(req, res);
     res.redirect('/management');
 }
 
