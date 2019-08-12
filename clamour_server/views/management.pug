@@ -1,15 +1,27 @@
 extends layout
 
+mixin tag_summary(tag)
+    h1= tag.id
+    h2= tag.running_status
+    h2= network_status
+
 block scripts
+
   script(src="/javascripts/vue.min.js")
   script(src="/javascripts/axios.min.js")
 
-block content
-  div#vue-network
-    input#button_network_scan(type="button" v-on:click="scan_network" value="Scan network")
-    p#text {{selected}}
-    select(v-model="selected" id="ip_addresses_list")
-      option(v-for="address in ip_addresses" v-bind:value="selected") {{address}}
 
-block vue_instance
-    script(src="/javascripts/tag.js")
+block content
+
+  div#vue-network
+    input#button_network_scan(type="button" v-on:click="scan_network"          value="Scan network")
+    input#button_network_scan(type="button" v-on:click="start_devices"         value="Start visit")
+    input#button_network_scan(type="button" v-on:click="stop_download_devices" value="Stop  visit and download")
+    
+    p#text {{selected}}
+    
+    +tag_summary({{variable}})
+
+block vue_handler
+
+    script(src="/javascripts/management.js")
