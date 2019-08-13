@@ -2,7 +2,7 @@ var Client = require('ssh2').Client;
 var color = require('colors');
 var path = require('path');
 
-var from_output = require('./interpreter_output')
+var output_parser = require('./interpreter_output')
 
 var dir = require('../../../configuration/directories')
 
@@ -13,9 +13,11 @@ module.exports.get_csv_list = function (req, res, ssh_client) {
 
     // Function used on the data outputed
     dataFunction = function (req, res, data, static_data) {
-        let csv_name_seeker = null;
-        if (csv_name_seeker = from_output.find_csv_names(data.toString())){
-            static_data = csv_name_seeker;
+        if(!static_data){
+            static_data = [];
+        }
+        if (output_parser.found_csv_name(data.toString())){
+            static_data.push(output_parser.get_csv_names(data.toString()));
             console.log(`${static_data}`.cyan);
         }
     };
@@ -25,6 +27,7 @@ module.exports.get_csv_list = function (req, res, ssh_client) {
         console.log(`Looks like it worked : ${static_data}`.magenta);
     };
 
+    // Function to deploy the defined behavior in the shell command line
     interract_with_shell(req, res, ssh_client, commands, dataFunction, closeFunction);
 };
 
@@ -57,7 +60,7 @@ const interract_with_shell = function (req, res, ssh_client, commands, dataFunct
         // End of the Shell session and end of the ssh client
         stream.on('close', function () {
             closeFunction(req, res, static_data);
-            console.log(`SSH Client :: End of the ssh connection on the tag`.magenta);
+            console.log(`SSH Client :: End of the ssh connection on the tag ${req.params.ip_address}`.magenta);
             ssh_client.end();
         });
     });
