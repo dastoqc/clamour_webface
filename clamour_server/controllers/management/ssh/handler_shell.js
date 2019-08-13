@@ -2,6 +2,8 @@ var Client = require('ssh2').Client;
 var color = require('colors');
 var path = require('path');
 
+var from_output = require('./interpreter_output')
+
 var dir = require('../../../configuration/directories')
 
 
@@ -12,7 +14,7 @@ module.exports.get_csv_list = function (req, res, ssh_client) {
     // Function used on the data outputed
     dataFunction = function (req, res, data, static_data) {
         let csv_name_seeker = null;
-        if (csv_name_seeker = find_csv_names_from_ssh_output(data.toString())){
+        if (csv_name_seeker = from_output.find_csv_names(data.toString())){
             static_data = csv_name_seeker;
             console.log(`${static_data}`.cyan);
         }
@@ -22,6 +24,7 @@ module.exports.get_csv_list = function (req, res, ssh_client) {
     closeFunction = function (req, res, static_data) {
         console.log(`Looks like it worked : ${static_data}`.magenta);
     };
+
     interract_with_shell(req, res, ssh_client, commands, dataFunction, closeFunction);
 };
 
@@ -33,8 +36,6 @@ const interract_with_shell = function (req, res, ssh_client, commands, dataFunct
             console.log(`An error occured while trying start a shell command line :\n ${err}`.red);
             return;
         }
-
-        var what_was_sent = commands.join('\n').concat(`\nexit\n`);
 
         // Bash commands sent to the tag
         stream.end(commands.join('\n').concat(`\nexit\n`), function () {
@@ -55,7 +56,7 @@ const interract_with_shell = function (req, res, ssh_client, commands, dataFunct
 
         // End of the Shell session and end of the ssh client
         stream.on('close', function () {
-            closeFunction(static_data);
+            closeFunction(req, res, static_data);
             console.log(`SSH Client :: End of the ssh connection on the tag`.magenta);
             ssh_client.end();
         });

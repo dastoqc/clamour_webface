@@ -42,7 +42,6 @@ const interract_with_tag = function (req, res, shell_function) {
 
     // Actions to take upon the start of the connection
     ssh_client.on('ready', function () {
-        console.log("ssh_client.on('ready', function () {".bgBlue);
         shell_function(req, res, ssh_client)
     });
 }
