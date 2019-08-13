@@ -17,31 +17,32 @@ const interract_with_tag = function (req, res, shell_function) {
 
     try {
         ssh_client.connect({
-            host: "192.168.4.1",
+            host: req.params.ip_address,
             port: 22,
             username: 'pi',
             password: '!clamour'
         });
     } catch (error) {
-        console.log("An error occured during the ssh connection attempt".red);
+        console.log(`An error occured during the SSH connection attempt on ip address ${req.params.ip_address}`.red);
         console.log(error);
         return;
     }
 
     // Error handling
     ssh_client.on('error', function (err) {
-        console.log(`An error occured in the SSH connection with tag ${req.params.ip_address}`.red);
+        console.log(`SSH Client on tag ${req.params.ip_address} :: An error occured in the SSH connection with tag ${req.params.ip_address}`.red);
         console.log(`Level: ${err.level} \n${err.stack}`.red)
         return;
     });
 
     // End of communication
     ssh_client.on('end', function () {
-        console.log(`SSH Client :: End of SSH communication with tag ${req.params.ip_address}`.yellow);
+        console.log(`SSH Client on tag ${req.params.ip_address} :: End of SSH communication with tag`.yellow);
     });
 
     // Actions to take upon the start of the connection
     ssh_client.on('ready', function () {
+        console.log(`SSH Client on tag ${req.params.ip_address} :: Start of SSH communication with tag`.cyan);
         shell_function(req, res, ssh_client)
     });
 }
