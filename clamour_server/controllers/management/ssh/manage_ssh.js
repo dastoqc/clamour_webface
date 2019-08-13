@@ -33,13 +33,16 @@ const interract_with_tag = function (req, res, shell_function) {
         console.log(`An error occured in the SSH connection with tag ${req.params.ip_address}`.red);
         console.log(`Level: ${err.level} \n${err.stack}`.red)
         return;
-    })
+    });
 
     // End of communication
     ssh_client.on('end', function () {
         console.log(`SSH Client :: End of SSH communication with tag ${req.params.ip_address}`.yellow);
-    })
+    });
 
     // Actions to take upon the start of the connection
-    ssh_client.on('ready', shell_function(req, res, ssh_client));
+    ssh_client.on('ready', function () {
+        console.log("ssh_client.on('ready', function () {".bgBlue);
+        shell_function(req, res, ssh_client)
+    });
 }

@@ -5,9 +5,9 @@ var path = require('path');
 var dir = require('../../../configuration/directories')
 
 
-module.exports.get_csv_list = function (res, req, ssh_client) {
+module.exports.get_csv_list = function (req, res, ssh_client) {
     // Bash commands to get the list of csv files
-    let commands = ['cd ~/clamour_data/csv_buffer\n', 'ls *.csv\n']
+    let commands = ['cd ~/clamour_data/csv_buffer', 'ls *.csv']
 
     // Function used on the data outputed
     dataFunction = function (req, res, data, static_data) {
@@ -16,7 +16,6 @@ module.exports.get_csv_list = function (res, req, ssh_client) {
             static_data = csv_name_seeker;
             console.log(`${static_data}`.cyan);
         }
-            
     };
 
     // Function used at the end of the shell session
@@ -35,29 +34,12 @@ const interract_with_shell = function (req, res, ssh_client, commands, dataFunct
             return;
         }
 
-        stream.end(`'ls *.csv\n'exit\n`, function () {
-            console.log(`SSH commands sent to the tag ${req.params.ip_address}`.magenta);
-        });
-        // // Bash commands sent to the tag
-        // var excecuteCommands = new Promise(function (resolve, reject) {
-        //     for (var i = 0; i < commands.length; i++) {
-        //         stream.write(`${commands[i]}\n`, function () {
-        //             console.log(`SSH Client :: ${commands[i]}`.magenta);
-        //         });
-        //     } resolve();
-        // })
-        //     .then(function () {
-        //         stream.end(`exit\n`, function () {
-        //             console.log(`SSH Client :: End of the shell session on the tag ${req.params.ip_address}`.magenta);
-        //         });
-        //     })
-        //     .catch (function(err) {
-        //     stream.end(`exit\n`, function () {
-        //         console.log(`An error occured during the shell session on the tag ${req.params.ip_address} :\n  ${err}`.red);
-        //     });
-        // })
+        var what_was_sent = commands.join('\n').concat(`\nexit\n`);
 
         // Bash commands sent to the tag
+        stream.end(commands.join('\n').concat(`\nexit\n`), function () {
+            console.log(`SSH Client :: End of the shell session on the tag ${req.params.ip_address}`.magenta);
+        });
 
         // Error handling
         stream.on('error', function (err) {
