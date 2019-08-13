@@ -6,7 +6,7 @@ var output_parser = require('./interpreter_output')
 
 var dir = require('../../../configuration/directories')
 
-module.exports.get_csv_list = function (req, res, ssh_client) {
+module.exports.get_csv_files = function (req, res, ssh_client) {
     let commands = ['cd ~/clamour_data/csv_buffer', 'ls *.csv']
     var csv_list = [];
 
@@ -22,7 +22,6 @@ module.exports.get_csv_list = function (req, res, ssh_client) {
             console.log(`SSH Client on tag ${req.params.ip_address} :: Shell commands sent to get .csv list`.magenta);
         });
 
-        // Event listening :
         // Error handling
         stream.on('error', function (err) {
             console.log(`SSH Client on tag ${req.params.ip_address} :: An error occured at the shell session\n${err}`.red);
@@ -32,7 +31,7 @@ module.exports.get_csv_list = function (req, res, ssh_client) {
         // Searching for the csv names within the commands
         stream.on('data', function (data) {
             if (output_parser.found_csv_name(data.toString())) {
-                csv_list.push(output_parser.get_csv_names(data.toString()));
+                csv_list = csv_list.concat(output_parser.get_csv_names(data.toString()));
             }
         });
 
@@ -46,8 +45,6 @@ module.exports.get_csv_list = function (req, res, ssh_client) {
 }
 
 download_csv = function (req, res, ssh_client, csv_list) {
-    console.log(`THIS IS WHEN IT'S EXCECUTED`.bgCyan);
-
     // Setting a SFTP client to download the csv files
     ssh_client.sftp(function (err, sftp_client) {
         // Error handling
@@ -55,19 +52,24 @@ download_csv = function (req, res, ssh_client, csv_list) {
             console.log(`SSH Client on tag ${req.params.ip_address} :: Error while trying start a sftp client to download csv files :\n ${err}`.red);
             return;
         }
-
         // Downloading each csv file
-        csv_list.forEach(function (element) {
+        var response = [];
+        csv_list.forEach(function (element, index) {
             sftp_client.fastGet(path.join(dir.remote_path.csv_buffer, element), path.join(dir.local_path.csv_buffer, element), function (err) {
                     if (err) {
-                        console.log(`SFTP Client on tag ${req.params.ip_address} :: Erro while trying to download ${element} :\n ${err}`.red);
+                        console.log(`SFTP Client on tag ${req.params.ip_address} :: Error while trying to download ${element} :\n ${err}`.red);
+                        ssh_client.end();
                         return;
                     }
-                    console.log(`${element} WAS DOWNLOADED!!!`);
+                    response.push(index);
+                    console.log(`SFTP Client on tag ${req.params.ip_address} :: ${element} downloaded`.cyan);
+                    if(response.length  === csv_list.length) {
+                        ssh_client.end();
+                    }
                 });
         });
     });
-    ssh_client.end();
+    
 }
 
 

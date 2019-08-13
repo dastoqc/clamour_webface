@@ -8,7 +8,7 @@ var con = require('../../../configuration/default_ssh.json')
 // Methods accessible outside 
 module.exports.list_csv_in_tag = function (req, res) {
 
-    interract_with_tag(req, res, shell_handler.get_csv_list)
+    interract_with_tag(req, res, shell_handler.get_csv_files)
 }
 
 // Internal function
