@@ -7,11 +7,12 @@ var con = require('../../../configuration/default_ssh.json')
 
 // Methods accessible outside 
 module.exports.list_csv_in_tag = function (req, res) {
+
     interract_with_tag(req, res, shell_handler.get_csv_list)
 }
 
 // Internal function
-const interract_with_tag = function (req, res, shell_function) {
+const interract_with_tag = function (req, res, shell_function_array) {
     // Variable declaration
     var ssh_client = new Client();
 
@@ -42,7 +43,7 @@ const interract_with_tag = function (req, res, shell_function) {
 
     // Actions to take upon the start of the connection
     ssh_client.on('ready', function () {
-        console.log(`SSH Client on tag ${req.params.ip_address} :: Start of SSH communication with tag`.cyan);
-        shell_function(req, res, ssh_client)
+        console.log(`SSH Client on tag ${req.params.ip_address} :: Start of SSH communication with tag`.green);
+        shell_function_array(req, res, ssh_client)
     });
 }
