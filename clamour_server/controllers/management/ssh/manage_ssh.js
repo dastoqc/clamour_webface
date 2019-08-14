@@ -1,29 +1,23 @@
 var Client = require('ssh2').Client;
 var color = require('colors');
 
-var shell_handler = require('./handler_get_csv');
+var ssh = require('./client_ssh');
 
 var con = require('../../../configuration/default_ssh.json')
 
 // Methods accessible outside 
-module.exports.list_csv_in_tag = function (req, res) {
-
-    connect_with_tag(req, res, shell_handler.get_csv_files)
-        .then((client) => {
-            shell_handler.get_csv_file_names(req, res, client)
-                .then((csv_list) => {
-                    shell_handler.download_csv(req, res, client, csv_list)
-                    .then((downloaded_csv_list) => {
-                        console.log("ON SE REND LA".bgYellow);
-                        disconnect_from_tag(req, res, client)
-                    })
-                })
-        })
+module.exports.download_csv = async function (req, res) {
+    var client = await connect_with_tag(req, res);
+    var csv_list = await ssh.list_csv(req, res, client);
+    if (csv_list.length !== 0) {
+        var downloaded = await ssh.download_csv(req, res, client, csv_list);
+        await ssh.delete_csv(req, res, client, downloaded);
+    }
+    await disconnect_from_tag(req, res, client);
 }
 
 // Internal function
 const connect_with_tag = function (req, res) {
-
     var promise = new Promise(function (resolve, reject) {
         var ssh_client = new Client();
         try {

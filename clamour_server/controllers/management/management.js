@@ -8,7 +8,7 @@ exports.get_test = function (req, res, next) {
 }
 
 exports.get_ssh_csv = function (req, res, next) {
-    ssh_manager.list_csv_in_tag(req, res);
+    ssh_manager.download_csv(req, res);
     res.redirect('/management');
 }
 

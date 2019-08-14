@@ -6,13 +6,14 @@ var output_parser = require('./interpreter_output')
 
 var dir = require('../../../configuration/directories')
 
-module.exports.get_csv_file_names = function (req, res, ssh_client) {
+module.exports.list_csv = function (req, res, ssh_client) {
+
     var promise = new Promise(function (resolve, reject) {
         let commands = ['cd ~/clamour_data/csv_buffer', 'ls *.csv']
         var csv_list = [];
 
+        // Shell command line
         ssh_client.shell(function (err, stream) {
-            // Error handling
             if (err) {
                 console.log(`SSH Client on tag ${req.params.ip_address} :: Error in shell session while trying to list csv files :\n${err}`.red);
                 return;
@@ -36,9 +37,9 @@ module.exports.get_csv_file_names = function (req, res, ssh_client) {
                 }
             });
 
-            // End of the Shell session and end of the ssh client
+            // End of the Shell session
             stream.on('close', function () {
-                console.log(`SSH Client on tag ${req.params.ip_address} :: List of CSV files :\n${csv_list}`.magenta);
+                console.log(`SSH Client on tag ${req.params.ip_address} :: List of CSV files : ${csv_list}`.magenta);
                 console.log(`SSH Client on tag ${req.params.ip_address} :: End of the shell session`.magenta);
                 resolve(csv_list);
             });
@@ -48,13 +49,20 @@ module.exports.get_csv_file_names = function (req, res, ssh_client) {
 }
 
 module.exports.download_csv = function (req, res, ssh_client, csv_list) {
-    // Setting a SFTP client to download the csv files
+
     var promise = new Promise(function (resolve, reject) {
+        // If the list of csv to download is empty, end the function directly
+        if (csv_list.length === 0) {
+            resolve([]);
+        }
+
+        // Setting a SFTP client to download the csv files
         ssh_client.sftp(function (err, sftp_client) {
             if (err) {
                 console.log(`SSH Client on tag ${req.params.ip_address} :: Error while trying start a sftp client to download csv files :\n ${err}`.red);
                 return;
             }
+
             // Downloading each csv file
             var attempted = [];
             var downloaded = [];
@@ -77,32 +85,43 @@ module.exports.download_csv = function (req, res, ssh_client, csv_list) {
     return promise;
 }
 
-// delete_remote_csv = function (req, res, ssh_client, csv_list) {
-//     let commands = ['cd ~/clamour_data/csv_buffer', 'rm *.csv']
+module.exports.delete_csv = function (req, res, ssh_client, csv_list) {
 
-//     ssh_client.shell(function (err, stream) {
-//         // Error handling
-//         if (err) {
-//             console.log(`SSH Client on tag ${req.params.ip_address} :: An error occured while trying start a shell command line :\n${err}`.red);
-//             return;
-//         }
+    let commands = ['cd ~/clamour_data/csv_buffer'];
+    csv_list.forEach(function (element) {
+        commands.push(`rm ${element}`);
+    })
 
-//         // Bash commands sent to the tag
-//         stream.end(commands.join('\n').concat(`\nexit\n`), function () {
-//             console.log(`SSH Client on tag ${req.params.ip_address} :: Shell commands sent to delete specified .csv files`.magenta);
-//         });
+    var promise = new Promise(function (resolve, reject) {
+        // Shell command line
+        ssh_client.shell(function (err, stream) {
+            if (err) {
+                console.log(`SSH Client on tag ${req.params.ip_address} :: Error in shell session while trying to delete .csv files :\n${err}`.red);
+                return;
+            }
 
-//         // Error handling
-//         stream.on('error', function (err) {
-//             console.log(`SSH Client on tag ${req.params.ip_address} :: Error in shell session while trying to erase csv files\n${err}`.red);
-//             return;
-//         });
+            // Bash commands sent to the tag
+            stream.end(commands.join('\n').concat(`\nexit\n`), function () {
+                console.log(`SSH Client on tag ${req.params.ip_address} :: Shell commands sent to delete .csv files`.magenta);
+            });
 
-//         // End of the Shell session and end of the ssh client
-//         stream.on('close', function () {
-//             console.log(`SSH Client on tag ${req.params.ip_address} :: List of CSV files deleted :\n${csv_list}`.magenta);
-//             console.log(`SSH Client on tag ${req.params.ip_address} :: End of the shell session`.magenta);
-//             ssh_client.end();
-//         });
-//     });
-// }
+            // Error handling
+            stream.on('error', function (err) {
+                console.log(`SSH Client on tag ${req.params.ip_address} :: An error while trying to delete .csv files :\n${err}`.red);
+                return;
+            });
+
+            // Searching for the csv names within the commands
+            stream.on('data', function (data) {
+            });
+
+            // End of the Shell session
+            stream.on('close', function () {
+                console.log(`SSH Client on tag ${req.params.ip_address} :: Deleted .csv files :${csv_list}`.magenta);
+                console.log(`SSH Client on tag ${req.params.ip_address} :: End of the shell session`.magenta);
+                resolve();
+            });
+        });
+    })
+    return promise;
+}
