@@ -13,6 +13,10 @@ module.exports.list_csv_in_tag = function (req, res) {
             shell_handler.get_csv_file_names(req, res, client)
                 .then((csv_list) => {
                     shell_handler.download_csv(req, res, client, csv_list)
+                    .then((downloaded_csv_list) => {
+                        console.log("ON SE REND LA".bgYellow);
+                        disconnect_from_tag(req, res, client)
+                    })
                 })
         })
 }
@@ -58,13 +62,13 @@ const connect_with_tag = function (req, res) {
 
 const disconnect_from_tag = function (req, res, ssh_client) {
     var promise = new Promise(function (resolve, reject) {
-        var ssh_client = new Client();
         try {
             ssh_client.end();
+            resolve();
         } catch (error) {
             console.log(`An error occured during the SSH disconnection attempt on ip address ${req.params.ip_address}`.red);
             console.log(error);
-            return;
+            reject();
         }
     })
     return promise;
