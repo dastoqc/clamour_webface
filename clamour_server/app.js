@@ -8,6 +8,8 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var managementRouter = require('./routes/management');
 
+var db = require('./controllers/database/database');
+
 var app = express();
 
 // view engine setup
