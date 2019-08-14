@@ -8,12 +8,12 @@ exports.get_test = function (req, res, next) {
 }
 
 exports.get_ssh_csv = function (req, res, next) {
-    ssh_manager.download_csv(req, res);
+    ssh_manager.download_all_csv(req, res);
     res.redirect('/management');
 }
 
 exports.download_csv = function (req, res, next) {
-    ssh_manager.download_csv();
+    ssh_manager.download_all_csv();
     res.redirect('/management');
 }
 

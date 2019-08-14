@@ -6,7 +6,7 @@ var ssh = require('./client_ssh');
 var con = require('../../../configuration/default_ssh.json')
 
 // Methods accessible outside 
-module.exports.download_csv = async function (req, res) {
+module.exports.download_all_csv = async function (req, res) {
     var client = await connect_with_tag(req, res);
     var csv_list = await ssh.list_csv(req, res, client);
     if (csv_list.length !== 0) {
@@ -14,6 +14,7 @@ module.exports.download_csv = async function (req, res) {
         await ssh.delete_csv(req, res, client, downloaded);
     }
     await disconnect_from_tag(req, res, client);
+    return downloaded;
 }
 
 // Internal function

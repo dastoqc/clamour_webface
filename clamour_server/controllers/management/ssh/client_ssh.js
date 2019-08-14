@@ -26,7 +26,7 @@ module.exports.list_csv = function (req, res, ssh_client) {
 
             // Error handling
             stream.on('error', function (err) {
-                console.log(`SSH Client on tag ${req.params.ip_address} :: An error occured at the shell session\n${err}`.red);
+                console.log(`SSH Client on tag ${req.params.ip_address} :: An error occured while trying to list csv files\n${err}`.red);
                 return;
             });
 
