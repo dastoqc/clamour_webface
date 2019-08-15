@@ -1,8 +1,8 @@
 var db = require('./database/database');
 
 exports.test_add_tag = async function (req, res, next) {
-    tagID = 13;
-    IPaddress = '1.1.2.13';
+    tagID = 38;
+    IPaddress = '1.2.2.4';
     Password = 12345;
     try {
         await db.query.tags.add({ tag_id: tagID, ip_address: IPaddress, password: Password });
@@ -10,6 +10,9 @@ exports.test_add_tag = async function (req, res, next) {
         console.log(await db.query.tags.get_from_id(tagID));
         console.log(await db.query.tags.get_password_from_ip_address(IPaddress));
         console.log(await db.query.tags.get_password_from_id(tagID));
+        //console.log(await db.query.tags.update_id({tag_id : tagID}, tagID * 100));
+        //console.log(await db.query.tags.update_ip_address({ip_address : IPaddress},  '3.3.3.3'));
+        console.log(await db.query.tags.found({ip_address : IPaddress}));
     } catch(err){
         console.log(`Error while initializing the database :\n${err}`.red);
     }
