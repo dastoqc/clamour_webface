@@ -14,7 +14,7 @@ exports.test_add_tag = async function (req, res, next) {
         //console.log(await db.query.tags.update_ip_address({ip_address : IPaddress},  '3.3.3.3'));
         console.log(await db.query.tags.found({ip_address : IPaddress}));
     } catch(err){
-        console.log(`Error while initializing the database :\n${err}`.red);
+        console.log(`Error while testing the tag table functions :\n${err}`.red);
     }
     res.render('index', { title: 'Test' });
 }

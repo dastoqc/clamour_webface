@@ -1,5 +1,9 @@
 const mysql = require('mysql2');
 const color = require('colors');
+const path = require('path');
+
+const dir = require('../../configuration/directories');
+
 
 // Database connection
 var db_connection;
@@ -27,3 +31,25 @@ module.exports.init_table = function (connection) {
     return promise;
 }
 
+module.exports.add = function (csv_name) {
+    var promise = new Promise((resolve, reject) => {
+        sql =
+            `LOAD DATA LOCAL INFILE ? 
+            INTO TABLE visits
+            FIELDS TERMINATED BY ',' 
+            ENCLOSED BY '"'
+            LINES TERMINATED BY 'only_first_line'
+            (@col1, @col2, @col3, @col4)
+            SET  
+            tag_id = @col1, date = @col2, start_time = @col3, mode = @col4;`;
+        param = [path.join(dir.local_path.csv_buffer, csv_name)];
+        db_connection.query(sql, param, (err, results, fields) => {
+            if (err) {
+                reject(err);
+                return;
+            };
+            resolve(results);
+        });
+    });
+    return promise;
+}
