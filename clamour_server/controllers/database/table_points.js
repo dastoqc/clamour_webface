@@ -1,8 +1,12 @@
 const mysql = require('mysql2');
 const color = require('colors');
 
+// Database connection
+var db_connection;
+
 // Using the database
-module.exports.create_table = function (connection) {
+module.exports.init_table = function (connection) {
+    db_connection = connection;    
     var promise = new Promise((resolve, reject) => {
         sql = `CREATE TABLE IF NOT EXISTS \`points\` (
             \`visit_number\` 		INT UNSIGNED NOT NULL,
@@ -23,7 +27,7 @@ module.exports.create_table = function (connection) {
             FOREIGN KEY (\`visit_number\`) REFERENCES visits(\`visit_number\`)
             ON DELETE CASCADE ON UPDATE CASCADE)
             ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;`
-        connection.query(sql, function (err, results, fields) {
+        db_connection.query(sql, function (err, results, fields) {
             if (err) {
                 reject(err);
                 return;

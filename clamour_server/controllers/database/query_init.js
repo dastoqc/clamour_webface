@@ -1,21 +1,18 @@
 const mysql = require('mysql2');
 const config = require('../../configuration/database.json')
 
-get_init_mode = function () {
-    if (process.env.DB_HOST)
-        return config.production;
-    return config.development;
-}
+var connection; 
 
 // Create the connection to database
 module.exports.db_connect = async function () {
-    return connection = mysql.createConnection(get_init_mode())
+    connection = mysql.createConnection(config.connection)
+    return connection;
 }
 
 // Initialize the database tables if they are not initialized yet
 module.exports.db_create = function () {
     var promise = new Promise((resolve, reject) => {
-        sql = `CREATE DATABASE IF NOT EXISTS \`${get_init_mode().database_name}\`;`
+        sql = `CREATE DATABASE IF NOT EXISTS \`${config.database_name}\`;`
         connection.query(sql, function (err, results, fields) {
             if (err) {
                 reject(err);
@@ -29,7 +26,7 @@ module.exports.db_create = function () {
 // Using the database
 module.exports.db_use = function () {
     var promise = new Promise((resolve, reject) => {
-        sql = `USE \`${get_init_mode().database_name}\`;`
+        sql = `USE \`${config.database_name}\`;`
         connection.query(sql, function (err, results, fields) {
             if (err) {
                 reject(err);

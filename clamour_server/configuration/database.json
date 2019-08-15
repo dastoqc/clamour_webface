@@ -1,14 +1,8 @@
 {
-  "development": {
+  "connection": {
     "user": "root",
     "password": null,
-    "database": "clamour_test",
     "host": "127.0.0.1"
   },
-  "production": {
-    "user": "root",
-    "password": null,
-    "database": "clamour_server",
-    "host": "127.0.0.1"
-  }
+  "database": "clamour_test"
 }
