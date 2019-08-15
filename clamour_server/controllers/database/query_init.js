@@ -26,7 +26,7 @@ module.exports.db_create = function () {
 // Using the database
 module.exports.db_use = function () {
     var promise = new Promise((resolve, reject) => {
-        sql = `USE \`${config.database_name}\`;`
+        sql = `USE \`${config.database}\`;`
         connection.query(sql, function (err, results, fields) {
             if (err) {
                 reject(err);

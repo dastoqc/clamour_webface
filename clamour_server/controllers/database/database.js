@@ -17,7 +17,7 @@ module.exports.init = async function () {
         await tags.init_table(connection);
         await visits.init_table(connection);
         await points.init_table(connection);
-        console.log(`Database set and ready to be used`.green);
+        console.log(`Database '${config.database}' set and ready to be used`.green);
     }
     catch (err) {
         console.log(`Error while initializing the database :\n${err}`.red);
