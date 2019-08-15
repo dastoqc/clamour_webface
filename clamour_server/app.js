@@ -12,6 +12,9 @@ var db = require('./controllers/database/database');
 
 var app = express();
 
+// Setting up the database
+db.init();
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');

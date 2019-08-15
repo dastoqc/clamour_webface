@@ -1,12 +1,12 @@
 {
   "development": {
-    "username": "root",
+    "user": "root",
     "password": null,
     "database": "clamour_test",
     "host": "127.0.0.1"
   },
   "production": {
-    "username": "root",
+    "user": "root",
     "password": null,
     "database": "clamour_server",
     "host": "127.0.0.1"

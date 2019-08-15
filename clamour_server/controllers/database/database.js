@@ -1,59 +1,36 @@
 const mysql = require('mysql2');
+const initializer = require('./query_init')
+const tags = require('./table_tags')
+const visits = require('./table_visits')
+const points = require('./table_points')
 
-// database connection
-var connection
+// Database connection
+var connection;
 
-// ======================= Initialization of the database ======================= //
+// Initialize the database
 module.exports.init = async function () {
     try {
-        await connect();
-        await create_db();
+        connection = await initializer.db_connect();
+        await initializer.db_create();
+        await initializer.db_use();
+        await tags.create_table(connection);
+        await visits.create_table(connection);
+        await points.create_table(connection);
     }
-    catch (err){
-        console.log(`Error while initializing the database :\n${err}`)
+    catch (err) {
+        console.log(`Error while initializing the database :\n${err}`.red);
     }
-}
-
-// Create the connection to database
-connect = async function () {
-    return connection = mysql.createConnection({
-        host: process.env.DB_HOST || 'localhost',
-        user: 'root',
-    })
-}
-
-// Initialize the database tables if they are not initialized yet
-create_db = function () {
-    var promise = new Promise((resolve, reject) => {
-        connection.query(`CREATE DATABASE IF NOT EXISTS \`${database_name}\`;`, function (err, results, fields) {
-            if (err) {
-                reject(err);
-                return;
-            }; resolve()
-        });
-    });
-    return promise;
-}
-
-// Using the database
-use_db = function () {
-    var promise = new Promise((resolve, reject) => {
-        connection.query(`USE \`${database_name}\`;`, function (err, results, fields) {
-            if (err) {
-                reject(err);
-                return;
-            }; resolve()
-        });
-    });
-    return promise;
-}
-
-// Initializat the database tables if they are not initialized yet
-
+    return;
+};
 
 // Close the connection to database
 module.exports.close = async function () {
     return connection.close();
-}
+};
 
-
+// Table query accessors
+module.exports.query = {
+    tags: tags,
+    visits: visits,
+    points: points
+};
