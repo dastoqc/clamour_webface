@@ -20,7 +20,8 @@ module.exports.init_table = function (connection) {
             if (err) {
                 reject(err);
                 return;
-            }; resolve()
+            }; 
+            resolve(results);
         });
     });
     return promise;
@@ -36,8 +37,6 @@ module.exports.add = function (tag) {
                 reject(err)
                 return;
             }; 
-            console.log(results);
-            console.log(fields);
             resolve(results);
         });
     });

@@ -17,7 +17,8 @@ module.exports.db_create = function () {
             if (err) {
                 reject(err);
                 return;
-            }; resolve()
+            }; 
+            resolve(results);
         });
     });
     return promise;
@@ -31,7 +32,8 @@ module.exports.db_use = function () {
             if (err) {
                 reject(err);
                 return;
-            }; resolve()
+            }; 
+            resolve(results);
         });
     });
     return promise;
