@@ -12,8 +12,8 @@ var db_connection;
 module.exports.init_table = function (connection) {
     db_connection = connection;
     var promise = new Promise((resolve, reject) => {
-        sql = 
-         `CREATE TABLE IF NOT EXISTS \`visits\` (
+        sql =
+            `CREATE TABLE IF NOT EXISTS \`visits\` (
         \`visit_number\` 	INT UNSIGNED NOT NULL AUTO_INCREMENT,
         \`tag_id\` 		    SMALLINT UNSIGNED NOT NULL,
         \`date\` 			DATE NOT NULL,
@@ -24,7 +24,7 @@ module.exports.init_table = function (connection) {
             if (err) {
                 reject(err);
                 return;
-            }; 
+            };
             resolve(results);
         });
     });
@@ -54,7 +54,7 @@ module.exports.add = function (csv_name) {
     return promise;
 }
 
-module.exports.get_if_equal_field = function (visit_info) {
+module.exports.get_all_if_equal_field = function (visit_info) {
     var promise = new Promise((resolve, reject) => {
         sql =
             `SELECT * FROM visits
@@ -65,6 +65,31 @@ module.exports.get_if_equal_field = function (visit_info) {
             OR start_time = ?
             OR mode = ?`;
         param = [visit_info.visit_number, visit_info.tag_id, visit_info.date, visit_info.start_time, visit_info.mode];
+        db_connection.query(sql, param, (err, results, fields) => {
+            if (err) {
+                reject(err)
+                return;
+            };
+            resolve(results);
+        });
+    });
+    return promise;
+}
+
+module.exports.get_if_equal_field_time_restricted = function (visit_info, start_date, end_date) {
+    var promise = new Promise((resolve, reject) => {
+        sql =
+            `SELECT * FROM visits
+            WHERE 
+            visit_number = ? 
+            OR tag_id = ?
+            OR date = ?
+            OR start_time = ?
+            OR mode = ?
+            AND date >= ?
+            AND date <= ?`;
+        param = [visit_info.visit_number, visit_info.tag_id, visit_info.date, visit_info.start_time, visit_info.mode,
+                start_date, end_date];
         db_connection.query(sql, param, (err, results, fields) => {
             if (err) {
                 reject(err)
