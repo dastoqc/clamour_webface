@@ -35,6 +35,7 @@ module.exports.init_table = function (connection) {
 
 module.exports.add = function (csv_name) {
     var promise = new Promise((resolve, reject) => {
+        // Addition of the visit in the visit's list
         var inner_promise = new Promise((inner_resolve, inner_reject) => {
             sql =
                 `LOAD DATA LOCAL INFILE ? 
@@ -52,11 +53,13 @@ module.exports.add = function (csv_name) {
                     reject(err);
                     return;
                 };
-                inner_resolve(first_result = { visit_addition: results });
+                inner_resolve(results);
             });
-        }).then(async function (first_result) {
+        })
+        // Addition of the visit's points in the point table
+        .then(async function (first_result) {
             try {
-                resolve(await points.add(csv_name));
+                resolve({visit_query : first_result, points_query : await points.add(csv_name)});
             } catch(err){
                 reject(err)
             };
