@@ -151,6 +151,24 @@ module.exports.update_ip_address = function (tag, new_ip_address) {
     return promise;
 }
 
+module.exports.delete = function (tag = {tag_id : -1, ip_address : '0.0.0.0'}) {
+    var promise = new Promise((resolve, reject) => {
+        sql =
+            `DELETE FROM tags WHERE
+            tag_id = ?
+            OR ip_address = INET_ATON(?)`;
+        param = [tag.tag_id, tag.ip_address];
+        db_connection.query(sql, param, (err, results, fields) => {
+            if (err) {
+                reject(err)
+                return;
+            };
+            resolve(results);
+        });
+    });
+    return promise;
+}
+
 module.exports.found = function (tag) {
     var promise = new Promise((resolve, reject) => {
         sql =
