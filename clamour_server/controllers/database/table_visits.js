@@ -62,8 +62,9 @@ module.exports.get_if_equal_field = function (visit_info) {
             visit_number = ? 
             OR tag_id = ?
             OR date = ?
+            OR start_time = ?
             OR mode = ?`;
-        param = [visit_info.visit_number, visit_info.tag_id, visit_info.date, visit_info.mode];
+        param = [visit_info.visit_number, visit_info.tag_id, visit_info.date, visit_info.start_time, visit_info.mode];
         db_connection.query(sql, param, (err, results, fields) => {
             if (err) {
                 reject(err)
