@@ -33,6 +33,5 @@ module.exports.close = async function () {
 // Table query accessors
 module.exports.query = {
     tags: tags,
-    visits: visits,
-    points: points
+    visits: visits
 };

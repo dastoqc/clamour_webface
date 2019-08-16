@@ -2,6 +2,7 @@ const mysql = require('mysql2');
 const color = require('colors');
 const path = require('path');
 
+const points = require('./table_points');
 const dir = require('../../configuration/directories');
 
 
@@ -34,22 +35,31 @@ module.exports.init_table = function (connection) {
 
 module.exports.add = function (csv_name) {
     var promise = new Promise((resolve, reject) => {
-        sql =
-            `LOAD DATA LOCAL INFILE ? 
-            INTO TABLE visits
-            FIELDS TERMINATED BY ',' 
-            ENCLOSED BY '"'
-            LINES TERMINATED BY 'only_first_line'
-            (@col1, @col2, @col3, @col4)
-            SET  
-            tag_id = @col1, date = @col2, start_time = @col3, mode = TRIM('\\n\\r' FROM @col4);`;
-        param = [path.join(dir.local_path.csv_buffer, csv_name)];
-        db_connection.query(sql, param, (err, results, fields) => {
-            if (err) {
-                reject(err);
-                return;
+        var inner_promise = new Promise((inner_resolve, inner_reject) => {
+            sql =
+                `LOAD DATA LOCAL INFILE ? 
+                INTO TABLE visits
+                FIELDS TERMINATED BY ',' 
+                ENCLOSED BY '"'
+                LINES TERMINATED BY 'only_first_line'
+                (@col1, @col2, @col3, @col4)
+                SET  
+                tag_id = @col1, date = @col2, start_time = @col3, mode = TRIM('\\n\\r' FROM @col4);`;
+            param = [path.join(dir.local_path.csv_buffer, csv_name)];
+            db_connection.query(sql, param, (err, results, fields) => {
+                if (err) {
+                    inner_reject(err);
+                    reject(err);
+                    return;
+                };
+                inner_resolve(first_result = { visit_addition: results });
+            });
+        }).then(async function (first_result) {
+            try {
+                resolve(await points.add(csv_name));
+            } catch(err){
+                reject(err)
             };
-            resolve(results);
         });
     });
     return promise;
@@ -65,11 +75,11 @@ module.exports.get_all_equal_field = function (visit_info) {
             OR date = ?
             OR start_time = ?
             OR mode = ?`;
-        param = 
-            [visit_info.visit_number, 
-            visit_info.tag_id, 
-            visit_info.date, 
-            visit_info.start_time, 
+        param =
+            [visit_info.visit_number,
+            visit_info.tag_id,
+            visit_info.date,
+            visit_info.start_time,
             visit_info.mode];
         db_connection.query(sql, param, (err, results, fields) => {
             if (err) {
@@ -85,7 +95,7 @@ module.exports.get_all_equal_field = function (visit_info) {
 module.exports.get_equal_field_time_restricted = function (visit_info, start_date = new Date(), end_date = new Date()) {
     var promise = new Promise((resolve, reject) => {
         // Default values from 7 days before to today
-        if(!start_date){
+        if (!start_date) {
             start_date.setDate(end_date.getDate() - 7);
         }
         sql =
@@ -98,14 +108,14 @@ module.exports.get_equal_field_time_restricted = function (visit_info, start_dat
             OR mode = ?)
             AND date >= ?
             AND date <= ?`;
-        param = 
-            [visit_info.visit_number, 
-            visit_info.tag_id, 
-            visit_info.date, 
-            visit_info.start_time, 
+        param =
+            [visit_info.visit_number,
+            visit_info.tag_id,
+            visit_info.date,
+            visit_info.start_time,
             visit_info.mode,
-            start_date, 
-            end_date];
+                start_date,
+                end_date];
         db_connection.query(sql, param, (err, results, fields) => {
             if (err) {
                 reject(err)
@@ -119,7 +129,7 @@ module.exports.get_equal_field_time_restricted = function (visit_info, start_dat
 
 module.exports.delete_equal_field = function (visit_info, start_date = new Date(), end_date = new Date()) {
     var promise = new Promise((resolve, reject) => {
-        if(!start_date){
+        if (!start_date) {
             start_date.setDate(end_date.getDate() - 7);
         }
         sql =
@@ -132,14 +142,14 @@ module.exports.delete_equal_field = function (visit_info, start_date = new Date(
             OR mode = ?)
             AND date >= ?
             AND date <= ?`;
-        param = 
-            [visit_info.visit_number, 
-            visit_info.tag_id, 
-            visit_info.date, 
-            visit_info.start_time, 
+        param =
+            [visit_info.visit_number,
+            visit_info.tag_id,
+            visit_info.date,
+            visit_info.start_time,
             visit_info.mode,
-            start_date, 
-            end_date];
+                start_date,
+                end_date];
         db_connection.query(sql, param, (err, results, fields) => {
             if (err) {
                 reject(err)
