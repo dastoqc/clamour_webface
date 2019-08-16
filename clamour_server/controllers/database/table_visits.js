@@ -41,7 +41,7 @@ module.exports.add = function (csv_name) {
             LINES TERMINATED BY 'only_first_line'
             (@col1, @col2, @col3, @col4)
             SET  
-            tag_id = @col1, date = @col2, start_time = @col3, mode = @col4;`;
+            tag_id = @col1, date = @col2, start_time = @col3, mode = TRIM('\\n\\r' FROM @col4);`;
         param = [path.join(dir.local_path.csv_buffer, csv_name)];
         db_connection.query(sql, param, (err, results, fields) => {
             if (err) {
