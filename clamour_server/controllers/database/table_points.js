@@ -71,13 +71,13 @@ module.exports.add = function (csv_name) {
     return promise;
 }
 
-module.exports.get_from_id = function (id) {
+module.exports.get = function (visit_number) {
     var promise = new Promise((resolve, reject) => {
         sql =
-            `SELECT tag_id, INET_NTOA(ip_address) AS ip_address
-            FROM tags
-            WHERE tag_id = ?`;
-        param = [id];
+            `SELECT *
+            FROM points
+            WHERE visit_number = ?`;
+        param = [visit_number];
         db_connection.query(sql, param, (err, results, fields) => {
             if (err) {
                 reject(err)
@@ -88,6 +88,5 @@ module.exports.get_from_id = function (id) {
     });
     return promise;
 }
-// Add
 // Get points
 // Delete points

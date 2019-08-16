@@ -56,14 +56,16 @@ module.exports.add = function (csv_name) {
                 inner_resolve(results);
             });
         })
-        // Addition of the visit's points in the point table
-        .then(async function (first_result) {
-            try {
-                resolve({visit_query : first_result, points_query : await points.add(csv_name)});
-            } catch(err){
-                reject(err)
-            };
-        });
+            // Addition of the visit's points in the point table
+            .then(async function (first_result) {
+                try {
+                    var second_result = await points.add(csv_name);
+                    resolve({ visit_query: first_result, points_query: second_result });
+                }
+                catch (err) {
+                    reject(err);
+                };
+            });
     });
     return promise;
 }
@@ -160,6 +162,19 @@ module.exports.delete_equal_field = function (visit_info, start_date = new Date(
             };
             resolve(results);
         });
+    });
+    return promise;
+}
+
+module.exports.get_points = function (visit_number) {
+    var promise = new Promise(async function (resolve, reject) {
+        try {
+            var result = await points.get(visit_number);
+            resolve(result);
+        }
+        catch (err) {
+            resolve(err);
+        }
     });
     return promise;
 }
