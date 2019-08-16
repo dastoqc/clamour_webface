@@ -116,3 +116,37 @@ module.exports.get_equal_field_time_restricted = function (visit_info, start_dat
     });
     return promise;
 }
+
+module.exports.delete_equal_field = function (visit_info, start_date = new Date(), end_date = new Date()) {
+    var promise = new Promise((resolve, reject) => {
+        if(!start_date){
+            start_date.setDate(end_date.getDate() - 7);
+        }
+        sql =
+            `DELETE FROM visits
+            WHERE 
+            (visit_number = ? 
+            OR tag_id = ?
+            OR date = ?
+            OR start_time = ?
+            OR mode = ?)
+            AND date >= ?
+            AND date <= ?`;
+        param = 
+            [visit_info.visit_number, 
+            visit_info.tag_id, 
+            visit_info.date, 
+            visit_info.start_time, 
+            visit_info.mode,
+            start_date, 
+            end_date];
+        db_connection.query(sql, param, (err, results, fields) => {
+            if (err) {
+                reject(err)
+                return;
+            };
+            resolve(results);
+        });
+    });
+    return promise;
+}
