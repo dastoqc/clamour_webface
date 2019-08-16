@@ -55,7 +55,7 @@ module.exports.add = function (csv_name) {
     return promise;
 }
 
-module.exports.get_all_if_equal_field = function (visit_info) {
+module.exports.get_all_equal_field = function (visit_info) {
     var promise = new Promise((resolve, reject) => {
         sql =
             `SELECT * FROM visits
@@ -82,7 +82,7 @@ module.exports.get_all_if_equal_field = function (visit_info) {
     return promise;
 }
 
-module.exports.get_if_equal_field_time_restricted = function (visit_info, start_date = new Date(), end_date = new Date()) {
+module.exports.get_equal_field_time_restricted = function (visit_info, start_date = new Date(), end_date = new Date()) {
     var promise = new Promise((resolve, reject) => {
         // Default values from 7 days before to today
         if(!start_date){

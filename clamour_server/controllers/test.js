@@ -30,16 +30,16 @@ module.exports.test_visits_queries = async function (req, res, next) {
         console.log(await db.query.visits.add('visit0x1008_2019-07-20-14:57.csv'));
 
         // Test the fetching of data
-        // console.log(await db.query.visits.get_all_if_equal_field({ visit_number: 38 }));
-        // console.log(await db.query.visits.get_all_if_equal_field({ tag_id: 4104 }));
-        // console.log(await db.query.visits.get_all_if_equal_field({ mode: 'test' }));
+        // console.log(await db.query.visits.get_all_equal_field({ visit_number: 38 }));
+        // console.log(await db.query.visits.get_all_equal_field({ tag_id: 4104 }));
+        // console.log(await db.query.visits.get_all_equal_field({ mode: 'test' }));
         // console.log(test_date);
         // console.log(await db.query.visits.get_all_if_equal_field({ date: test_date }));
 
         // Test the fetching of data
-        console.log(await db.query.visits.get_if_equal_field_time_restricted({ visit_number: 38 }));
-        console.log(await db.query.visits.get_if_equal_field_time_restricted({ tag_id: 4104 }));
-        console.log(await db.query.visits.get_if_equal_field_time_restricted({ mode: 'test' }, test_start_date));
+        console.log(await db.query.visits.get_equal_field_time_restricted({ visit_number: 38 }));
+        console.log(await db.query.visits.get_equal_field_time_restricted({ tag_id: 4104 }));
+        console.log(await db.query.visits.get_equal_field_time_restricted({ mode: 'test' }, test_start_date));
         console.log(test_date);
         console.log(await db.query.visits.get_if_equal_field_time_restricted({ date: test_date }));
 
