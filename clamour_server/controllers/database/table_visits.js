@@ -140,8 +140,7 @@ module.exports.delete_equal_field = function (visit_number) {
             sql =
                 `DELETE FROM visits
                 WHERE visit_number = ?`;
-            param =
-                [visit_number];
+            param = [visit_number];
             db_connection.query(sql, param, (err, results, fields) => {
                 if (err) {
                     inner_reject(err);
