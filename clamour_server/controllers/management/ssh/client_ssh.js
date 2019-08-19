@@ -125,3 +125,40 @@ module.exports.delete_csv = function (req, res, ssh_client, csv_list) {
     })
     return promise;
 }
+
+
+// module.exports.get_running_status = function (ssh_client, csv_list) {
+
+//     let commands = ['pgrep -f /clamour.py'];
+
+//     var promise = new Promise(function (resolve, reject) {
+//         // Shell command line
+//         ssh_client.shell(function (err, stream) {
+//             if (err) {
+//                 console.log(`SSH Client on tag ${req.params.ip_address} :: Error in shell session while trying to check the runnig status :\n${err}`.red);
+//                 return;
+//             }
+
+//             // Bash commands sent to the tag
+//             stream.end(commands.join('\n').concat(`\nexit\n`), function () {
+//                 console.log(`SSH Client on tag ${req.params.ip_address} :: Shell commands sent to check the runnig status`.magenta);
+//             });
+
+//             // Error handling
+//             stream.on('error', function (err) {
+//                 console.log(`SSH Client on tag ${req.params.ip_address} :: An error while trying to check the runnig status of the script :\n${err}`.red);
+//                 return;
+//             });
+
+//             // Searching for the csv names within the commands
+//             stream.on('data', function (data) {
+//             });
+
+//             // End of the Shell session
+//             stream.on('close', function () {
+//                 resolve();
+//             });
+//         });
+//     })
+//     return promise;
+// }

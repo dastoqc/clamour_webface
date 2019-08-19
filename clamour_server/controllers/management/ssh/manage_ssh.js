@@ -6,19 +6,33 @@ var ssh = require('./client_ssh');
 var con = require('../../../configuration/default_ssh.json')
 
 // Methods accessible outside 
-module.exports.download_all_csv = async function (req, res) {
-    var client = await connect_with_tag(req, res);
-    var csv_list = await ssh.list_csv(req, res, client);
-    if (csv_list.length !== 0) {
-        var downloaded = await ssh.download_csv(req, res, client, csv_list);
-        await ssh.delete_csv(req, res, client, downloaded);
-    }
-    await disconnect_from_tag(req, res, client);
-    return downloaded;
+module.exports.download_all_csv = function (req, res) {
+
+    var promise = new Promise(async function (resolve, reject) {
+        try {
+            var client = await connect_with_tag(req);
+            var csv_list = await ssh.list_csv(req, res, client);
+            if (csv_list.length !== 0) {
+                var downloaded = await ssh.download_csv(req, res, client, csv_list);
+                await ssh.delete_csv(req, res, client, downloaded);
+            }
+            resolve(downloaded);
+            await disconnect_from_tag(req, res, client);
+            
+        } catch (err) {
+            console.log(`Error while trying to download a list of csv files :`);
+            reject(err);
+        }
+    })
+    return promise;
+}
+
+module.exports.check_running_status = async function () {
+
 }
 
 // Internal function
-const connect_with_tag = function (req, res) {
+const connect_with_tag = function (req) {
     var promise = new Promise(function (resolve, reject) {
         var ssh_client = new Client();
         try {
