@@ -28,7 +28,7 @@ module.exports.init_table = function (connection) {
             \`yaw_variation\` 		INT NOT NULL,
             PRIMARY KEY (\`visit_number\` ASC, \`point_number\` ASC),
             CONSTRAINT visits_fk
-            FOREIGN KEY (\`visit_number\`) REFERENCES visits(\`visit_number\`)
+            FOREIGN KEY (\`visit_number\`) REFERENCES visits(\`visits.visit_number\`)
             ON DELETE CASCADE ON UPDATE CASCADE)
             ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;`
         db_connection.query(sql, function (err, results, fields) {
@@ -88,5 +88,22 @@ module.exports.get = function (visit_number) {
     });
     return promise;
 }
-// Get points
+
+module.exports.delete = function (visit_number) {
+    var promise = new Promise((resolve, reject) => {
+        sql =
+            `DELETE FROM points
+            WHERE visit_number = ?`;
+        param = [visit_number];
+        db_connection.query(sql, param, (err, results, fields) => {
+            if (err) {
+                reject(err)
+                return;
+            };
+            resolve(results);
+        });
+    });
+    return promise;
+}
+
 // Delete points

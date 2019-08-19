@@ -28,8 +28,8 @@ module.exports.test_visits_queries = async function (req, res, next) {
     var test_start_date = new Date(2019, 7 -1, 20);
     try {
         // Test addition of visits
-        // console.log(await db.query.visits.add('test_0x1008_2019-07-20-16:00.csv'));
-        // console.log(await db.query.visits.add('visit0x1008_2019-07-20-14:57.csv'));
+        console.log(await db.query.visits.add('test_0x1008_2019-07-20-16:00.csv'));
+        console.log(await db.query.visits.add('visit0x1008_2019-07-20-14:57.csv'));
 
         // // Test the fetching of data
         // // console.log(await db.query.visits.get_all_equal_field({ visit_number: 38 }));
