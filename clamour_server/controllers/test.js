@@ -49,7 +49,7 @@ module.exports.test_visits_queries = async function (req, res, next) {
 
         // console.log(await db.query.visits.get_points(1));
 
-        //console.log(await db.query.visits.delete_equal_field(1));
+        console.log(await db.query.visits.delete_equal_field(1));
 
     } catch (err) {
         console.log(`Error while testing the visits table functions :\n${err}`.red);

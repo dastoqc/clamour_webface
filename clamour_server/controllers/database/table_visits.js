@@ -149,18 +149,17 @@ module.exports.delete_equal_field = function (visit_number) {
                 };
                 inner_resolve(results);
             });
-        });
-    })
-        .then(async function (first_result) {
-            try {
-                var second_result = await points.delete(visit_number);
-                resolve({ visit_query: first_result, points_query: second_result });
-            }
-            catch (err) {
-                reject(err);
-            };
-        });
-    ;
+        })
+            .then(async function (first_result) {
+                try {
+                    var second_result = await points.delete(visit_number);
+                    resolve({ visit_query: first_result, points_query: second_result });
+                }
+                catch (err) {
+                    reject(err);
+                };
+            });
+    });
     return promise;
 }
 
