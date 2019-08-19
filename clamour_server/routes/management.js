@@ -23,4 +23,8 @@ router.get('/network', management.scan_network);
 // SSH manipulation
 router.get('/csv_list/ip_address/:ip_address', management.get_ssh_csv);
 
+
+// Scan for network
+router.get('/scan_network');
+
 module.exports = router; 
