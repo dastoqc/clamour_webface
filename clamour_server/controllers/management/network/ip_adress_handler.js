@@ -37,14 +37,12 @@ module.exports.filter_potential_tag_ip_addresses = async function (ip_address_li
 };
 
 module.exports.filter_known_tags_ip_addresses = async function (ip_address_list) {
-
     var tag_ip_address = [];
-    var counter = 0;
     var promise = new Promise(async function (resolve, reject) {
         try {
             for (var i = 0; i < ip_address_list.length; i++) {
-                if (await db.query.tags.found(ip_address_list[i])) {
-                    tag_ip_address.push(element);
+                if (await db.query.tags.found({ ip_address: ip_address_list[i] })) {
+                    await tag_ip_address.push(ip_address_list[i]);
                 };
             }
             resolve(tag_ip_address);
