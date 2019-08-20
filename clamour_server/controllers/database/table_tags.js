@@ -9,9 +9,10 @@ module.exports.init_table = function (connection) {
     var promise = new Promise((resolve, reject) => {
         sql =
             `CREATE TABLE IF NOT EXISTS \`tags\` (
-            \`tag_id\` 		SMALLINT UNSIGNED NOT NULL,
-            \`ip_address\` 	INT UNSIGNED NULL,
-            \`password\` 	VARCHAR(20) NULL,
+            \`tag_id\` 		    SMALLINT UNSIGNED NOT NULL,
+            \`ip_address\` 	    INT UNSIGNED NULL,
+            \`password\` 	    VARCHAR(20) NULL,
+            \`script_status\` 	VARCHAR(6) NULL DEFAULT 'UKNOWN',
             PRIMARY KEY (\`tag_id\`),
             UNIQUE INDEX \`tag_id_UNIQUE\` (\`tag_id\` ASC),
             UNIQUE INDEX \`ip_address_UNIQUE\` (\`ip_address\` ASC));`;
@@ -46,7 +47,7 @@ module.exports.add = function (tag) {
 module.exports.get_from_id = function (id) {
     var promise = new Promise((resolve, reject) => {
         sql =
-            `SELECT tag_id, INET_NTOA(ip_address) AS ip_address
+            `SELECT tag_id, INET_NTOA(ip_address) AS ip_address, script_status
             FROM tags
             WHERE tag_id = ?`;
         param = [id];
@@ -64,7 +65,7 @@ module.exports.get_from_id = function (id) {
 module.exports.get_from_ip_address = function (ip_address) {
     var promise = new Promise((resolve, reject) => {
         sql =
-            `SELECT tag_id, INET_NTOA(ip_address) AS ip_address
+            `SELECT tag_id, INET_NTOA(ip_address) AS ip_address, script_status
             FROM tags
             WHERE ip_address = INET_ATON(?)`;
         param = [ip_address];
