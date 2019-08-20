@@ -1,7 +1,7 @@
-var ssh_manager = require('./ssh/manage_ssh')
-var tcp_manager = require('./manage_tcp')
-var network_manager = require('./network/manage_network')
-
+var ssh_manager = require('./ssh/manage_ssh');
+var tcp_manager = require('./manage_tcp');
+var network_manager = require('./network/manage_network');
+var db = require('../database/database');
 
 exports.get_test = function (req, res, next) {
     res.render('landing', { title: 'Management Route successfully created' });
@@ -36,11 +36,19 @@ exports.get_running_status = async function (req, res, next) {
 }
 
 //{ID : 1234, IP: 123.123.123.123, Status : {isRunning: ON/OFF/UKNONWN, pid: 1234}}
+
+// { [TAG : {ID:, IP:, Status:},
+//    TAG : {ID:, IP:, Status:},
+//    TAG : {ID:, IP:, Status:}]}
 exports.scan_network = async function (req, res, next) {
     try {
-        var ip_address_list = await network_manager.scan_for_tag_ip_address();
-        res.json({ tag_ip_addresses: ip_address_list });
+        var tag_ip_address_list = await network_manager.scan_for_tag_ip_address();
+        var tag_list = [];
+        for (var i = 0; i < tag_ip_address_list.length; i++) {
+            tag_list.push((await db.query.tags.get_from_ip_address(tag_ip_address_list[i]))[0]);
+        };
+        res.json(tag_list);
     } catch (err) {
-        res.send({error : err});
+        res.send({ error: err });
     }
 }
