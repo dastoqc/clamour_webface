@@ -35,7 +35,7 @@ module.exports.check_running_status = async function (ip_address) {
             var running_status = await ssh.get_running_status(client, ip_address);
             resolve(running_status);
         } catch (err) {
-            console.log(`Error while trying to download a list of csv files :`.red);
+            console.log(`Error while trying to get the running status of ip address ${ip_address} :`.red);
             reject(err);
         }
     });

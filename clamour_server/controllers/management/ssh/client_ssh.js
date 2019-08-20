@@ -130,8 +130,7 @@ module.exports.delete_csv = function (req, res, ssh_client, csv_list) {
 module.exports.get_running_status = function (ssh_client, ip_address) {
 
     let commands = ['echo "<status>" && pgrep -f clamour.py'];
-    var status = "UNKNOWN"
-    var counter = 0;
+    var status;
     var next_data_is_status = false;
 
     var promise = new Promise(function (resolve, reject) {
@@ -158,17 +157,22 @@ module.exports.get_running_status = function (ssh_client, ip_address) {
 
             // Searching for the csv names within the commands
             stream.on('data', function (data) {
-                console.log(`${counter++}`.bgCyan);
-                console.log(`${data}`.blue);
                 if (next_data_is_status) {
-                    console.log(output_parser.found_running_status(data));
+                    if (output_parser.found_running_status(data)) {
+                        status = { isActivated: true, pid: String(data).trim() };
+                    }
+                    else {
+                        status = { isActivated: false, pid: "-1" };
+                    }
                 }
                 next_data_is_status = output_parser.found_status_cue(data);
             });
 
             // End of the Shell session
             stream.on('close', function () {
-                resolve();
+                console.log(`SSH Client on tag ${ip_address} :: clamour script running status found : (Running: ${status.isActivated}, PID: ${status.pid})`.magenta);
+                console.log(`SSH Client on tag ${ip_address} :: End of the shell session`.magenta);
+                resolve(status);
             });
         });
     })
