@@ -7,7 +7,6 @@ var con = require('../../../configuration/default_ssh.json')
 
 // Methods accessible outside 
 module.exports.download_all_csv = function (ip_address) {
-
     var promise = new Promise(async function (resolve, reject) {
         try {
             var client = await connect_with_tag(ip_address);
@@ -26,7 +25,6 @@ module.exports.download_all_csv = function (ip_address) {
         }
         await disconnect_from_tag(client);
     });
-
     return promise;
 }
 
@@ -37,12 +35,11 @@ module.exports.check_running_status = async function (ip_address) {
             var running_status = await ssh.get_running_status(client, ip_address);
             resolve(running_status);
         } catch (err) {
-            console.log(`Error while trying to get the running status of ip address ${ip_address} :`.red);
+            console.log(`Error while trying to get the running status of tag on ip address ${ip_address} :`.red);
             reject(err);
         }
         await disconnect_from_tag(client);
     });
-
     return promise;
 }
 
@@ -80,7 +77,7 @@ const connect_with_tag = function (ip_address) {
             console.log(`SSH Client on tag ${ip_address} :: Start of SSH communication with tag`.green);
             resolve(ssh_client);
         });
-    })
+    });
     return promise;
 }
 
@@ -92,8 +89,8 @@ const disconnect_from_tag = function (ssh_client) {
         } catch (err) {
             console.log(`An error occured during the SSH disconnection attempt on ip address ${ip_address}`.red);
             console.log(err);
-            reject();
+            reject(err);
         }
-    })
+    });
     return promise;
 }
