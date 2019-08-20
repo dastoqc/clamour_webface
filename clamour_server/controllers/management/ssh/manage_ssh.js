@@ -6,25 +6,24 @@ var ssh = require('./client_ssh');
 var con = require('../../../configuration/default_ssh.json')
 
 // Methods accessible outside 
-module.exports.download_all_csv = function (req, res) {
+module.exports.download_all_csv = function (ip_address) {
 
     var promise = new Promise(async function (resolve, reject) {
         try {
-            var client = await connect_with_tag(req);
-            var csv_list = await ssh.list_csv(req, res, client);
+            var client = await connect_with_tag(ip_address);
+            var csv_list = await ssh.list_csv(client, ip_address);
             if (csv_list.length !== 0) {
-                var downloaded = await ssh.download_csv(req, res, client, csv_list);
-                await ssh.delete_csv(req, res, client, downloaded);
+                var downloaded = await ssh.download_csv(client, ip_address, csv_list);
+                await ssh.delete_csv(client, ip_address, downloaded);
             }
             resolve(downloaded);
-            await disconnect_from_tag(client);
-
         } catch (err) {
             console.log(`Error while trying to download a list of csv files :`.red);
             reject(err);
-            await disconnect_from_tag(client);
         }
+        await disconnect_from_tag(client);
     });
+
     return promise;
 }
 
@@ -38,7 +37,9 @@ module.exports.check_running_status = async function (ip_address) {
             console.log(`Error while trying to get the running status of ip address ${ip_address} :`.red);
             reject(err);
         }
+        await disconnect_from_tag(client);
     });
+
     return promise;
 }
 
