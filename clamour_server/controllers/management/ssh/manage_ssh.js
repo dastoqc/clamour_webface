@@ -15,8 +15,11 @@ module.exports.download_all_csv = function (ip_address) {
             if (csv_list.length !== 0) {
                 var downloaded = await ssh.download_csv(client, ip_address, csv_list);
                 await ssh.delete_csv(client, ip_address, downloaded);
+                resolve(downloaded);
             }
-            resolve(downloaded);
+            else {
+                resolve([]);
+            }
         } catch (err) {
             console.log(`Error while trying to download a list of csv files :`.red);
             reject(err);
