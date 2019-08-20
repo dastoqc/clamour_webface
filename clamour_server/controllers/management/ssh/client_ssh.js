@@ -131,7 +131,7 @@ module.exports.get_running_status = function (ssh_client, ip_address) {
 
     let commands = ['echo "<status>" && pgrep -f clamour.py'];
     var status;
-    var next_data_is_status = false;
+    var next_data_is_status = { isActivated: "UNKNOWN", pid: "-1" };
 
     var promise = new Promise(function (resolve, reject) {
 
@@ -159,10 +159,10 @@ module.exports.get_running_status = function (ssh_client, ip_address) {
             stream.on('data', function (data) {
                 if (next_data_is_status) {
                     if (output_parser.found_running_status(data)) {
-                        status = { isActivated: true, pid: String(data).trim() };
+                        status = { isActivated: "ON", pid: String(data).trim() };
                     }
                     else {
-                        status = { isActivated: false, pid: "-1" };
+                        status = { isActivated: "OFF", pid: "-1" };
                     }
                 }
                 next_data_is_status = output_parser.found_status_cue(data);
