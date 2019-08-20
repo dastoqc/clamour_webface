@@ -22,7 +22,7 @@ router.get('/network', management.scan_network);
 
 // SSH manipulation
 router.get('/csv_list/ip_address/:ip_address', management.get_ssh_csv);
-
+router.get('/check_running_status/ip_address/:ip_address', management.get_running_status);
 
 // Scan for network
 router.get('/scan_network');

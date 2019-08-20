@@ -22,11 +22,20 @@ exports.receive_data_stream = function (req, res, next) {
     res.redirect('/management');
 }
 
+exports.get_running_status = async function (req, res, next) {
+    try {
+        var running_status = await ssh_manager.check_running_status(req.params.ip_address);
+    } catch (err) {
+        res.json({ error: err });
+    }
+    res.json({ status: running_status });
+}
+
 exports.scan_network = async function (req, res, next) {
     try {
         var ip_address_list = await network_manager.scan_for_tag_ip_address();
-    } catch(err) {
-        res.json({error : err});
+    } catch (err) {
+        res.json({ error: err });
     }
-    res.json({tag_ip_addresses : ip_address_list});
+    res.json({ tag_ip_addresses: ip_address_list });
 }

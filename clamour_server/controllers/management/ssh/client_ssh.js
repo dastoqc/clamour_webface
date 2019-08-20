@@ -127,38 +127,50 @@ module.exports.delete_csv = function (req, res, ssh_client, csv_list) {
 }
 
 
-// module.exports.get_running_status = function (ssh_client, csv_list) {
+module.exports.get_running_status = function (ssh_client, ip_address) {
 
-//     let commands = ['pgrep -f /clamour.py'];
+    let commands = ['echo "<status>" && pgrep -f clamour.py'];
+    var status = "UNKNOWN"
+    var counter = 0;
+    var next_data_is_status = false;
 
-//     var promise = new Promise(function (resolve, reject) {
-//         // Shell command line
-//         ssh_client.shell(function (err, stream) {
-//             if (err) {
-//                 console.log(`SSH Client on tag ${req.params.ip_address} :: Error in shell session while trying to check the runnig status :\n${err}`.red);
-//                 return;
-//             }
+    var promise = new Promise(function (resolve, reject) {
 
-//             // Bash commands sent to the tag
-//             stream.end(commands.join('\n').concat(`\nexit\n`), function () {
-//                 console.log(`SSH Client on tag ${req.params.ip_address} :: Shell commands sent to check the runnig status`.magenta);
-//             });
+        // Shell command line 
+        ssh_client.shell(function (err, stream) {
+            if (err) {
+                console.log(`SSH Client on tag ${ip_address} :: Error in shell session while trying to check the runnig status :\n${err}`.red);
+                reject(err);
+                return;
+            }
 
-//             // Error handling
-//             stream.on('error', function (err) {
-//                 console.log(`SSH Client on tag ${req.params.ip_address} :: An error while trying to check the runnig status of the script :\n${err}`.red);
-//                 return;
-//             });
+            // Bash commands sent to the tag
+            stream.end(commands.join('\n').concat(`\nexit\n`), function () {
+                console.log(`SSH Client on tag ${ip_address} :: Shell commands sent to check the runnig status`.magenta);
+            });
 
-//             // Searching for the csv names within the commands
-//             stream.on('data', function (data) {
-//             });
+            // Error handling
+            stream.on('error', function (err) {
+                console.log(`SSH Client on tag ${ip_address} :: An error while trying to check the runnig status of the script :\n${err}`.red);
+                reject(err);
+                return;
+            });
 
-//             // End of the Shell session
-//             stream.on('close', function () {
-//                 resolve();
-//             });
-//         });
-//     })
-//     return promise;
-// }
+            // Searching for the csv names within the commands
+            stream.on('data', function (data) {
+                console.log(`${counter++}`.bgCyan);
+                console.log(`${data}`.blue);
+                if (next_data_is_status) {
+                    console.log(output_parser.found_running_status(data));
+                }
+                next_data_is_status = output_parser.found_status_cue(data);
+            });
+
+            // End of the Shell session
+            stream.on('close', function () {
+                resolve();
+            });
+        });
+    })
+    return promise;
+}
