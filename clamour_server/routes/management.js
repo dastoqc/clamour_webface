@@ -13,6 +13,9 @@ router.get('/tcp', management.receive_data_stream);
 router.get('/scan_network', management.scan_network);
 
 // Stoping the localization script and downloading the .csv files
+router.get('/start_script/ip_address/:ip_address/mode/:mode', management.start_script);
+
+// Stoping the localization script and downloading the .csv files
 router.get('/stop_download/ip_address/:ip_address', management.stop_tag_download_csv);
 
 // Check running status of the script of an ip address

@@ -6,6 +6,22 @@ var ssh = require('./client_ssh');
 var con = require('../../../configuration/default_ssh.json')
 
 // Methods accessible outside 
+module.exports.start_script = function (ip_address, mode) {
+    var promise = new Promise(async function (resolve, reject) {
+        try {
+            var client = await connect_with_tag(ip_address, mode);
+            await ssh.start_script(client, ip_address, {mode: "test"});
+            resolve();
+        } catch (err) {
+            console.log(`Error while trying to start the script on tag ${ip_address} :\n${err}`.red);
+            reject(err);
+        }
+        await disconnect_from_tag(client);
+    });
+    return promise;
+}
+
+
 module.exports.stop_script = function (ip_address) {
     var promise = new Promise(async function (resolve, reject) {
         try {

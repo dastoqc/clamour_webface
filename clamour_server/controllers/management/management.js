@@ -7,6 +7,18 @@ exports.get_test = function (req, res, next) {
     res.render('landing', { title: 'Management Route successfully created' });
 }
 
+exports.start_script = async function (req, res, next) {
+    try {
+        await ssh_manager.start_script(req.params.ip_address, req.params.mode);
+        res.json({
+            tag: (await db.query.tags.get_from_ip_address(req.params.ip_address))[0],
+        });
+    } catch (err) {
+        console.log(`Error while trying start the script on a tag :\n ${err}`.red);
+        res.json({ error: err });
+    }
+}
+
 exports.stop_tag_download_csv = async function (req, res, next) {
     try {
         await ssh_manager.stop_script(req.params.ip_address);
@@ -19,7 +31,7 @@ exports.stop_tag_download_csv = async function (req, res, next) {
             downloaded_files: downloaded_csv_files
         });
     } catch (err) {
-        console.log(`Error while trying stop a tag and download its csv files ${err} :`.red);
+        console.log(`Error while trying stop a tag and download its csv files:\n ${err}`.red);
         res.json({ error: err });
     }
 }
