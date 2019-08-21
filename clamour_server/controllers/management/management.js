@@ -7,18 +7,13 @@ exports.get_test = function (req, res, next) {
     res.render('landing', { title: 'Management Route successfully created' });
 }
 
-exports.get_ssh_csv = async function (req, res, next) {
+exports.stop_tag_download_csv = async function (req, res, next) {
     try {
         var dowloaded_csv_files = await ssh_manager.download_all_csv(req.params.ip_address);
         res.json({ dowloaded_files: dowloaded_csv_files });
     } catch (err) {
         res.json({ error: err });
     }
-}
-
-exports.download_csv = function (req, res, next) {
-    ssh_manager.download_all_csv();
-    res.redirect('/management');
 }
 
 exports.receive_data_stream = function (req, res, next) {

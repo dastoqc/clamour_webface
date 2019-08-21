@@ -6,25 +6,14 @@ let management = require('../controllers/management/management')
 /* GET home page. */
 router.get('/', management.get_test);
 
-// First implementation of ssh connection
-router.get('/ssh', management.get_ssh_csv);
-
-// First download from of sftp connection
-router.get('/sftp', management.download_csv);
-
 // First download from of tcp connection
 router.get('/tcp', management.receive_data_stream);
 
-// First download from of tcp connection
-router.get('/network', management.scan_network);
-
-
-
 // SSH manipulation
-router.get('/csv_list/ip_address/:ip_address', management.get_ssh_csv);
+router.get('/stop_download/ip_address/:ip_address', management.stop_tag_download_csv);
 router.get('/check_running_status/ip_address/:ip_address', management.get_running_status);
 
 // Scan for network
-router.get('/scan_network');
+router.get('/scan_network', management.scan_network);
 
 module.exports = router; 
