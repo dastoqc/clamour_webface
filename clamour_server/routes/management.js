@@ -9,11 +9,13 @@ router.get('/', management.get_test);
 // First download from of tcp connection
 router.get('/tcp', management.receive_data_stream);
 
-// SSH manipulation
-router.get('/stop_download/ip_address/:ip_address', management.stop_tag_download_csv);
-router.get('/check_running_status/ip_address/:ip_address', management.get_running_status);
-
 // Scan for network
 router.get('/scan_network', management.scan_network);
+
+// Stoping the localization script and downloading the .csv files
+router.get('/stop_download/ip_address/:ip_address', management.stop_tag_download_csv);
+
+// Check running status of the script of an ip address
+router.get('/check_running_status/ip_address/:ip_address', management.get_running_status);
 
 module.exports = router; 

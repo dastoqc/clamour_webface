@@ -14,7 +14,10 @@ exports.stop_tag_download_csv = async function (req, res, next) {
         for (var i = 0; i < downloaded_csv_files.length; i++) {
             await db.query.visits.add(downloaded_csv_files[i]);
         }
-        res.json({ downloaded_files: downloaded_csv_files });
+        res.json({
+            tag: (await db.query.tags.get_from_ip_address(req.params.ip_address))[0],
+            downloaded_files: downloaded_csv_files
+        });
     } catch (err) {
         console.log(`Error while trying stop a tag and download its csv files ${err} :`.red);
         res.json({ error: err });
@@ -46,7 +49,9 @@ exports.scan_network = async function (req, res, next) {
             await ssh_manager.check_running_status(tag_ip_address_list[i]);
             tag_list.push((await db.query.tags.get_from_ip_address(tag_ip_address_list[i]))[0]);
         };
-        res.json(tag_list);
+        res.json({
+            detected_tag_list: tag_list
+        });
     } catch (err) {
         console.log(`Error during the network scanning :\n${err}`.red);
         res.send({ error: err });
