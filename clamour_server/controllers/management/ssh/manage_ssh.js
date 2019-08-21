@@ -10,8 +10,13 @@ module.exports.start_script = function (ip_address, mode) {
     var promise = new Promise(async function (resolve, reject) {
         try {
             var client = await connect_with_tag(ip_address, mode);
-            await ssh.start_script(client, ip_address, {mode: "test"});
-            resolve();
+            var running_status = await ssh.get_running_status(client, ip_address);
+            if (running_status.isActivated == "ON") {
+                resolve("ALREADY TURNED ON")
+            } else {
+                await ssh.start_script(client, ip_address, { mode: mode });
+                resolve("TURNED ON")
+            }
         } catch (err) {
             console.log(`Error while trying to start the script on tag ${ip_address} :\n${err}`.red);
             reject(err);

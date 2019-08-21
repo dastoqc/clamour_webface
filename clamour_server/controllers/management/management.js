@@ -9,8 +9,9 @@ exports.get_test = function (req, res, next) {
 
 exports.start_script = async function (req, res, next) {
     try {
-        await ssh_manager.start_script(req.params.ip_address, req.params.mode);
+        var change = await ssh_manager.start_script(req.params.ip_address, req.params.mode);
         res.json({
+            change: change,
             tag: (await db.query.tags.get_from_ip_address(req.params.ip_address))[0],
         });
     } catch (err) {
