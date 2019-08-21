@@ -1,48 +1,67 @@
 var nmap = require('node-nmap');
 var os = require('os');
 
+var db = require('../../database/database');
+
 // Settings
 var ifaces = os.networkInterfaces();
 
 /**
  * Exported functions
  */
-module.exports.get_self_wlan_ip_address = function get_self_wlan_ip_address() {
+module.exports.get_self_wlan_ip_address = async function () {
     var wlan_interface_name;
-    for(var iface in ifaces) {
-        if(/^wl/.test(iface))
+    for (var iface in ifaces) {
+        if (/^wl/.test(iface))
             wlan_interface_name = iface;
     }
     return ifaces[wlan_interface_name][0].address;
 };
 
-module.exports.get_ip_addresses_from_scan = function get_ip_addresses_from_scan(scan_data) {
+module.exports.get_ip_addresses_from_scan = async function (scan_data) {
     var ip_addresses = [];
     for (var i = 0; i < scan_data.length; i++)
         ip_addresses.push(scan_data[i].ip);
     return ip_addresses;
 };
 
-module.exports.get_tag_ip_addresses_from_list = function get_tag_ip_addresses_from_list(ip_address_list) {
+module.exports.filter_potential_tag_ip_addresses = async function (ip_address_list) {
     var ip_addresses_to_ignore = get_ip_addresses_to_ignore();
     var index;
     for (var i = 0; i < ip_addresses_to_ignore.length; i++) {
         index = ip_address_list.indexOf(ip_addresses_to_ignore[i]);
-        if(index !== -1)
+        if (index !== -1)
             ip_address_list.splice(ip_address_list.indexOf(ip_addresses_to_ignore[i]), 1);
     }
     return ip_address_list;
 };
 
+module.exports.filter_known_tags_ip_addresses = async function (ip_address_list) {
+    var tag_ip_address = [];
+    var promise = new Promise(async function (resolve, reject) {
+        try {
+            for (var i = 0; i < ip_address_list.length; i++) {
+                if (await db.query.tags.found({ ip_address: ip_address_list[i] })) {
+                    await tag_ip_address.push(ip_address_list[i]);
+                };
+            }
+            resolve(tag_ip_address);
+        } catch (err) {
+            reject(err);
+        }
+    });
+    return promise;
+}
+
 /**
  * Internal functions
  */
-function get_ip_addresses_to_ignore() {
+get_ip_addresses_to_ignore = function () {
     var addresses_to_ignore = get_local_ip_addresses();
-    return addresses_to_ignore.concat(get_router_ip_addresses(addresses_to_ignore)); 
+    return addresses_to_ignore.concat(get_router_ip_addresses(addresses_to_ignore));
 };
 
-function get_router_ip_addresses(addresses) {
+get_router_ip_addresses = function (addresses) {
     var router_addresses_list = [];
     for (var i = 0; i < addresses.length; i++) {
         var router_address = addresses[i].split('.');
@@ -55,7 +74,7 @@ function get_router_ip_addresses(addresses) {
     return router_addresses_list;
 };
 
-function get_local_ip_addresses() {
+get_local_ip_addresses = function () {
     var local_addresses = [];
     Object.keys(ifaces).forEach(function (ifname) {
         var alias = 0;
