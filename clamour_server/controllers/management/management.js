@@ -4,7 +4,7 @@ var network_manager = require('./network/manage_network');
 var db = require('../database/database');
 
 exports.get_test = function (req, res, next) {
-    res.render('management');
+    res.render('management', {variable : "test variable"});
     // res.render('landing', { title: 'Management Route successfully created' });
 }
 
