@@ -6,6 +6,21 @@ var ssh = require('./client_ssh');
 var con = require('../../../configuration/default_ssh.json')
 
 // Methods accessible outside 
+module.exports.stop_script = function (ip_address) {
+    var promise = new Promise(async function (resolve, reject) {
+        try {
+            var client = await connect_with_tag(ip_address);
+            await ssh.stop_script(client, ip_address);
+            resolve();
+        } catch (err) {
+            console.log(`Error while trying to stop the script on tag ${ip_address} :\n${err}`.red);
+            reject(err);
+        }
+        await disconnect_from_tag(client);
+    });
+    return promise;
+}
+
 module.exports.download_all_csv = function (ip_address) {
     var promise = new Promise(async function (resolve, reject) {
         try {

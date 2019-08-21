@@ -126,7 +126,6 @@ module.exports.delete_csv = function (ssh_client, ip_address, csv_list) {
     return promise;
 }
 
-
 module.exports.get_running_status = function (ssh_client, ip_address) {
 
     let commands = ['echo "<status>" && pgrep -f clamour.py'];
@@ -175,6 +174,48 @@ module.exports.get_running_status = function (ssh_client, ip_address) {
                 console.log(`SSH Client on tag ${ip_address} :: clamour script running status found : (Running: ${status.isActivated}, PID: ${status.pid})`.magenta);
                 console.log(`SSH Client on tag ${ip_address} :: End of the shell session`.magenta);
                 resolve(status);
+            });
+        });
+    })
+    return promise;
+}
+
+module.exports.stop_script = function (ssh_client, ip_address) {
+
+    let commands = ['kill $(pgrep -f clamour.py)'];
+
+    var promise = new Promise(function (resolve, reject) {
+
+        // Shell command line 
+        ssh_client.shell(function (err, stream) {
+            if (err) {
+                console.log(`SSH Client on tag ${ip_address} :: Error in shell session while trying to stop the script :\n${err}`.red);
+                reject(err);
+                return;
+            }
+
+            // Bash commands sent to the tag
+            stream.end(commands.join('\n').concat(`\nexit\n`), function () {
+                console.log(`SSH Client on tag ${ip_address} :: Shell commands sent to stop the script`.magenta);
+                db.query.tags.update_status({ip_address: ip_address}, 'OFF');
+            });
+
+            // Error handling
+            stream.on('error', function (err) {
+                console.log(`SSH Client on tag ${ip_address} :: An error while trying to stop the script :\n${err}`.red);
+                reject(err);
+                return;
+            });
+
+            // Searching for the csv names within the commands
+            stream.on('data', function (data) {
+            });
+
+            // End of the Shell session
+            stream.on('close', function () {
+                console.log(`SSH Client on tag ${ip_address} :: Clamour script stoped`.magenta);
+                console.log(`SSH Client on tag ${ip_address} :: End of the shell session`.magenta);
+                resolve();
             });
         });
     })

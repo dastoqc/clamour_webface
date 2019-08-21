@@ -9,9 +9,11 @@ exports.get_test = function (req, res, next) {
 
 exports.stop_tag_download_csv = async function (req, res, next) {
     try {
+        await ssh_manager.stop_script(req.params.ip_address);
         var dowloaded_csv_files = await ssh_manager.download_all_csv(req.params.ip_address);
         res.json({ dowloaded_files: dowloaded_csv_files });
     } catch (err) {
+        console.log(`Error while trying stop a tag and download its csv files ${err} :`.red);
         res.json({ error: err });
     }
 }
@@ -29,8 +31,6 @@ exports.get_running_status = async function (req, res, next) {
         res.json({ error: err });
     }
 }
-
-//{ID : 1234, IP: 123.123.123.123, Status : {isRunning: ON/OFF/UKNONWN, pid: 1234}}
 
 // { [TAG : {ID:, IP:, Status:},
 //    TAG : {ID:, IP:, Status:},
