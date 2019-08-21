@@ -45,10 +45,12 @@ exports.scan_network = async function (req, res, next) {
         var tag_ip_address_list = await network_manager.scan_for_tag_ip_address();
         var tag_list = [];
         for (var i = 0; i < tag_ip_address_list.length; i++) {
+            await ssh_manager.check_running_status(tag_ip_address_list[i]);
             tag_list.push((await db.query.tags.get_from_ip_address(tag_ip_address_list[i]))[0]);
         };
         res.json(tag_list);
     } catch (err) {
+        console.log(`Error during the network scanning :\n${err}`.red);
         res.send({ error: err });
     }
 }

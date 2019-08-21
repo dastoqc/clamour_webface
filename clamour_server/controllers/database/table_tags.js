@@ -116,11 +116,7 @@ module.exports.get_password_from_id = function (id) {
     return promise;
 }
 
-<<<<<<< HEAD
-module.exports.update_id = function (tag = {tag_id: -1, ip_address: "0.0.0.0"}, new_id = 0) {
-=======
 module.exports.update_id = function (tag = {tag_id : -1, ip_address : '0.0.0.0'}, new_id = 0) {
->>>>>>> database
     var promise = new Promise((resolve, reject) => {
         sql =
             `UPDATE tags
@@ -138,11 +134,7 @@ module.exports.update_id = function (tag = {tag_id : -1, ip_address : '0.0.0.0'}
     return promise;
 }
 
-<<<<<<< HEAD
-module.exports.update_ip_address = function (tag = {tag_id: -1, ip_address: "0.0.0.0"}, new_ip_address = "0.0.0.0") {
-=======
 module.exports.update_ip_address = function (tag = {tag_id : -1, ip_address : '0.0.0.0'}, new_ip_address = '0.0.0.0') {
->>>>>>> database
     var promise = new Promise((resolve, reject) => {
         sql =
             `UPDATE tags
@@ -207,7 +199,6 @@ module.exports.found = function (tag = {tag_id: -1, ip_address: "0.0.0.0"}) {
                 reject(err)
                 return;
             };
-            console.log(results);
             (results[0].found != 0) ? resolve(true) : resolve(false);
         });
     });

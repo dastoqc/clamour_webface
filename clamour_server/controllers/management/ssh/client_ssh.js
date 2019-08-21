@@ -2,9 +2,9 @@ var Client = require('ssh2').Client;
 var color = require('colors');
 var path = require('path');
 
-var output_parser = require('./interpreter_output')
-
-var dir = require('../../../configuration/directories')
+var output_parser = require('./interpreter_output');
+var db = require('../../database/database');
+var dir = require('../../../configuration/directories');
 
 module.exports.list_csv = function (ssh_client, ip_address) {
 
@@ -160,9 +160,11 @@ module.exports.get_running_status = function (ssh_client, ip_address) {
                 if (next_data_is_status) {
                     if (output_parser.found_running_status(data)) {
                         status = { isActivated: "ON", pid: String(data).trim() };
+                        db.query.tags.update_status({ip_address: ip_address}, 'ON');
                     }
                     else {
                         status = { isActivated: "OFF", pid: "-1" };
+                        db.query.tags.update_status({ip_address: ip_address}, 'OFF');
                     }
                 }
                 next_data_is_status = output_parser.found_status_cue(data);
