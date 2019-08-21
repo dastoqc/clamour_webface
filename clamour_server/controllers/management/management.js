@@ -10,8 +10,11 @@ exports.get_test = function (req, res, next) {
 exports.stop_tag_download_csv = async function (req, res, next) {
     try {
         await ssh_manager.stop_script(req.params.ip_address);
-        var dowloaded_csv_files = await ssh_manager.download_all_csv(req.params.ip_address);
-        res.json({ dowloaded_files: dowloaded_csv_files });
+        var downloaded_csv_files = await ssh_manager.download_all_csv(req.params.ip_address);
+        for (var i = 0; i < downloaded_csv_files.length; i++) {
+            await db.query.visits.add(downloaded_csv_files[i]);
+        }
+        res.json({ downloaded_files: downloaded_csv_files });
     } catch (err) {
         console.log(`Error while trying stop a tag and download its csv files ${err} :`.red);
         res.json({ error: err });
