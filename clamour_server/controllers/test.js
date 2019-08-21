@@ -14,7 +14,9 @@ module.exports.test_tag_queries = async function (req, res, next) {
         // //console.log(await db.query.tags.update_ip_address({ip_address : IPaddress},  '3.3.3.3'));
         // console.log(await db.query.tags.found({ ip_address: IPaddress }));
 
-        // console.log(await db.query.tags.delete({ip_address:'1.1.1.3'}))
+        // console.log(await db.query.tags.delete({ip_address:'1.1.1.3'}));
+
+        // console.log(await db.query.tags.update_status({ip_address: '192.168.2.102'}, 'ON'));
     } catch (err) {
         console.log(`Error while testing the tags table functions :\n${err}`.red);
     }

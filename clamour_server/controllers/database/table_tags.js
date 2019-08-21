@@ -12,7 +12,7 @@ module.exports.init_table = function (connection) {
             \`tag_id\` 		    SMALLINT UNSIGNED NOT NULL,
             \`ip_address\` 	    INT UNSIGNED NULL,
             \`password\` 	    VARCHAR(20) NULL,
-            \`script_status\` 	VARCHAR(6) NULL DEFAULT 'UKNOWN',
+            \`script_status\` 	VARCHAR(7) NULL DEFAULT 'UNKNOWN',
             PRIMARY KEY (\`tag_id\`),
             UNIQUE INDEX \`tag_id_UNIQUE\` (\`tag_id\` ASC),
             UNIQUE INDEX \`ip_address_UNIQUE\` (\`ip_address\` ASC));`;
@@ -27,7 +27,7 @@ module.exports.init_table = function (connection) {
     return promise;
 }
 
-module.exports.add = function (tag) {
+module.exports.add = function (tag = {tag_id : -1, ip_address : '0.0.0.0'}) {
     var promise = new Promise((resolve, reject) => {
         sql =
             `INSERT INTO tags (tag_id, ip_address, password) 
@@ -116,7 +116,11 @@ module.exports.get_password_from_id = function (id) {
     return promise;
 }
 
+<<<<<<< HEAD
 module.exports.update_id = function (tag = {tag_id: -1, ip_address: "0.0.0.0"}, new_id = 0) {
+=======
+module.exports.update_id = function (tag = {tag_id : -1, ip_address : '0.0.0.0'}, new_id = 0) {
+>>>>>>> database
     var promise = new Promise((resolve, reject) => {
         sql =
             `UPDATE tags
@@ -134,13 +138,35 @@ module.exports.update_id = function (tag = {tag_id: -1, ip_address: "0.0.0.0"}, 
     return promise;
 }
 
+<<<<<<< HEAD
 module.exports.update_ip_address = function (tag = {tag_id: -1, ip_address: "0.0.0.0"}, new_ip_address = "0.0.0.0") {
+=======
+module.exports.update_ip_address = function (tag = {tag_id : -1, ip_address : '0.0.0.0'}, new_ip_address = '0.0.0.0') {
+>>>>>>> database
     var promise = new Promise((resolve, reject) => {
         sql =
             `UPDATE tags
             SET ip_address = INET_ATON(?)
             WHERE tag_id = ? OR ip_address = INET_ATON(?)`;
         param = [new_ip_address, tag.tag_id, tag.ip_address];
+        db_connection.query(sql, param, (err, results, fields) => {
+            if (err) {
+                reject(err)
+                return;
+            };
+            resolve(results);
+        });
+    });
+    return promise;
+}
+
+module.exports.update_status = function (tag = {tag_id : -1, ip_address : '0.0.0.0'}, status = 'UNKNOWN') {
+    var promise = new Promise((resolve, reject) => {
+        sql =
+            `UPDATE tags
+            SET script_status = ?
+            WHERE tag_id = ? OR ip_address = INET_ATON(?)`;
+        param = [status, tag.tag_id, tag.ip_address];
         db_connection.query(sql, param, (err, results, fields) => {
             if (err) {
                 reject(err)
