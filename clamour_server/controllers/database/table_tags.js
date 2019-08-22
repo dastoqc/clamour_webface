@@ -44,6 +44,22 @@ module.exports.add = function (tag = {tag_id : -1, ip_address : '0.0.0.0'}) {
     return promise;
 }
 
+module.exports.get_all = function () {
+    var promise = new Promise((resolve, reject) => {
+        sql =
+            `SELECT tag_id, INET_NTOA(ip_address) AS ip_address, script_status
+            FROM tags`;
+        db_connection.query(sql, (err, results, fields) => {
+            if (err) {
+                reject(err)
+                return;
+            };
+            resolve(results);
+        });
+    });
+    return promise;
+}
+
 module.exports.get_from_id = function (id) {
     var promise = new Promise((resolve, reject) => {
         sql =

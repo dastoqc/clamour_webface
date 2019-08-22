@@ -5,9 +5,9 @@ module.exports.test_tag_queries = async function (req, res, next) {
     IPaddress = '1.3.1.1';
     Password = 12345;
     try {
-        await db.query.tags.add({ tag_id: tagID, ip_address: IPaddress, password: Password });
-        console.log(await db.query.tags.get_from_ip_address(IPaddress));
-        console.log(await db.query.tags.get_from_id(tagID));
+        // await db.query.tags.add({ tag_id: tagID, ip_address: IPaddress, password: Password });
+        // console.log(await db.query.tags.get_from_ip_address(IPaddress));
+        // console.log(await db.query.tags.get_from_id(tagID));
         // console.log(await db.query.tags.get_password_from_ip_address(IPaddress));
         // console.log(await db.query.tags.get_password_from_id(tagID));
         // //console.log(await db.query.tags.update_id({tag_id : tagID}, tagID * 100));
@@ -17,6 +17,8 @@ module.exports.test_tag_queries = async function (req, res, next) {
         // console.log(await db.query.tags.delete({ip_address:'1.1.1.3'}));
 
         // console.log(await db.query.tags.update_status({ip_address: '192.168.2.102'}, 'ON'));
+
+        console.log(await db.query.tags.get_all());
     } catch (err) {
         console.log(`Error while testing the tags table functions :\n${err}`.red);
     }
