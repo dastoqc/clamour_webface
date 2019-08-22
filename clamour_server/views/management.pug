@@ -15,8 +15,10 @@ block content
     
     p#text {{selected}}
 
-  each tag in tag_list    
-    +tag_summary(tag)
+  - var n = 0;
+  ul
+    while n < tag_number
+      li= n++
 
 block vue_handler
     script(src="/javascripts/management.js")

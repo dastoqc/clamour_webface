@@ -4,8 +4,8 @@ var network_manager = require('./network/manage_network');
 var db = require('../database/database');
 
 module.exports.render_page = async function (req, res, next) {
-    var tag_list = await db.query.tags.get_all();
-    res.render('management', {tag_list : tag_list});
+    var tag_number = await db.query.tags.get_number();
+    res.render('management', {tag_number : tag_number});
 }
 
 module.exports.start_script = async function (req, res, next) {
