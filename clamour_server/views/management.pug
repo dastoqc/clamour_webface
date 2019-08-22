@@ -1,27 +1,22 @@
 extends layout
 
-mixin tag_summary(tag)
-    h1= tag.id
-    h2= tag.running_status
-    h2= network_status
-
 block scripts
-
   script(src="/javascripts/vue.min.js")
   script(src="/javascripts/axios.min.js")
 
+block mixins
+  include ./mixins/tag_element.pug
 
 block content
-
   div#vue-network
     input#button_network_scan(type="button" v-on:click="scan_network"          value="Scan network")
     input#button_network_scan(type="button" v-on:click="start_devices"         value="Start visit")
     input#button_network_scan(type="button" v-on:click="stop_download_devices" value="Stop visit and download")
     
     p#text {{selected}}
-    
-    +tag_summary(variable)
+
+  each tag in tag_list    
+    +tag_summary(tag)
 
 block vue_handler
-
     script(src="/javascripts/management.js")

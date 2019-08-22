@@ -3,9 +3,9 @@ var tcp_manager = require('./manage_tcp');
 var network_manager = require('./network/manage_network');
 var db = require('../database/database');
 
-exports.get_test = function (req, res, next) {
-    res.render('management', {variable : "test variable"});
-    // res.render('landing', { title: 'Management Route successfully created' });
+exports.get_test = async function (req, res, next) {
+    var tag_list = await db.query.tags.get_all();
+    res.render('management', {tag_list : tag_list});
 }
 
 exports.start_script = async function (req, res, next) {
