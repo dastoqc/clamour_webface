@@ -4,7 +4,7 @@ var router = express.Router();
 let management = require('../controllers/management/management')
 
 /* GET home page. */
-router.get('/', management.get_test);
+router.get('/', management.render_page);
 
 // First download from of tcp connection
 router.get('/tcp', management.receive_data_stream);

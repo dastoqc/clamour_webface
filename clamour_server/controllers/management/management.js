@@ -3,12 +3,12 @@ var tcp_manager = require('./manage_tcp');
 var network_manager = require('./network/manage_network');
 var db = require('../database/database');
 
-exports.get_test = async function (req, res, next) {
+module.exports.render_page = async function (req, res, next) {
     var tag_list = await db.query.tags.get_all();
     res.render('management', {tag_list : tag_list});
 }
 
-exports.start_script = async function (req, res, next) {
+module.exports.start_script = async function (req, res, next) {
     try {
         var change = await ssh_manager.start_script(req.params.ip_address, req.params.mode);
         res.json({
@@ -21,7 +21,7 @@ exports.start_script = async function (req, res, next) {
     }
 }
 
-exports.stop_tag_download_csv = async function (req, res, next) {
+module.exports.stop_tag_download_csv = async function (req, res, next) {
     try {
         await ssh_manager.stop_script(req.params.ip_address);
         var downloaded_csv_files = await ssh_manager.download_all_csv(req.params.ip_address);
@@ -38,12 +38,12 @@ exports.stop_tag_download_csv = async function (req, res, next) {
     }
 }
 
-exports.receive_data_stream = function (req, res, next) {
+module.exports.receive_data_stream = function (req, res, next) {
     tcp_manager.listen_to_data_stream();
     res.redirect('/management');
 }
 
-exports.get_running_status = async function (req, res, next) {
+module.exports.get_running_status = async function (req, res, next) {
     try {
         var running_status = await ssh_manager.check_running_status(req.params.ip_address);
         res.json({ status: running_status });
@@ -55,7 +55,7 @@ exports.get_running_status = async function (req, res, next) {
 // { [TAG : {ID:, IP:, Status:},
 //    TAG : {ID:, IP:, Status:},
 //    TAG : {ID:, IP:, Status:}]}
-exports.scan_network = async function (req, res, next) {
+module.exports.scan_network = async function (req, res, next) {
     try {
         var tag_ip_address_list = await network_manager.scan_for_tag_ip_address();
         var tag_list = [];

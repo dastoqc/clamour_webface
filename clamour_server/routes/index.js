@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
 
-let landing = require('../controllers/landing');
+let index = require('../controllers/index');
 
 /* GET home page. */
-router.get('/', landing.get_lead);
-router.post('/', landing.submit_lead);
+router.get('/', index.index);
+router.post('/', index.index);
 
 
 
