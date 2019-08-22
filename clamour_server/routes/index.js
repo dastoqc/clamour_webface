@@ -7,6 +7,4 @@ let index = require('../controllers/index');
 router.get('/', index.index);
 router.post('/', index.index);
 
-
-
 module.exports = router;
