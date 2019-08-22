@@ -27,12 +27,12 @@ module.exports.init_table = function (connection) {
     return promise;
 }
 
-module.exports.add = function (tag = {tag_id : -1, ip_address : '0.0.0.0'}) {
+module.exports.add = function (tag = {tag_id : -1, ip_address : '0.0.0.0', password: ''}) {
     var promise = new Promise((resolve, reject) => {
         sql =
             `INSERT INTO tags (tag_id, ip_address, password) 
             VALUES (?, INET_ATON(?), ?)`;
-        param = [tag.tag_id, tag.ip_address, tag.password || ''];
+        param = [tag.tag_id, tag.ip_address, tag.password];
         db_connection.query(sql, param, (err, results, fields) => {
             if (err) {
                 reject(err);
@@ -207,6 +207,20 @@ module.exports.delete = function (tag = {tag_id : -1, ip_address : '0.0.0.0'}) {
             OR ip_address = INET_ATON(?)`;
         param = [tag.tag_id, tag.ip_address];
         db_connection.query(sql, param, (err, results, fields) => {
+            if (err) {
+                reject(err)
+                return;
+            };
+            resolve(results);
+        });
+    });
+    return promise;
+}
+
+module.exports.delete = function () {
+    var promise = new Promise((resolve, reject) => {
+        sql = `DELETE FROM tags`;
+        db_connection.query(sql, (err, results, fields) => {
             if (err) {
                 reject(err)
                 return;
