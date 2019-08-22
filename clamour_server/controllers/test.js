@@ -19,6 +19,7 @@ module.exports.test_tag_queries = async function (req, res, next) {
         // console.log(await db.query.tags.update_status({ip_address: '192.168.2.102'}, 'ON'));
 
         console.log(await db.query.tags.get_all());
+        console.log(await db.query.tags.get_number());
     } catch (err) {
         console.log(`Error while testing the tags table functions :\n${err}`.red);
     }

@@ -47,14 +47,27 @@ module.exports.add = function (tag = {tag_id : -1, ip_address : '0.0.0.0'}) {
 module.exports.get_all = function () {
     var promise = new Promise((resolve, reject) => {
         sql =
-            `SELECT tag_id, INET_NTOA(ip_address) AS ip_address, script_status
-            FROM tags`;
+            `SELECT tag_id, INET_NTOA(ip_address) AS ip_address, script_status FROM tags`;
         db_connection.query(sql, (err, results, fields) => {
             if (err) {
                 reject(err)
                 return;
             };
             resolve(results);
+        });
+    });
+    return promise;
+}
+
+module.exports.get_number = function () {
+    var promise = new Promise((resolve, reject) => {
+        sql = `SELECT COUNT(*) AS number_of_tags FROM tags;`;
+        db_connection.query(sql, (err, results, fields) => {
+            if (err) {
+                reject(err)
+                return;
+            };
+            resolve(results[0].number_of_tags);
         });
     });
     return promise;
