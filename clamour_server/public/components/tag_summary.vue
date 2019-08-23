@@ -1,20 +1,21 @@
 <template lang="pug">
     div
-      p {{ title }}
-      | random text 
+      p#test_text This is just a test text field
 </template>
 
 <script>
-// Imports
-export default {
+module.exports = {
+  components: {
+  },
+
   data() {
     return {
       title: "Vue Wizards"
     };
   },
+
   methods: {
     updateTitle: function(updatedTitle) {
-      this.title = updatedTitle;
     }
   }
 };
