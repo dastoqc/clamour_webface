@@ -5,7 +5,20 @@
 
 <script>
 module.exports = {
-  components: {
+  components: {},
+
+  props: {
+    tag: {
+      type: {
+        tag_info: {
+          id: Number,
+          ip_address: String,
+          running_status: String
+        },
+        network_status: String
+      },
+      required: true
+    }
   },
 
   data() {
@@ -15,8 +28,7 @@ module.exports = {
   },
 
   methods: {
-    updateTitle: function(updatedTitle) {
-    }
+    updateTitle: function() {}
   }
 };
 </script>

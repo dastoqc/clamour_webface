@@ -20957,8 +20957,67 @@ var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("body {\n
 //
 //
 
+var Tag = require("../components/tag_summary.vue");
+
 module.exports = {
   components: {
+    tag_summary: Tag
+  },
+
+  data() {
+    return {
+      known_device_list: [],
+      detected_device_list: [],
+      title: "Vue Wizards"
+    };
+  },
+
+  methods: {
+    updateTitle: function(updatedTitle) {}
+  }
+};
+
+})()
+if (module.exports.__esModule) module.exports = module.exports.default
+var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
+if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _vm._m(0)}
+__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('p',{attrs:{"id":"test_text"}},[_vm._v("This is just a test text field")])])}]
+if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  module.hot.dispose(__vueify_style_dispose__)
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-27834336", __vue__options__)
+  } else {
+    hotAPI.reload("data-v-27834336", __vue__options__)
+  }
+})()}
+},{"../components/tag_summary.vue":10,"vue":6,"vue-hot-reload-api":3,"vueify/lib/insert-css":8}],10:[function(require,module,exports){
+var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("body {\n  margin: 0;\n  font-family: \"Nunito SemiBold\";\n}")
+;(function(){
+//
+//
+//
+//
+//
+
+module.exports = {
+  components: {},
+
+  props: {
+    tag: {
+      type: {
+        tag_info: {
+          id: Number,
+          ip_address: String,
+          running_status: String
+        },
+        network_status: String
+      },
+      required: true
+    }
   },
 
   data() {
@@ -20968,8 +21027,7 @@ module.exports = {
   },
 
   methods: {
-    updateTitle: function(updatedTitle) {
-    }
+    updateTitle: function() {}
   }
 };
 
@@ -20987,15 +21045,15 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-4ad3324f", __vue__options__)
   } else {
-    hotAPI.reload("data-v-4ad3324f", __vue__options__)
+    hotAPI.rerender("data-v-4ad3324f", __vue__options__)
   }
 })()}
-},{"vue":6,"vue-hot-reload-api":3,"vueify/lib/insert-css":8}],10:[function(require,module,exports){
+},{"vue":6,"vue-hot-reload-api":3,"vueify/lib/insert-css":8}],11:[function(require,module,exports){
 var Vue = require("vue/dist/vue.js");
 
-Vue.component("tag_summary", require("../components/tag_summary.vue"));
+Vue.component("tag_summary", require("../components/management.vue"));
 
 const app = new Vue({
   el: "#app"
 });
-},{"../components/tag_summary.vue":9,"vue/dist/vue.js":4}]},{},[10]);
+},{"../components/management.vue":9,"vue/dist/vue.js":4}]},{},[11]);

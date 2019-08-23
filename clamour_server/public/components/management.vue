@@ -4,26 +4,23 @@
 </template>
 
 <script>
-// Imports
-import Tag from "../components/tag_summary.vue";
+var Tag = require("../components/tag_summary.vue");
 
-export default {
+module.exports = {
   components: {
-    "tag_summary": Tag
+    tag_summary: Tag
   },
+
   data() {
     return {
-      ninjas: [
-        { name: "Ryu", speciality: "Vue Components", show: false },
-        { name: "Crystal", speciality: "HTML Wizardry", show: false },
-      ],
+      known_device_list: [],
+      detected_device_list: [],
       title: "Vue Wizards"
     };
   },
+
   methods: {
-    updateTitle: function(updatedTitle) {
-      this.title = updatedTitle;
-    }
+    updateTitle: function(updatedTitle) {}
   }
 };
 </script>
