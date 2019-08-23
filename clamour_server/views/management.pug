@@ -1,8 +1,6 @@
 extends layout
 
 block scripts
-  script(src="/javascripts/vue.min.js")
-  script(src="/javascripts/axios.min.js")
 
 block mixins
   include ./mixins/tag_element.pug
@@ -17,11 +15,11 @@ block content
     
     //- p#text {{selected}}
 
-  - var i = 0;
-  ul
-    while i < tag_number
-      li= i
-      = i++
+  //- - var i = 0;
+  //- ul
+  //-   while i < tag_number
+  //-     li= i
+  //-     = i++
 
   //- div#components-demo
   //-   button-counter
@@ -31,4 +29,4 @@ block content
   //-   todo-item
 
 block vue_handler
-    script(src="/builds/management.js")
+    script(src="/builds/main.js")
