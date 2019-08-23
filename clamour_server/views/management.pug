@@ -15,10 +15,15 @@ block content
     
     p#text {{selected}}
 
-  - var n = 0;
+  - var i = 0;
   ul
-    while n < tag_number
-      li= n++
+    while i < tag_number
+      li= i
+      = i++
+
+  //- div#components-demo
+  //-   button-counter
+
 
 block vue_handler
     script(src="/javascripts/management.js")

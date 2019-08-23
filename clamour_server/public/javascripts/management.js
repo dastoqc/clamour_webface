@@ -1,9 +1,9 @@
 
-var network = new Vue({
-    el: '#vue-network',
+var management = new Vue({
+    el: '#vue-management',
     data: {
+        known_device_list: ["a", "b"],
         detected_device_list: [],
-        known_device_list: [],
         selected: "192.168.4.200",
         variable: { id: 1234, ip_address: "123.456.789.101", running_status: "OFF", network_status: "OUT" }
     },
@@ -42,3 +42,15 @@ var network = new Vue({
         }
     }
 })
+
+// // Define a new component called button-counter
+// var device = Vue.component('button-counter', {
+//     data: function () {
+//       return {
+//         count: 0
+//       }
+//     },
+//     template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
+//   })
+
+// new Vue({ el: '#components-demo' })
