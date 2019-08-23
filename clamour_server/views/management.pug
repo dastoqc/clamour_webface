@@ -9,6 +9,8 @@ block mixins
 
 block content
   div#vue-network
+    cruel-world
+
     input#button_network_scan(type="button" v-on:click="scan_network"          value="Scan network")
     input#button_network_scan(type="button" v-on:click="start_devices"         value="Start visit")
     input#button_network_scan(type="button" v-on:click="stop_download_devices" value="Stop visit and download")
@@ -24,5 +26,4 @@ block content
     todo-item
 
 block vue_handler
-    script(src="/javascripts/management.js")
-    script(src="/components/tag_summary.js")
+    script(src="/javascripts/bundle.js")
