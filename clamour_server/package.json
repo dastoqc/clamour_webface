@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "devstart": "nodemon ./bin/www",
-    "build_frontend": "browserify -t vueify -e public/javascripts/main.js -o public/bundles/management.js"
+    "develop": "npm run devstart && npm run devfront",
+    "devstart": "DEBUG=clamour-server:* nodemon ./bin/www",
+    "devfront_management": "watchify -v -t vueify -e public/javascripts/management.js -o public/builds/management.js"
   },
   "dependencies": {
     "axios": "^0.19.0",
@@ -23,7 +24,8 @@
     "ssh2": "^0.8.5",
     "ssh2-sftp-client": "^2.5.0",
     "vue": "^2.6.10",
-    "vueify": "^9.4.1"
+    "vueify": "^9.4.1",
+    "watchify": "^3.11.1"
   },
   "devDependencies": {
     "nodemon": "^1.19.1"
