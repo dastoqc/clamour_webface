@@ -11,11 +11,16 @@ module.exports = {
     tag_summary: Tag
   },
 
+  props: {
+    known_device_list: {
+      type: Array,
+      required: true
+    }
+  },
+
   data() {
     return {
-      known_device_list: [],
-      detected_device_list: [],
-      title: "Vue Wizards"
+      title: "tag board"
     };
   },
 

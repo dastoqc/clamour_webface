@@ -1,6 +1,6 @@
-var Vue = require("vue/dist/vue.js");
+var Vue = require("vue/dist/vue.min.js");
 
-Vue.component("tag_summary", require("../components/management.vue"));
+Vue.component("tag_board", require("../components/tag_board.vue"));
 
 const app = new Vue({
   el: "#app"
