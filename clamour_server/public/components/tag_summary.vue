@@ -1,7 +1,8 @@
 <template lang="pug">
     li
       h1#title Tag : {{known_device.tag.id}}
-      p#test_text This is the tag summary, yeah!
+      h2#status Status : {{known_device.tag.running_status}}
+      h2#network Detection : {{known_device.detected}}
 </template>
 
 <script>

@@ -9154,6 +9154,7 @@ var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("body {\n
 //
 //
 //
+//
 
 module.exports = {
   components: {},
@@ -9180,7 +9181,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',[_c('h1',{attrs:{"id":"title"}},[_vm._v("Tag : "+_vm._s(_vm.known_device.tag.id))]),_c('p',{attrs:{"id":"test_text"}},[_vm._v("This is the tag summary, yeah!")])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',[_c('h1',{attrs:{"id":"title"}},[_vm._v("Tag : "+_vm._s(_vm.known_device.tag.id))]),_c('h2',{attrs:{"id":"status"}},[_vm._v("Status : "+_vm._s(_vm.known_device.tag.running_status))]),_c('h2',{attrs:{"id":"network"}},[_vm._v("Detection : "+_vm._s(_vm.known_device.detected))])])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -9190,7 +9191,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-4ad3324f", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-4ad3324f", __vue__options__)
+    hotAPI.reload("data-v-4ad3324f", __vue__options__)
   }
 })()}
 },{"vue":6,"vue-hot-reload-api":3,"vueify/lib/insert-css":8}],12:[function(require,module,exports){
