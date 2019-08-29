@@ -1,5 +1,4 @@
 var ssh_manager = require('./ssh/manage_ssh');
-var tcp_manager = require('./manage_tcp');
 var network_manager = require('./network/manage_network');
 var db = require('../database/database');
 
@@ -36,11 +35,6 @@ module.exports.stop_tag_download_csv = async function (req, res, next) {
         console.log(`Error while trying stop a tag and download its csv files:\n ${err}`.red);
         res.json({ error: err });
     }
-}
-
-module.exports.receive_data_stream = function (req, res, next) {
-    tcp_manager.listen_to_data_stream();
-    res.redirect('/management');
 }
 
 module.exports.get_running_status = async function (req, res, next) {

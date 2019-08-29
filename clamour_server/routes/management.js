@@ -6,9 +6,6 @@ let management = require('../controllers/management/management')
 /* GET home page. */
 router.get('/', management.render_page);
 
-// First download from of tcp connection
-router.get('/tcp', management.receive_data_stream);
-
 // Scan for network
 router.get('/scan_network', management.scan_network);
 
