@@ -6,6 +6,7 @@
 
 <script>
 var Tag_board = require("../components/tag_board.vue");
+var axios = require("axios/dist/axios.min.js");
 
 module.exports = {
   components: {
@@ -35,7 +36,11 @@ module.exports = {
           detected: true
         },
         {
-          tag: { id: 3, ip_address: "192.168.4.202", running_status: "UNKNOWN" },
+          tag: {
+            id: 3,
+            ip_address: "192.168.4.202",
+            running_status: "UNKNOWN"
+          },
           detected: false
         },
         {
@@ -56,7 +61,31 @@ module.exports = {
   },
 
   methods: {
-    updateTitle: function(updatedTitle) {}
+    updateTitle: function(updatedTitle) {},
+    scan_network: async function() {
+      try {
+        var response = await axios.get("scan_network");
+        this.detected_device_list = response.data;
+      } catch (err) {
+        alert(`An error occured while trying to scan the network\n`, err);
+        console.warn(`Error during http call :\n`, err);
+      }
+    }
+  },
+
+  created: async function() {
+    try {
+      var response = await axios.get("../tags");
+      for (var known_tag in response.data) {
+        known_device_list.push({
+          tag: known_tag,
+          detected: false
+        });
+      }
+    } catch (err) {
+      alert(`An error occured while trying to communicate with the server to load the page\n`, err);
+      console.warn(`Error during http call :\n`, err);
+    }
   }
 };
 </script>
