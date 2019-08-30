@@ -69,15 +69,11 @@ module.exports = {
 
         // Updating board
         for (i in this.known_device_list) {
+          this.known_device_list[i].detected = false;
           for (j in this.detected_device_list) {
-            if (
-              this.known_device_list[i].tag.ip_address ===
-              this.detected_device_list[j].ip_address
-            ) {
+            if (this.known_device_list[i].tag.ip_address === this.detected_device_list[j].ip_address) {
               this.known_device_list[i].tag = this.detected_device_list[j];
               this.known_device_list[i].detected = true;
-            } else {
-              this.known_device_list[i].detected = false;
             }
           }
         }

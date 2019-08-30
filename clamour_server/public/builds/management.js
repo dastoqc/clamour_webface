@@ -9053,12 +9053,9 @@ module.exports = {
       ],
       detected_device_list: [
         {
-          tag: {
-            id: Number,
-            ip_address: String,
-            running_status: String
-          },
-          detected: false
+          id: Number,
+          ip_address: String,
+          running_status: String
         }
       ],
       title: "Vue Wizards"
@@ -9193,15 +9190,11 @@ module.exports = {
 
         // Updating board
         for (i in this.known_device_list) {
+          this.known_device_list[i].detected = false;
           for (j in this.detected_device_list) {
-            if (
-              this.known_device_list[i].tag.ip_address ===
-              this.detected_device_list[j].ip_address
-            ) {
+            if (this.known_device_list[i].tag.ip_address === this.detected_device_list[j].ip_address) {
               this.known_device_list[i].tag = this.detected_device_list[j];
               this.known_device_list[i].detected = true;
-            } else {
-              this.known_device_list[i].detected = false;
             }
           }
         }
@@ -9241,7 +9234,6 @@ var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("body {\n
 //
 //
 //
-//
 
 module.exports = {
   components: {},
@@ -9270,7 +9262,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',[_c('button',{on:{"click":_vm.test}},[_vm._v("test button")]),_c('h1',{attrs:{"id":"title"}},[_vm._v("Tag : "+_vm._s(_vm.known_device.tag.tag_id))]),_c('h2',{attrs:{"id":"status"}},[_vm._v("Status : "+_vm._s(_vm.known_device.tag.script_status))]),_c('h2',{attrs:{"id":"network"}},[_vm._v("Detection : "+_vm._s(_vm.known_device.detected))])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',[_c('h1',{attrs:{"id":"title"}},[_vm._v("Tag : "+_vm._s(_vm.known_device.tag.tag_id))]),_c('h2',{attrs:{"id":"status"}},[_vm._v("Status : "+_vm._s(_vm.known_device.tag.script_status))]),_c('h2',{attrs:{"id":"network"}},[_vm._v("Detection : "+_vm._s(_vm.known_device.detected))])])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)

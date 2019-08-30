@@ -27,12 +27,9 @@ module.exports = {
       ],
       detected_device_list: [
         {
-          tag: {
-            id: Number,
-            ip_address: String,
-            running_status: String
-          },
-          detected: false
+          id: Number,
+          ip_address: String,
+          running_status: String
         }
       ],
       title: "Vue Wizards"

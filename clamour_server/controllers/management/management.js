@@ -24,9 +24,6 @@ module.exports.stop_tag_download_csv = async function (req, res, next) {
     try {
         await ssh_manager.stop_script(req.params.ip_address);
         var downloaded_csv_files = await ssh_manager.download_all_csv(req.params.ip_address);
-        for (var i = 0; i < downloaded_csv_files.length; i++) {
-            await db.query.visits.add(downloaded_csv_files[i]);
-        }
         res.json({
             tag: (await db.query.tags.get_from_ip_address(req.params.ip_address))[0],
             downloaded_files: downloaded_csv_files

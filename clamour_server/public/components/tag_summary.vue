@@ -1,6 +1,5 @@
 <template lang="pug">
     li
-      button(v-on:click="test") test button
       h1#title Tag : {{known_device.tag.tag_id}}
       h2#status Status : {{known_device.tag.script_status}}
       h2#network Detection : {{known_device.detected}}
