@@ -9082,6 +9082,8 @@ var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("body {\n
 //
 //
 //
+//
+//
 
 var axios = require("axios/dist/axios.min.js");
 var Tag = require("../components/tag_summary.vue");
@@ -9095,15 +9097,16 @@ module.exports = {
 
   data() {
     return {
-      log_message_1: "Ready to offer",
-      log_message_2: "an unforgettable",
-      log_message_3: "auditory experience",
-      log_message_4: "in the Chambord Castle",
+      log_message_1: "Ready to offer an unforgettable auditory experience in the Chambord Castle",
+      log_message_2: "",
+      log_message_3: "",
+      log_message_4: "",
+      log_message_5: "",
 
       known_device_list: [
         {
           tag: {
-            id: Number,
+            tag_id: Number,
             ip_address: String,
             running_status: String
           },
@@ -9112,16 +9115,16 @@ module.exports = {
       ],
       detected_device_list: [
         {
-          id: Number,
+          tag_id: Number,
           ip_address: String,
           running_status: String
         }
       ],
-      selected: {
+      selected_device: {
         tag: {
-          id: Number,
-          ip_address: String,
-          running_status: String
+          tag_id: undefined,
+          ip_address: undefined,
+          running_status: undefined
         },
         detected: false
       }
@@ -9130,10 +9133,24 @@ module.exports = {
 
   methods: {
     updateMessage: function(newMessage) {
+      this.log_message_5 = this.log_message_4;
       this.log_message_4 = this.log_message_3;
       this.log_message_3 = this.log_message_2;
       this.log_message_2 = this.log_message_1;
       this.log_message_1 = newMessage;
+    },
+
+    select_device: function(selected_device) {
+      this.selected_device.tag.tag_id == selected_device.tag.tag_id
+        ? (this.selected_device = {
+            tag: {
+              tag_id: undefined,
+              ip_address: undefined,
+              running_status: undefined
+            },
+            detected: false
+          })
+        : (this.selected_device = selected_device);
     },
 
     get_list_id: function(tag_list) {
@@ -9237,7 +9254,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('ul',[_c('li',[_vm._v(_vm._s(_vm.log_message_1))]),_c('li',[_vm._v(_vm._s(_vm.log_message_2))]),_c('li',[_vm._v(_vm._s(_vm.log_message_3))]),_c('li',[_vm._v(_vm._s(_vm.log_message_4))])]),_c('button',{on:{"click":_vm.scan_network}},[_vm._v("Scan network")]),_c('p',{attrs:{"id":"test_text"}},[_vm._v("This is the tag board")]),_c('ul',_vm._l((_vm.known_device_list),function(tag){return _c('tag_summary',{attrs:{"known_device":tag}})}),1)])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('ul',[_c('li',[_vm._v(_vm._s(_vm.log_message_1))]),_c('li',[_vm._v(_vm._s(_vm.log_message_2))]),_c('li',[_vm._v(_vm._s(_vm.log_message_3))]),_c('li',[_vm._v(_vm._s(_vm.log_message_4))]),_c('li',[_vm._v(_vm._s(_vm.log_message_5))]),_c('h2',[_vm._v("Selected device : "+_vm._s(_vm.selected_device.tag.tag_id))])]),_c('button',{on:{"click":_vm.scan_network}},[_vm._v("Scan network")]),_c('p',{attrs:{"id":"test_text"}},[_vm._v("This is the tag board")]),_c('ul',_vm._l((_vm.known_device_list),function(tag){return _c('tag_summary',{attrs:{"known_device":tag},on:{"select_tag":function($event){return _vm.select_device($event)}}})}),1)])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -9269,21 +9286,16 @@ module.exports = {
       type: Object,
       required: true
     },
-    selected_device: {
-      type: Object,
-      required: true
-    }
+    selected: false
   },
 
   data() {
     return {
-      title: "Tag"
     };
   },
 
   methods: {
     test: function() {
-      this.known_device.tag.tag_id = 12345;
     }
   }
 };
@@ -9292,7 +9304,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',[_c('h1',{attrs:{"id":"title"}},[_vm._v("Tag : "+_vm._s(_vm.known_device.tag.tag_id))]),_c('h2',{attrs:{"id":"status"}},[_vm._v("Status : "+_vm._s(_vm.known_device.tag.script_status))]),_c('h2',{attrs:{"id":"network"}},[_vm._v("Detection : "+_vm._s(_vm.known_device.detected))])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',[_c('button',{attrs:{"id":"title","disabled":!_vm.known_device.detected},on:{"click":function($event){return _vm.$emit('select_tag', _vm.known_device)}}},[_vm._v("Tag : "+_vm._s(_vm.known_device.tag.tag_id))]),_c('h2',{attrs:{"id":"status"}},[_vm._v("Status : "+_vm._s(_vm.known_device.tag.script_status))]),_c('h2',{attrs:{"id":"network"}},[_vm._v("Detection : "+_vm._s(_vm.known_device.detected))])])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -9302,7 +9314,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-4ad3324f", __vue__options__)
   } else {
-    hotAPI.reload("data-v-4ad3324f", __vue__options__)
+    hotAPI.rerender("data-v-4ad3324f", __vue__options__)
   }
 })()}
 },{"vue":7,"vue-hot-reload-api":4,"vueify/lib/insert-css":9}],13:[function(require,module,exports){

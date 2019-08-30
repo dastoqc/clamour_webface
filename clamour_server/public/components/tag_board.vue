@@ -5,10 +5,12 @@
         li {{log_message_2}}
         li {{log_message_3}}
         li {{log_message_4}}
+        li {{log_message_5}}
+        h2 Selected device : {{selected_device.tag.tag_id}}
       button(v-on:click="scan_network") Scan network
       p#test_text This is the tag board
       ul
-        tag_summary(v-for="tag in known_device_list" v-bind:known_device="tag")
+        tag_summary(v-for="tag in known_device_list" v-bind:known_device="tag" v-on:select_tag="select_device($event)")
 </template>
 
 <script>
@@ -24,15 +26,16 @@ module.exports = {
 
   data() {
     return {
-      log_message_1: "Ready to offer",
-      log_message_2: "an unforgettable",
-      log_message_3: "auditory experience",
-      log_message_4: "in the Chambord Castle",
+      log_message_1: "Ready to offer an unforgettable auditory experience in the Chambord Castle",
+      log_message_2: "",
+      log_message_3: "",
+      log_message_4: "",
+      log_message_5: "",
 
       known_device_list: [
         {
           tag: {
-            id: Number,
+            tag_id: Number,
             ip_address: String,
             running_status: String
           },
@@ -41,16 +44,16 @@ module.exports = {
       ],
       detected_device_list: [
         {
-          id: Number,
+          tag_id: Number,
           ip_address: String,
           running_status: String
         }
       ],
-      selected: {
+      selected_device: {
         tag: {
-          id: Number,
-          ip_address: String,
-          running_status: String
+          tag_id: undefined,
+          ip_address: undefined,
+          running_status: undefined
         },
         detected: false
       }
@@ -59,10 +62,24 @@ module.exports = {
 
   methods: {
     updateMessage: function(newMessage) {
+      this.log_message_5 = this.log_message_4;
       this.log_message_4 = this.log_message_3;
       this.log_message_3 = this.log_message_2;
       this.log_message_2 = this.log_message_1;
       this.log_message_1 = newMessage;
+    },
+
+    select_device: function(selected_device) {
+      this.selected_device.tag.tag_id == selected_device.tag.tag_id
+        ? (this.selected_device = {
+            tag: {
+              tag_id: undefined,
+              ip_address: undefined,
+              running_status: undefined
+            },
+            detected: false
+          })
+        : (this.selected_device = selected_device);
     },
 
     get_list_id: function(tag_list) {
