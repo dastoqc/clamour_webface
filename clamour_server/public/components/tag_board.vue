@@ -8,10 +8,13 @@
         li {{log_message_5}}
         h2 Selected device : {{selected_device.tag.tag_id}}
       button(v-on:click="scan_network") Scan network
-      button(v-on:click="start_localization") Start localization
+      button(v-on:click="start_localization") Activate device
+      button(v-on:click="stop_download_localization") Stop and download
       p#test_text This is the tag board
       ul
-        tag_summary(v-for="tag in known_device_list" v-bind:known_device="tag" v-on:select_tag="select_device($event)")
+        tag_summary(v-for="tag in known_device_list" 
+                    v-bind:known_device="tag" 
+                    v-on:select_tag="select_device($event)")
 </template>
 
 <script>
@@ -156,10 +159,34 @@ module.exports = {
       } catch (err) {
         // Error handling
         alert(`An error occured while trying to activate the localization\n`, err);
-        this.update_message(`Localization activation failed on tag ${this.selected_device.tag.tag_id}, no answer from the server`);
+        this.update_message(`Localization activation failed on tag ${this.selected_device.tag.tag_id}`);
+        console.warn(`Error during http call :\n`, err);
+      }
+    },
+
+    stop_download_localization: async function() {
+      try {
+        // Assuring that a tag is selected
+        if (!this.selected_device.tag.tag_id) {
+          alert(`No tag was selected`);
+          return;
+        }
+
+        // Sending request and parsing response
+        this.update_message(`Stoping the localization on device ${this.selected_device.tag.tag_id}...`);
+        var response = await axios.get(`stop_download/ip_address/${this.selected_device.tag.ip_address}`);
+        var tag = response.data.tag;
+        var downloaded_files = response.data.downloaded_files;
+
+
+      } catch (err) {
+        // Error handling
+        alert(`An error occured while trying to deactivate the localization\n`, err);
+        this.update_message(`Localization deactivation failed on tag ${this.selected_device.tag.tag_id}`);
         console.warn(`Error during http call :\n`, err);
       }
     }
+
   },
 
   created: async function() {

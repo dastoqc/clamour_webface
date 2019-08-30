@@ -4,9 +4,20 @@ var db = require('../database/database');
 
 module.exports.render_page = async function (req, res, next) {
     var tag_number = await db.query.tags.get_number();
-    res.render('management', {tag_number : tag_number});
+    res.render('management', { tag_number: tag_number });
 }
 
+// Response format
+// {
+//     "change": String,
+//     "tag":{"tag_id": Number,"ip_address": String,"script_status": String}
+// }
+//
+// Example :
+// {
+//     "change":"ALREADY TURNED ON",
+//     "tag":{"tag_id":4096,"ip_address":"192.168.4.200","script_status":"ON"}
+// }
 module.exports.start_script = async function (req, res, next) {
     try {
         var change = await ssh_manager.start_script(req.params.ip_address, req.params.mode);
@@ -20,6 +31,17 @@ module.exports.start_script = async function (req, res, next) {
     }
 }
 
+// Response format :
+// { 
+//    "tag": {"tag_id": Number,"ip_address": String ,"script_status": String },
+//    "downloaded_files": [ String ]
+// }
+//
+// Example :
+// { 
+//    "tag": {"tag_id":4096,"ip_address":"192.168.4.200","script_status":"OFF"},
+//    "downloaded_files": ["test_0x00_2019-08-30-08:50.csv"]
+// }
 module.exports.stop_tag_download_csv = async function (req, res, next) {
     try {
         await ssh_manager.stop_script(req.params.ip_address);
@@ -34,6 +56,11 @@ module.exports.stop_tag_download_csv = async function (req, res, next) {
     }
 }
 
+// Response format :
+// { "status": {"isActivated": String,"pid": String}}
+//
+// Example :
+// {"status":{"isActivated":"ON","pid":"1488"}}
 module.exports.get_running_status = async function (req, res, next) {
     try {
         var running_status = await ssh_manager.check_running_status(req.params.ip_address);
@@ -43,9 +70,21 @@ module.exports.get_running_status = async function (req, res, next) {
     }
 }
 
-// { [TAG : {ID:, IP:, Status:},
-//    TAG : {ID:, IP:, Status:},
-//    TAG : {ID:, IP:, Status:}]}
+
+// Response format :
+// { "detected_tag_list" : [{"tag_id" : Number , "ip_address": String , "script_status": String }] }
+// 
+// Example :
+// { "detected_tag_list":
+//     [
+//          {"tag_id":4100,"ip_address":"192.168.4.21","script_status":"ON"},
+//          {"tag_id":4101,"ip_address":"192.168.4.22","script_status":"OFF"},
+//          {"tag_id":4102,"ip_address":"192.168.4.23","script_status":"OFF"},
+//          {"tag_id":4103,"ip_address":"192.168.4.24","script_status":"OFF"},
+//          {"tag_id":4105,"ip_address":"192.168.4.25","script_status":"OFF"},
+//          {"tag_id":4096,"ip_address":"192.168.4.200","script_status":"ON"}
+//     ]
+// }
 module.exports.scan_network = async function (req, res, next) {
     try {
         var tag_ip_address_list = await network_manager.scan_for_tag_ip_address();

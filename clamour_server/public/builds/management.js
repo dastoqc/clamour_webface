@@ -9085,6 +9085,9 @@ var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("body {\n
 //
 //
 //
+//
+//
+//
 
 var axios = require("axios/dist/axios.min.js");
 var Tag = require("../components/tag_summary.vue");
@@ -9227,10 +9230,34 @@ module.exports = {
       } catch (err) {
         // Error handling
         alert(`An error occured while trying to activate the localization\n`, err);
-        this.update_message(`Localization activation failed on tag ${this.selected_device.tag.tag_id}, no answer from the server`);
+        this.update_message(`Localization activation failed on tag ${this.selected_device.tag.tag_id}`);
+        console.warn(`Error during http call :\n`, err);
+      }
+    },
+
+    stop_download_localization: async function() {
+      try {
+        // Assuring that a tag is selected
+        if (!this.selected_device.tag.tag_id) {
+          alert(`No tag was selected`);
+          return;
+        }
+
+        // Sending request and parsing response
+        this.update_message(`Stoping the localization on device ${this.selected_device.tag.tag_id}...`);
+        var response = await axios.get(`stop_download/ip_address/${this.selected_device.tag.ip_address}`);
+        var tag = response.data.tag;
+        var downloaded_files = response.data.downloaded_files;
+
+
+      } catch (err) {
+        // Error handling
+        alert(`An error occured while trying to deactivate the localization\n`, err);
+        this.update_message(`Localization deactivation failed on tag ${this.selected_device.tag.tag_id}`);
         console.warn(`Error during http call :\n`, err);
       }
     }
+
   },
 
   created: async function() {
@@ -9258,7 +9285,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('ul',[_c('li',[_vm._v(_vm._s(_vm.log_message_1))]),_c('li',[_vm._v(_vm._s(_vm.log_message_2))]),_c('li',[_vm._v(_vm._s(_vm.log_message_3))]),_c('li',[_vm._v(_vm._s(_vm.log_message_4))]),_c('li',[_vm._v(_vm._s(_vm.log_message_5))]),_c('h2',[_vm._v("Selected device : "+_vm._s(_vm.selected_device.tag.tag_id))])]),_c('button',{on:{"click":_vm.scan_network}},[_vm._v("Scan network")]),_c('button',{on:{"click":_vm.start_localization}},[_vm._v("Start localization")]),_c('p',{attrs:{"id":"test_text"}},[_vm._v("This is the tag board")]),_c('ul',_vm._l((_vm.known_device_list),function(tag){return _c('tag_summary',{attrs:{"known_device":tag},on:{"select_tag":function($event){return _vm.select_device($event)}}})}),1)])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('ul',[_c('li',[_vm._v(_vm._s(_vm.log_message_1))]),_c('li',[_vm._v(_vm._s(_vm.log_message_2))]),_c('li',[_vm._v(_vm._s(_vm.log_message_3))]),_c('li',[_vm._v(_vm._s(_vm.log_message_4))]),_c('li',[_vm._v(_vm._s(_vm.log_message_5))]),_c('h2',[_vm._v("Selected device : "+_vm._s(_vm.selected_device.tag.tag_id))])]),_c('button',{on:{"click":_vm.scan_network}},[_vm._v("Scan network")]),_c('button',{on:{"click":_vm.start_localization}},[_vm._v("Activate device")]),_c('button',{on:{"click":_vm.stop_download_localization}},[_vm._v("Stop and download")]),_c('p',{attrs:{"id":"test_text"}},[_vm._v("This is the tag board")]),_c('ul',_vm._l((_vm.known_device_list),function(tag){return _c('tag_summary',{attrs:{"known_device":tag},on:{"select_tag":function($event){return _vm.select_device($event)}}})}),1)])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
