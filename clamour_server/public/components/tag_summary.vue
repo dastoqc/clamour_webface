@@ -13,6 +13,10 @@ module.exports = {
     known_device: {
       type: Object,
       required: true
+    },
+    selected_device: {
+      type: Object,
+      required: true
     }
   },
 
@@ -24,7 +28,7 @@ module.exports = {
 
   methods: {
     test: function() {
-      this.known_device.tag.tag_id = 12345
+      this.known_device.tag.tag_id = 12345;
     }
   }
 };

@@ -9032,7 +9032,6 @@ var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("body {\n
 //
 
 var Tag_board = require("../components/tag_board.vue");
-var axios = require("axios/dist/axios.min.js");
 
 module.exports = {
   components: {
@@ -9041,6 +9040,66 @@ module.exports = {
 
   data() {
     return {
+      title: "Vue Wizards"
+    };
+  },
+
+  methods: {
+    updateTitle: function(updatedTitle) {}
+  }
+};
+
+})()
+if (module.exports.__esModule) module.exports = module.exports.default
+var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
+if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('p',{attrs:{"id":"test_text"}},[_vm._v("This is the management page")]),_c('tag_board')],1)}
+__vue__options__.staticRenderFns = []
+if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  module.hot.dispose(__vueify_style_dispose__)
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-1169d94e", __vue__options__)
+  } else {
+    hotAPI.reload("data-v-1169d94e", __vue__options__)
+  }
+})()}
+},{"../components/tag_board.vue":11,"vue":7,"vue-hot-reload-api":4,"vueify/lib/insert-css":9}],11:[function(require,module,exports){
+var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("body {\n  margin: 0;\n  font-family: \"Nunito SemiBold\";\n}")
+;(function(){
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+var axios = require("axios/dist/axios.min.js");
+var Tag = require("../components/tag_summary.vue");
+
+module.exports = {
+  components: {
+    tag_summary: Tag
+  },
+
+  props: {},
+
+  data() {
+    return {
+      log_message_1: "Ready to offer",
+      log_message_2: "an unforgettable",
+      log_message_3: "auditory experience",
+      log_message_4: "in the Chambord Castle",
+
       known_device_list: [
         {
           tag: {
@@ -9058,18 +9117,93 @@ module.exports = {
           running_status: String
         }
       ],
-      title: "Vue Wizards"
+      selected: {
+        tag: {
+          id: Number,
+          ip_address: String,
+          running_status: String
+        },
+        detected: false
+      }
     };
   },
 
   methods: {
-    updateTitle: function(updatedTitle) {},
+    updateMessage: function(newMessage) {
+      this.log_message_4 = this.log_message_3;
+      this.log_message_3 = this.log_message_2;
+      this.log_message_2 = this.log_message_1;
+      this.log_message_1 = newMessage;
+    },
+
+    get_list_id: function(tag_list) {
+      if (tag_list.length === 0) return "None";
+      var id_list = [];
+      for (index in tag_list) {
+        id_list.push(tag_list[index].tag_id);
+      }
+      return id_list;
+    },
+
     scan_network: async function() {
       try {
+        // Sending request and parsing response
+        this.updateMessage(`Network scan in progress, waiting for answer...`);
         var response = await axios.get("scan_network");
-        this.detected_device_list = response.data;
+        this.detected_device_list = response.data.detected_tag_list;
+        var detected_id = this.get_list_id(this.detected_device_list);
+
+        // Displaying result
+        this.updateMessage(
+          `Network scan finished, detected device(s) : ${detected_id}`
+        );
+
+        // Updating board
+        for (i in this.known_device_list) {
+          this.known_device_list[i].detected = false;
+          for (j in this.detected_device_list) {
+            if (
+              this.known_device_list[i].tag.ip_address ===
+              this.detected_device_list[j].ip_address
+            ) {
+              this.known_device_list[i].tag = this.detected_device_list[j];
+              this.known_device_list[i].detected = true;
+            }
+          }
+        }
       } catch (err) {
+        // Error handling
         alert(`An error occured while trying to scan the network\n`, err);
+        this.updateMessage(`Network scan failed, no answer from the server`);
+        console.warn(`Error during http call :\n`, err);
+      }
+    },
+
+    start_script: async function() {
+      try {
+        // Sending request and parsing response
+        this.updateMessage(
+          `Starting the localization on device ${selected.tag.tag_id} ...`
+        );
+        var response = await axios.get(
+          `start_script/ip_address/${known_device.tag.ip_address}/mode/visit`
+        );
+
+        // Displaying result
+        this.updateMessage(
+          `Localization started on tag, ${ip_address} : ${detected_id}`
+        );
+
+        // Updating board
+      } catch (err) {
+        // Error handling
+        alert(
+          `An error occured while trying to activate the localization\n`,
+          err
+        );
+        this.updateMessage(
+          `Localization activation failed, no answer from the server`
+        );
         console.warn(`Error during http call :\n`, err);
       }
     }
@@ -9103,115 +9237,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('p',{attrs:{"id":"test_text"}},[_vm._v("This is the management page")]),_c('tag_board',{attrs:{"known_device_list":_vm.known_device_list,"detected_device_list":_vm.detected_device_list}})],1)}
-__vue__options__.staticRenderFns = []
-if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), true)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  module.hot.dispose(__vueify_style_dispose__)
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-1169d94e", __vue__options__)
-  } else {
-    hotAPI.rerender("data-v-1169d94e", __vue__options__)
-  }
-})()}
-},{"../components/tag_board.vue":11,"axios/dist/axios.min.js":1,"vue":7,"vue-hot-reload-api":4,"vueify/lib/insert-css":9}],11:[function(require,module,exports){
-var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("body {\n  margin: 0;\n  font-family: \"Nunito SemiBold\";\n}")
-;(function(){
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-var axios = require("axios/dist/axios.min.js");
-var Tag = require("../components/tag_summary.vue");
-
-module.exports = {
-  components: {
-    tag_summary: Tag
-  },
-
-  props: {
-    known_device_list: {
-      type: Array,
-      required: true
-    },
-    detected_device_list: {
-      type: Array,
-      required: true
-    }
-  },
-
-  data() {
-    return {
-      log_message_1: "Ready to offer",
-      log_message_2: "an unforgettable",
-      log_message_3: "auditory experience"
-    };
-  },
-
-  methods: {
-    updateMessage: function(newMessage) {
-      this.log_message_3 = this.log_message_2;
-      this.log_message_2 = this.log_message_1;
-      this.log_message_1 = newMessage;
-    },
-
-    get_list_id: function(tag_list) {
-      if (tag_list.length === 0) return "None";
-      var id_list = [];
-      for (index in tag_list) {
-        id_list.push(tag_list[index].tag_id);
-      }
-      return id_list;
-    },
-
-    scan_network: async function() {
-      try {
-        // Sending request and parsing response
-        this.updateMessage(`Network scan in progress, waiting for answer...`);
-        var response = await axios.get("scan_network");
-        this.detected_device_list = response.data.detected_tag_list;
-        var detected_id = this.get_list_id(this.detected_device_list);
-
-        // Displaying result
-        this.updateMessage(
-          `Network scan finished, detected device(s) : ${detected_id}`
-        );
-
-        // Updating board
-        for (i in this.known_device_list) {
-          this.known_device_list[i].detected = false;
-          for (j in this.detected_device_list) {
-            if (this.known_device_list[i].tag.ip_address === this.detected_device_list[j].ip_address) {
-              this.known_device_list[i].tag = this.detected_device_list[j];
-              this.known_device_list[i].detected = true;
-            }
-          }
-        }
-      } catch (err) {
-        alert(`An error occured while trying to scan the network\n`, err);
-        this.updateMessage(`Network scan failed, no answer from the server`);
-        console.warn(`Error during http call :\n`, err);
-      }
-    }
-  }
-};
-
-})()
-if (module.exports.__esModule) module.exports = module.exports.default
-var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
-if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('ul',[_c('li',[_vm._v(_vm._s(_vm.log_message_1))]),_c('li',[_vm._v(_vm._s(_vm.log_message_2))]),_c('li',[_vm._v(_vm._s(_vm.log_message_3))])]),_c('button',{on:{"click":_vm.scan_network}},[_vm._v("Scan network")]),_c('p',{attrs:{"id":"test_text"}},[_vm._v("This is the tag board")]),_c('ul',_vm._l((_vm.known_device_list),function(tag){return _c('tag_summary',{attrs:{"known_device":tag}})}),1)])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('ul',[_c('li',[_vm._v(_vm._s(_vm.log_message_1))]),_c('li',[_vm._v(_vm._s(_vm.log_message_2))]),_c('li',[_vm._v(_vm._s(_vm.log_message_3))]),_c('li',[_vm._v(_vm._s(_vm.log_message_4))])]),_c('button',{on:{"click":_vm.scan_network}},[_vm._v("Scan network")]),_c('p',{attrs:{"id":"test_text"}},[_vm._v("This is the tag board")]),_c('ul',_vm._l((_vm.known_device_list),function(tag){return _c('tag_summary',{attrs:{"known_device":tag}})}),1)])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -9221,7 +9247,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-5b252c62", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-5b252c62", __vue__options__)
+    hotAPI.reload("data-v-5b252c62", __vue__options__)
   }
 })()}
 },{"../components/tag_summary.vue":12,"axios/dist/axios.min.js":1,"vue":7,"vue-hot-reload-api":4,"vueify/lib/insert-css":9}],12:[function(require,module,exports){
@@ -9242,6 +9268,10 @@ module.exports = {
     known_device: {
       type: Object,
       required: true
+    },
+    selected_device: {
+      type: Object,
+      required: true
     }
   },
 
@@ -9253,7 +9283,7 @@ module.exports = {
 
   methods: {
     test: function() {
-      this.known_device.tag.tag_id = 12345
+      this.known_device.tag.tag_id = 12345;
     }
   }
 };
