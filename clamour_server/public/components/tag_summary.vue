@@ -1,7 +1,8 @@
 <template lang="pug">
     li
-      h1#title Tag : {{known_device.tag.id}}
-      h2#status Status : {{known_device.tag.running_status}}
+      button(v-on:click="test") test button
+      h1#title Tag : {{known_device.tag.tag_id}}
+      h2#status Status : {{known_device.tag.script_status}}
       h2#network Detection : {{known_device.detected}}
 </template>
 
@@ -23,7 +24,9 @@ module.exports = {
   },
 
   methods: {
-    updateTitle: function() {}
+    test: function() {
+      this.known_device.tag.tag_id = 12345
+    }
   }
 };
 </script>
