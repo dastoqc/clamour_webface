@@ -8,6 +8,7 @@
         li {{log_message_5}}
         h2 Selected device : {{selected_device.tag.tag_id}}
       button(v-on:click="scan_network") Scan network
+      button(v-on:click="start_localization") Start localization
       p#test_text This is the tag board
       ul
         tag_summary(v-for="tag in known_device_list" v-bind:known_device="tag" v-on:select_tag="select_device($event)")
@@ -26,7 +27,8 @@ module.exports = {
 
   data() {
     return {
-      log_message_1: "Ready to offer an unforgettable auditory experience in the Chambord Castle",
+      log_message_1:
+        "Ready to offer an unforgettable auditory experience in the Chambord Castle",
       log_message_2: "",
       log_message_3: "",
       log_message_4: "",
@@ -61,7 +63,7 @@ module.exports = {
   },
 
   methods: {
-    updateMessage: function(newMessage) {
+    update_message: function(newMessage) {
       this.log_message_5 = this.log_message_4;
       this.log_message_4 = this.log_message_3;
       this.log_message_3 = this.log_message_2;
@@ -94,13 +96,13 @@ module.exports = {
     scan_network: async function() {
       try {
         // Sending request and parsing response
-        this.updateMessage(`Network scan in progress, waiting for answer...`);
+        this.update_message(`Network scan in progress, waiting for answer...`);
         var response = await axios.get("scan_network");
         this.detected_device_list = response.data.detected_tag_list;
         var detected_id = this.get_list_id(this.detected_device_list);
 
         // Displaying result
-        this.updateMessage(
+        this.update_message(
           `Network scan finished, detected device(s) : ${detected_id}`
         );
 
@@ -120,36 +122,41 @@ module.exports = {
       } catch (err) {
         // Error handling
         alert(`An error occured while trying to scan the network\n`, err);
-        this.updateMessage(`Network scan failed, no answer from the server`);
+        this.update_message(`Network scan failed, no answer from the server`);
         console.warn(`Error during http call :\n`, err);
       }
     },
 
-    start_script: async function() {
+    start_localization: async function() {
       try {
+        // Assuring that a tag is selected
+        if (!this.selected_device.tag.tag_id) {
+          alert(`No tag was selected`);
+          return;
+        }
+
         // Sending request and parsing response
-        this.updateMessage(
-          `Starting the localization on device ${selected.tag.tag_id} ...`
-        );
-        var response = await axios.get(
-          `start_script/ip_address/${known_device.tag.ip_address}/mode/visit`
-        );
+        this.update_message(`Starting the localization on device ${this.selected_device.tag.tag_id}...`);
+        var response = await axios.get(`start_script/ip_address/${this.selected_device.tag.ip_address}/mode/visit`);
+        var change = response.data.change;
+        var tag = response.data.tag;
 
         // Displaying result
-        this.updateMessage(
-          `Localization started on tag, ${ip_address} : ${detected_id}`
-        );
+        if(change === "TURNED ON")
+          this.update_message(`Localization started on tag ${tag.tag_id}`);
+        else if(change === "ALREADY TURNED ON")
+          this.update_message(`Localization already running on tag ${tag.tag_id}`);
+        
+        // Updating the board
+        for (index in this.known_device_list) {
+          if (this.known_device_list[i].tag.tag_id === this.selected_device.tag.tag_id)
+            this.known_device_list[i].tag.tag_id = response.data.tag;
+        }
 
-        // Updating board
       } catch (err) {
         // Error handling
-        alert(
-          `An error occured while trying to activate the localization\n`,
-          err
-        );
-        this.updateMessage(
-          `Localization activation failed, no answer from the server`
-        );
+        alert(`An error occured while trying to activate the localization\n`, err);
+        this.update_message(`Localization activation failed on tag ${this.selected_device.tag.tag_id}, no answer from the server`);
         console.warn(`Error during http call :\n`, err);
       }
     }
@@ -170,10 +177,7 @@ module.exports = {
         });
       }
     } catch (err) {
-      alert(
-        `An error occured while trying to communicate with the server to load the page\n`,
-        err
-      );
+      alert(`An error occured while trying to fetch the lis of devices\n`, err);
       console.warn(`Error during http call :\n`, err);
     }
   }
