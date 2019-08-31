@@ -1,6 +1,6 @@
 <template lang="pug">
     div
-      h1#title Device Management
+      h1#title Advanced device setup
       tag_board()
 </template>
 

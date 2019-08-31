@@ -9040,7 +9040,6 @@ module.exports = {
 
   data() {
     return {
-      title: "Vue Wizards"
     };
   },
 
@@ -9053,7 +9052,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('p',{attrs:{"id":"test_text"}},[_vm._v("This is the management page")]),_c('tag_board')],1)}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h1',{attrs:{"id":"title"}},[_vm._v("Device Management")]),_c('tag_board')],1)}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -9063,7 +9062,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-1169d94e", __vue__options__)
   } else {
-    hotAPI.reload("data-v-1169d94e", __vue__options__)
+    hotAPI.rerender("data-v-1169d94e", __vue__options__)
   }
 })()}
 },{"../components/tag_board.vue":11,"vue":7,"vue-hot-reload-api":4,"vueify/lib/insert-css":9}],11:[function(require,module,exports){
