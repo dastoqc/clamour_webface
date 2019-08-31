@@ -9168,6 +9168,17 @@ module.exports = {
         : (this.selected_device = selected_device);
     },
 
+    unselect_device: function(selected_device) {
+      this.selected_device = {
+            tag: {
+              tag_id: undefined,
+              ip_address: undefined,
+              script_status: undefined
+            },
+            detected: false
+          }
+    },
+
     check_status: async function(specified_device) {
       try {
         // Sending request and parsing response
@@ -9204,6 +9215,7 @@ module.exports = {
         this.update_message(`Network scan finished, detected device(s) : ${detected_id}`);
 
         // Updating board
+        this.unselect_device();
         for (i in this.known_device_list) {
           this.known_device_list[i].detected = false;
           for (j in this.detected_device_list) {
@@ -9326,7 +9338,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-5b252c62", __vue__options__)
   } else {
-    hotAPI.reload("data-v-5b252c62", __vue__options__)
+    hotAPI.rerender("data-v-5b252c62", __vue__options__)
   }
 })()}
 },{"../components/tag_summary.vue":12,"axios/dist/axios.min.js":1,"vue":7,"vue-hot-reload-api":4,"vueify/lib/insert-css":9}],12:[function(require,module,exports){

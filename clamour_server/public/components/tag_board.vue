@@ -97,6 +97,17 @@ module.exports = {
         : (this.selected_device = selected_device);
     },
 
+    unselect_device: function(selected_device) {
+      this.selected_device = {
+            tag: {
+              tag_id: undefined,
+              ip_address: undefined,
+              script_status: undefined
+            },
+            detected: false
+          }
+    },
+
     check_status: async function(specified_device) {
       try {
         // Sending request and parsing response
@@ -133,6 +144,7 @@ module.exports = {
         this.update_message(`Network scan finished, detected device(s) : ${detected_id}`);
 
         // Updating board
+        this.unselect_device();
         for (i in this.known_device_list) {
           this.known_device_list[i].detected = false;
           for (j in this.detected_device_list) {
