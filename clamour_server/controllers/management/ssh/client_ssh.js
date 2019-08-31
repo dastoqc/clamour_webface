@@ -126,7 +126,7 @@ module.exports.delete_csv = function (ssh_client, ip_address, csv_list) {
     return promise;
 }
 
-module.exports.get_running_status = function (ssh_client, ip_address) {
+module.exports.get_script_status = function (ssh_client, ip_address) {
 
     let commands = ['echo "<status>" && pgrep -f clamour.py'];
     var status;
@@ -157,7 +157,7 @@ module.exports.get_running_status = function (ssh_client, ip_address) {
             // Searching for the csv names within the commands
             stream.on('data', function (data) {
                 if (next_data_is_status) {
-                    if (output_parser.found_running_status(data)) {
+                    if (output_parser.found_script_status(data)) {
                         status = { isActivated: "ON", pid: String(data).trim() };
                         db.query.tags.update_status({ ip_address: ip_address }, 'ON');
                     }

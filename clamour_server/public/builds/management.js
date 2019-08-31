@@ -9114,7 +9114,7 @@ module.exports = {
           tag: {
             tag_id: Number,
             ip_address: String,
-            running_status: String
+            script_status: String
           },
           detected: false
         }
@@ -9123,14 +9123,14 @@ module.exports = {
         {
           tag_id: Number,
           ip_address: String,
-          running_status: String
+          script_status: String
         }
       ],
       selected_device: {
         tag: {
           tag_id: undefined,
           ip_address: undefined,
-          running_status: undefined
+          script_status: undefined
         },
         detected: false
       }
@@ -9161,7 +9161,7 @@ module.exports = {
             tag: {
               tag_id: undefined,
               ip_address: undefined,
-              running_status: undefined
+              script_status: undefined
             },
             detected: false
           })
@@ -9172,7 +9172,7 @@ module.exports = {
       try {
         // Sending request and parsing response
         this.update_message(`Checking the status of tag ${specified_device.tag.tag_id}, waiting for answer...`);
-        var response = await axios.get(`check_running_status/ip_address/${specified_device.tag.ip_address}`);
+        var response = await axios.get(`check_script_status/ip_address/${specified_device.tag.ip_address}`);
         var isActivated = response.data.status.isActivated;
 
         // Displaying result
@@ -9182,7 +9182,7 @@ module.exports = {
         // Updating the board
         for (i in this.known_device_list) {
           if (this.known_device_list[i].tag.tag_id === specified_device.tag.tag_id)
-            this.known_device_list[i].tag.running_status = status;
+            this.known_device_list[i].tag.script_status = status;
         }
       } catch (err) {
         // Error handling
@@ -9368,7 +9368,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',[_c('button',{attrs:{"id":"title","disabled":!_vm.known_device.detected},on:{"click":function($event){return _vm.$emit('select_tag', _vm.known_device)}}},[_vm._v("Tag : "+_vm._s(_vm.known_device.tag.tag_id))]),_c('button',{attrs:{"id":"status","disabled":!_vm.known_device.detected},on:{"click":function($event){return _vm.$emit('check_status', _vm.known_device)}}},[_vm._v("Status : "+_vm._s(_vm.known_device.tag.running_status))]),_c('h2',{attrs:{"id":"network"}},[_vm._v("Detection : "+_vm._s(_vm.known_device.detected))])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',[_c('button',{attrs:{"id":"title","disabled":!_vm.known_device.detected},on:{"click":function($event){return _vm.$emit('select_tag', _vm.known_device)}}},[_vm._v("Tag : "+_vm._s(_vm.known_device.tag.tag_id))]),_c('button',{attrs:{"id":"status","disabled":!_vm.known_device.detected},on:{"click":function($event){return _vm.$emit('check_status', _vm.known_device)}}},[_vm._v("Status : "+_vm._s(_vm.known_device.tag.script_status))]),_c('h2',{attrs:{"id":"network"}},[_vm._v("Detection : "+_vm._s(_vm.known_device.detected))])])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -9378,7 +9378,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-4ad3324f", __vue__options__)
   } else {
-    hotAPI.reload("data-v-4ad3324f", __vue__options__)
+    hotAPI.rerender("data-v-4ad3324f", __vue__options__)
   }
 })()}
 },{"vue":7,"vue-hot-reload-api":4,"vueify/lib/insert-css":9}],13:[function(require,module,exports){

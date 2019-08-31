@@ -5,7 +5,7 @@ var management = new Vue({
         known_device_list: ["a", "b"],
         detected_device_list: [],
         selected: "192.168.4.200",
-        variable: { id: 1234, ip_address: "123.456.789.101", running_status: "OFF", network_status: "OUT" }
+        variable: { id: 1234, ip_address: "123.456.789.101", script_status: "OFF", network_status: "OUT" }
     },
 
     methods: {

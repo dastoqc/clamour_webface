@@ -23,7 +23,7 @@ module.exports.found_status_cue = function (ssh_output_string) {
     else return false;
 }
 
-module.exports.found_running_status = function (ssh_output_string) {
+module.exports.found_script_status = function (ssh_output_string) {
     var reg_expression = RegExp(/[0-9]+/g);
     if (String(ssh_output_string).match(reg_expression))
         return true;

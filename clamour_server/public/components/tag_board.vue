@@ -43,7 +43,7 @@ module.exports = {
           tag: {
             tag_id: Number,
             ip_address: String,
-            running_status: String
+            script_status: String
           },
           detected: false
         }
@@ -52,14 +52,14 @@ module.exports = {
         {
           tag_id: Number,
           ip_address: String,
-          running_status: String
+          script_status: String
         }
       ],
       selected_device: {
         tag: {
           tag_id: undefined,
           ip_address: undefined,
-          running_status: undefined
+          script_status: undefined
         },
         detected: false
       }
@@ -90,7 +90,7 @@ module.exports = {
             tag: {
               tag_id: undefined,
               ip_address: undefined,
-              running_status: undefined
+              script_status: undefined
             },
             detected: false
           })
@@ -101,7 +101,7 @@ module.exports = {
       try {
         // Sending request and parsing response
         this.update_message(`Checking the status of tag ${specified_device.tag.tag_id}, waiting for answer...`);
-        var response = await axios.get(`check_running_status/ip_address/${specified_device.tag.ip_address}`);
+        var response = await axios.get(`check_script_status/ip_address/${specified_device.tag.ip_address}`);
         var isActivated = response.data.status.isActivated;
 
         // Displaying result
@@ -111,7 +111,7 @@ module.exports = {
         // Updating the board
         for (i in this.known_device_list) {
           if (this.known_device_list[i].tag.tag_id === specified_device.tag.tag_id)
-            this.known_device_list[i].tag.running_status = status;
+            this.known_device_list[i].tag.script_status = status;
         }
       } catch (err) {
         // Error handling

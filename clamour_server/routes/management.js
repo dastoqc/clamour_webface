@@ -16,6 +16,6 @@ router.get('/start_script/ip_address/:ip_address/mode/:mode', management.start_s
 router.get('/stop_download/ip_address/:ip_address', management.stop_tag_download_csv);
 
 // Check running status of the script of an ip address
-router.get('/check_running_status/ip_address/:ip_address', management.get_running_status);
+router.get('/check_script_status/ip_address/:ip_address', management.get_script_status);
 
 module.exports = router; 

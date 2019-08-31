@@ -61,10 +61,10 @@ module.exports.stop_tag_download_csv = async function (req, res, next) {
 //
 // Example :
 // {"status":{"isActivated":"ON","pid":"1488"}}
-module.exports.get_running_status = async function (req, res, next) {
+module.exports.get_script_status = async function (req, res, next) {
     try {
-        var running_status = await ssh_manager.check_running_status(req.params.ip_address);
-        res.json({ status: running_status });
+        var script_status = await ssh_manager.check_script_status(req.params.ip_address);
+        res.json({ status: script_status });
     } catch (err) {
         res.json({ error: err });
     }
@@ -90,7 +90,7 @@ module.exports.scan_network = async function (req, res, next) {
         var tag_ip_address_list = await network_manager.scan_for_tag_ip_address();
         var tag_list = [];
         for (var i = 0; i < tag_ip_address_list.length; i++) {
-            await ssh_manager.check_running_status(tag_ip_address_list[i]);
+            await ssh_manager.check_script_status(tag_ip_address_list[i]);
             tag_list.push((await db.query.tags.get_from_ip_address(tag_ip_address_list[i]))[0]);
         };
         res.json({

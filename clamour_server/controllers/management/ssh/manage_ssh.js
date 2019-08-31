@@ -10,8 +10,8 @@ module.exports.start_script = function (ip_address, mode) {
     var promise = new Promise(async function (resolve, reject) {
         try {
             var client = await connect_with_tag(ip_address, mode);
-            var running_status = await ssh.get_running_status(client, ip_address);
-            if (running_status.isActivated == "ON") {
+            var script_status = await ssh.get_script_status(client, ip_address);
+            if (script_status.isActivated == "ON") {
                 resolve("ALREADY TURNED ON")
             } else {
                 await ssh.start_script(client, ip_address, { mode: mode });
@@ -64,12 +64,12 @@ module.exports.download_all_csv = function (ip_address) {
     return promise;
 }
 
-module.exports.check_running_status = async function (ip_address) {
+module.exports.check_script_status = async function (ip_address) {
     var promise = new Promise(async function (resolve, reject) {
         try {
             var client = await connect_with_tag(ip_address);
-            var running_status = await ssh.get_running_status(client, ip_address);
-            resolve(running_status);
+            var script_status = await ssh.get_script_status(client, ip_address);
+            resolve(script_status);
         } catch (err) {
             console.log(`Error while trying to get the running status of tag on ip address ${ip_address} :`.red);
             reject(err);
