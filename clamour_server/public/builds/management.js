@@ -9222,9 +9222,9 @@ module.exports = {
           this.update_message(`Localization already running on tag ${tag.tag_id}`);
         
         // Updating the board
-        for (index in this.known_device_list) {
+        for (i in this.known_device_list) {
           if (this.known_device_list[i].tag.tag_id === this.selected_device.tag.tag_id)
-            this.known_device_list[i].tag.tag_id = response.data.tag;
+            this.known_device_list[i].tag = tag;
         }
 
       } catch (err) {
@@ -9249,10 +9249,18 @@ module.exports = {
         var tag = response.data.tag;
         var downloaded_files = response.data.downloaded_files;
 
+        // Displaying result
+        this.update_message(`Device stoped and files retreived : ${downloaded_files}`);
+
+        // Updating the board
+        for (i in this.known_device_list) {
+          if (this.known_device_list[i].tag.tag_id === this.selected_device.tag.tag_id)
+            this.known_device_list[i].tag = tag;
+        }
 
       } catch (err) {
         // Error handling
-        alert(`An error occured while trying to deactivate the localization\n`, err);
+        alert(`An error occured while trying to stop the localization and load files\n`, err);
         this.update_message(`Localization deactivation failed on tag ${this.selected_device.tag.tag_id}`);
         console.warn(`Error during http call :\n`, err);
       }
