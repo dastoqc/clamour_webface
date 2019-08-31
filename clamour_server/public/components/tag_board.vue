@@ -99,13 +99,13 @@ module.exports = {
 
     unselect_device: function(selected_device) {
       this.selected_device = {
-            tag: {
-              tag_id: undefined,
-              ip_address: undefined,
-              script_status: undefined
-            },
-            detected: false
-          }
+        tag: {
+          tag_id: undefined,
+          ip_address: undefined,
+          script_status: undefined
+        },
+        detected: false
+      }
     },
 
     check_status: async function(specified_device) {

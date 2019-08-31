@@ -9170,13 +9170,13 @@ module.exports = {
 
     unselect_device: function(selected_device) {
       this.selected_device = {
-            tag: {
-              tag_id: undefined,
-              ip_address: undefined,
-              script_status: undefined
-            },
-            detected: false
-          }
+        tag: {
+          tag_id: undefined,
+          ip_address: undefined,
+          script_status: undefined
+        },
+        detected: false
+      }
     },
 
     check_status: async function(specified_device) {
@@ -9338,7 +9338,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-5b252c62", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-5b252c62", __vue__options__)
+    hotAPI.reload("data-v-5b252c62", __vue__options__)
   }
 })()}
 },{"../components/tag_summary.vue":12,"axios/dist/axios.min.js":1,"vue":7,"vue-hot-reload-api":4,"vueify/lib/insert-css":9}],12:[function(require,module,exports){
