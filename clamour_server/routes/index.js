@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 let index = require('../controllers/index');
-let rest = require('../controllers/rest')
+let rest = require('../controllers/rest_api')
 
 /* GET home page. */
 router.get('/', index.index);

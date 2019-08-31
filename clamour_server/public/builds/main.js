@@ -1,1 +1,0 @@
-console.error("Error: Cannot find module '/home/alexandre/project/chambord/development/server/clamour-server/clamour_server/public/javascripts/main.js' from '/home/alexandre/project/chambord/development/server/clamour-server/clamour_server'");
