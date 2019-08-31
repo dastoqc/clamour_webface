@@ -1,5 +1,6 @@
 <template lang="pug">
     div
+      h1 Device management board
       ul
         li {{log_message_1}}
         li {{log_message_2}}
@@ -7,6 +8,7 @@
         li {{log_message_4}}
         li {{log_message_5}}
         h2 Selected device : {{selected_device.tag.tag_id}}
+      tag_setter(v-if="is_advanced_mode")
       button(v-on:click="scan_network") Scan network
       button(v-on:click="start_localization") Activate device
       button(v-on:click="stop_download_localization") Stop and download
@@ -21,13 +23,17 @@
 <script>
 var axios = require("axios/dist/axios.min.js");
 var Tag = require("../components/tag_summary.vue");
+var Tag_setter = require("../components/tag_setter.vue");
 
 module.exports = {
   components: {
-    tag_summary: Tag
+    tag_summary: Tag,
+    tag_setter: Tag_setter
   },
 
-  props: {},
+  props: {
+    is_advanced_mode: Boolean
+  },
 
   data() {
     return {

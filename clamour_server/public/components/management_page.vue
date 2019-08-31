@@ -1,7 +1,8 @@
 <template lang="pug">
     div
       h1#title Device Management
-      tag_board()
+      button#management_mode(v-on:click="toggle_mode") {{mode_toggle_button}}
+      tag_board(v-bind:is_advanced_mode="is_advanced_mode")
 </template>
 
 <script>
@@ -9,16 +10,28 @@ var Tag_board = require("../components/tag_board.vue");
 
 module.exports = {
   components: {
-    tag_board: Tag_board
+    tag_board: Tag_board,
   },
 
   data() {
     return {
+      is_advanced_mode: false
     };
   },
 
   methods: {
-    updateTitle: function(updatedTitle) {}
+    toggle_mode: function() {
+      this.is_advanced_mode = !this.is_advanced_mode;
+    }
+  },
+
+  computed:{ 
+    mode_toggle_button: function(){
+      if(this.is_advanced_mode)
+        return "Regular management";
+      else
+        return "Advanced settings";
+    }
   }
 };
 </script>
