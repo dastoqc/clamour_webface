@@ -14,7 +14,8 @@
       ul
         tag_summary(v-for="tag in known_device_list" 
                     v-bind:known_device="tag" 
-                    v-on:select_tag="select_device($event)")
+                    v-on:select_tag="select_device($event)"
+                    v-on:check_status="check_status($event)")
 </template>
 
 <script>
@@ -66,6 +67,15 @@ module.exports = {
   },
 
   methods: {
+    get_list_id: function(tag_list) {
+      if (tag_list.length === 0) return "None";
+      var id_list = [];
+      for (index in tag_list) {
+        id_list.push(tag_list[index].tag_id);
+      }
+      return id_list;
+    },
+
     update_message: function(newMessage) {
       this.log_message_5 = this.log_message_4;
       this.log_message_4 = this.log_message_3;
@@ -87,13 +97,28 @@ module.exports = {
         : (this.selected_device = selected_device);
     },
 
-    get_list_id: function(tag_list) {
-      if (tag_list.length === 0) return "None";
-      var id_list = [];
-      for (index in tag_list) {
-        id_list.push(tag_list[index].tag_id);
+    check_status: async function(specified_device) {
+      try {
+        // Sending request and parsing response
+        this.update_message(`Checking the status of tag ${specified_device.tag.tag_id}, waiting for answer...`);
+        var response = await axios.get(`check_running_status/ip_address/${specified_device.tag.ip_address}`);
+        var isActivated = response.data.status.isActivated;
+
+        // Displaying result
+        var status = (isActivated == "ON") ? "ON" : "OFF";
+        this.update_message(`Status found on the tag ${specified_device.tag.tag_id} : ${status}`);
+
+        // Updating the board
+        for (i in this.known_device_list) {
+          if (this.known_device_list[i].tag.tag_id === specified_device.tag.tag_id)
+            this.known_device_list[i].tag.running_status = status;
+        }
+      } catch (err) {
+        // Error handling
+        alert(`An error occured while trying to check the status of tag ${specified_device.tag_id}\n`, err);
+        this.update_message(`Status check up failed on tag ${specified_device.tag_id}`);
+        console.warn(`Error during http call :\n`, err);
       }
-      return id_list;
     },
 
     scan_network: async function() {
@@ -105,9 +130,7 @@ module.exports = {
         var detected_id = this.get_list_id(this.detected_device_list);
 
         // Displaying result
-        this.update_message(
-          `Network scan finished, detected device(s) : ${detected_id}`
-        );
+        this.update_message(`Network scan finished, detected device(s) : ${detected_id}`);
 
         // Updating board
         for (i in this.known_device_list) {

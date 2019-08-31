@@ -9088,6 +9088,7 @@ var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("body {\n
 //
 //
 //
+//
 
 var axios = require("axios/dist/axios.min.js");
 var Tag = require("../components/tag_summary.vue");
@@ -9137,6 +9138,15 @@ module.exports = {
   },
 
   methods: {
+    get_list_id: function(tag_list) {
+      if (tag_list.length === 0) return "None";
+      var id_list = [];
+      for (index in tag_list) {
+        id_list.push(tag_list[index].tag_id);
+      }
+      return id_list;
+    },
+
     update_message: function(newMessage) {
       this.log_message_5 = this.log_message_4;
       this.log_message_4 = this.log_message_3;
@@ -9158,13 +9168,28 @@ module.exports = {
         : (this.selected_device = selected_device);
     },
 
-    get_list_id: function(tag_list) {
-      if (tag_list.length === 0) return "None";
-      var id_list = [];
-      for (index in tag_list) {
-        id_list.push(tag_list[index].tag_id);
+    check_status: async function(specified_device) {
+      try {
+        // Sending request and parsing response
+        this.update_message(`Checking the status of tag ${specified_device.tag.tag_id}, waiting for answer...`);
+        var response = await axios.get(`check_running_status/ip_address/${specified_device.tag.ip_address}`);
+        var isActivated = response.data.status.isActivated;
+
+        // Displaying result
+        var status = (isActivated == "ON") ? "ON" : "OFF";
+        this.update_message(`Status found on the tag ${specified_device.tag.tag_id} : ${status}`);
+
+        // Updating the board
+        for (i in this.known_device_list) {
+          if (this.known_device_list[i].tag.tag_id === specified_device.tag.tag_id)
+            this.known_device_list[i].tag.running_status = status;
+        }
+      } catch (err) {
+        // Error handling
+        alert(`An error occured while trying to check the status of tag ${specified_device.tag_id}\n`, err);
+        this.update_message(`Status check up failed on tag ${specified_device.tag_id}`);
+        console.warn(`Error during http call :\n`, err);
       }
-      return id_list;
     },
 
     scan_network: async function() {
@@ -9176,9 +9201,7 @@ module.exports = {
         var detected_id = this.get_list_id(this.detected_device_list);
 
         // Displaying result
-        this.update_message(
-          `Network scan finished, detected device(s) : ${detected_id}`
-        );
+        this.update_message(`Network scan finished, detected device(s) : ${detected_id}`);
 
         // Updating board
         for (i in this.known_device_list) {
@@ -9293,7 +9316,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('ul',[_c('li',[_vm._v(_vm._s(_vm.log_message_1))]),_c('li',[_vm._v(_vm._s(_vm.log_message_2))]),_c('li',[_vm._v(_vm._s(_vm.log_message_3))]),_c('li',[_vm._v(_vm._s(_vm.log_message_4))]),_c('li',[_vm._v(_vm._s(_vm.log_message_5))]),_c('h2',[_vm._v("Selected device : "+_vm._s(_vm.selected_device.tag.tag_id))])]),_c('button',{on:{"click":_vm.scan_network}},[_vm._v("Scan network")]),_c('button',{on:{"click":_vm.start_localization}},[_vm._v("Activate device")]),_c('button',{on:{"click":_vm.stop_download_localization}},[_vm._v("Stop and download")]),_c('p',{attrs:{"id":"test_text"}},[_vm._v("This is the tag board")]),_c('ul',_vm._l((_vm.known_device_list),function(tag){return _c('tag_summary',{attrs:{"known_device":tag},on:{"select_tag":function($event){return _vm.select_device($event)}}})}),1)])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('ul',[_c('li',[_vm._v(_vm._s(_vm.log_message_1))]),_c('li',[_vm._v(_vm._s(_vm.log_message_2))]),_c('li',[_vm._v(_vm._s(_vm.log_message_3))]),_c('li',[_vm._v(_vm._s(_vm.log_message_4))]),_c('li',[_vm._v(_vm._s(_vm.log_message_5))]),_c('h2',[_vm._v("Selected device : "+_vm._s(_vm.selected_device.tag.tag_id))])]),_c('button',{on:{"click":_vm.scan_network}},[_vm._v("Scan network")]),_c('button',{on:{"click":_vm.start_localization}},[_vm._v("Activate device")]),_c('button',{on:{"click":_vm.stop_download_localization}},[_vm._v("Stop and download")]),_c('p',{attrs:{"id":"test_text"}},[_vm._v("This is the tag board")]),_c('ul',_vm._l((_vm.known_device_list),function(tag){return _c('tag_summary',{attrs:{"known_device":tag},on:{"select_tag":function($event){return _vm.select_device($event)},"check_status":function($event){return _vm.check_status($event)}}})}),1)])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -9309,6 +9332,8 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
 },{"../components/tag_summary.vue":12,"axios/dist/axios.min.js":1,"vue":7,"vue-hot-reload-api":4,"vueify/lib/insert-css":9}],12:[function(require,module,exports){
 var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("body {\n  margin: 0;\n  font-family: \"Nunito SemiBold\";\n}")
 ;(function(){
+//
+//
 //
 //
 //
@@ -9343,7 +9368,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',[_c('button',{attrs:{"id":"title","disabled":!_vm.known_device.detected},on:{"click":function($event){return _vm.$emit('select_tag', _vm.known_device)}}},[_vm._v("Tag : "+_vm._s(_vm.known_device.tag.tag_id))]),_c('h2',{attrs:{"id":"status"}},[_vm._v("Status : "+_vm._s(_vm.known_device.tag.script_status))]),_c('h2',{attrs:{"id":"network"}},[_vm._v("Detection : "+_vm._s(_vm.known_device.detected))])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',[_c('button',{attrs:{"id":"title","disabled":!_vm.known_device.detected},on:{"click":function($event){return _vm.$emit('select_tag', _vm.known_device)}}},[_vm._v("Tag : "+_vm._s(_vm.known_device.tag.tag_id))]),_c('button',{attrs:{"id":"status","disabled":!_vm.known_device.detected},on:{"click":function($event){return _vm.$emit('check_status', _vm.known_device)}}},[_vm._v("Status : "+_vm._s(_vm.known_device.tag.running_status))]),_c('h2',{attrs:{"id":"network"}},[_vm._v("Detection : "+_vm._s(_vm.known_device.detected))])])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -9353,7 +9378,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-4ad3324f", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-4ad3324f", __vue__options__)
+    hotAPI.reload("data-v-4ad3324f", __vue__options__)
   }
 })()}
 },{"vue":7,"vue-hot-reload-api":4,"vueify/lib/insert-css":9}],13:[function(require,module,exports){
