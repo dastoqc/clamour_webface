@@ -7,11 +7,11 @@
       button(v-on:click="delete_device") Delete device
     div
       p New ID:
-      input(v-bind="new_tag_id")
+      input(v-model="new_tag_id")
       p New IP address: 
-      input(v-bind="new_ip_address")
+      input(v-model="new_ip_address")
       p Password:
-      input(v-bind="new_password")
+      input(v-model="new_password")
 </template>
 
 <script>
@@ -29,9 +29,9 @@ module.exports = {
 
   data() {
     return {
-      new_tag_id: Number,
-      new_ip_address: String,
-      new_password: String,
+      new_tag_id: "",
+      new_ip_address: "",
+      new_password: "",
       log_message: "Manage the settings of the devices from this board"
     };
   },
@@ -39,6 +39,9 @@ module.exports = {
   methods: {
     add_device: async function() {
       try {
+        console.log(this.new_tag_id);
+        console.log(this.new_ip_address);
+        console.log(this.new_password);
         var response = await axios.post("../tags", {
           data: {
             tag_id: this.new_tag_id,
@@ -48,7 +51,10 @@ module.exports = {
         });
       } catch (err) {
         // Error handling
-        alert(`An error occured while trying to add a device to the server\n`, err);
+        alert(
+          `An error occured while trying to add a device to the server\n`,
+          err
+        );
         //this.update_message(`Device addition failed`);
         console.warn(`Error during http call :\n`, err);
       }
