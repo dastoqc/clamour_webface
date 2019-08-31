@@ -2,7 +2,9 @@
   div
     h1 Device setting
     div
-      p {{log_message}}
+      button(v-on:click="add_device") Add device
+      button(v-on:click="update_device") Update device
+      button(v-on:click="delete_device") Delete device
     div
       p New ID:
       input(v-bind="new_tag_id")
@@ -37,7 +39,7 @@ module.exports = {
   methods: {
     add_device: async function() {
       try {
-        axios.post("../tags", {
+        var response = await axios.post("../tags", {
           data: {
             tag_id: this.new_tag_id,
             ip_address: this.new_ip_address,

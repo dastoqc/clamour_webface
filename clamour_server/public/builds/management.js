@@ -9356,12 +9356,14 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-5b252c62", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-5b252c62", __vue__options__)
+    hotAPI.reload("data-v-5b252c62", __vue__options__)
   }
 })()}
 },{"../components/tag_setter.vue":12,"../components/tag_summary.vue":13,"axios/dist/axios.min.js":1,"vue":7,"vue-hot-reload-api":4,"vueify/lib/insert-css":9}],12:[function(require,module,exports){
 var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("body {\n  margin: 0;\n  font-family: \"Nunito SemiBold\";\n}")
 ;(function(){
+//
+//
 //
 //
 //
@@ -9401,7 +9403,7 @@ module.exports = {
   methods: {
     add_device: async function() {
       try {
-        axios.post("../tags", {
+        var response = await axios.post("../tags", {
           data: {
             tag_id: this.new_tag_id,
             ip_address: this.new_ip_address,
@@ -9424,7 +9426,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h1',[_vm._v("Device setting")]),_c('div',[_c('p',[_vm._v(_vm._s(_vm.log_message))])]),_c('div',[_c('p',[_vm._v("New ID:")]),_c('input',_vm._b({},'input',_vm.new_tag_id,false)),_c('p',[_vm._v("New IP address: ")]),_c('input',_vm._b({},'input',_vm.new_ip_address,false)),_c('p',[_vm._v("Password:")]),_c('input',_vm._b({},'input',_vm.new_password,false))])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h1',[_vm._v("Device setting")]),_c('div',[_c('button',{on:{"click":_vm.add_device}},[_vm._v("Add device")]),_c('button',{on:{"click":_vm.update_device}},[_vm._v("Update device")]),_c('button',{on:{"click":_vm.delete_device}},[_vm._v("Delete device")])]),_c('div',[_c('p',[_vm._v("New ID:")]),_c('input',_vm._b({},'input',_vm.new_tag_id,false)),_c('p',[_vm._v("New IP address: ")]),_c('input',_vm._b({},'input',_vm.new_ip_address,false)),_c('p',[_vm._v("Password:")]),_c('input',_vm._b({},'input',_vm.new_password,false))])])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
