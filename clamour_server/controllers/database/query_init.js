@@ -12,7 +12,7 @@ module.exports.db_connect = async function () {
 // Initialize the database tables if they are not initialized yet
 module.exports.db_create = function () {
     var promise = new Promise((resolve, reject) => {
-        sql = `CREATE DATABASE IF NOT EXISTS \`${config.database_name}\`;`
+        sql = `CREATE DATABASE IF NOT EXISTS \`${config.database}\`;`
         connection.query(sql, function (err, results, fields) {
             if (err) {
                 reject(err);
