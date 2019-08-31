@@ -9390,7 +9390,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-4ad3324f", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-4ad3324f", __vue__options__)
+    hotAPI.reload("data-v-4ad3324f", __vue__options__)
   }
 })()}
 },{"vue":7,"vue-hot-reload-api":4,"vueify/lib/insert-css":9}],13:[function(require,module,exports){

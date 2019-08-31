@@ -1,32 +1,8 @@
 extends layout
 
-block scripts
-
-block mixins
-  include ./mixins/tag_element.pug
-
 block content
   div#vue-network
     management_page
-
-    //- input#button_network_scan(type="button" v-on:click="scan_network"          value="Scan network")
-    //- input#button_network_scan(type="button" v-on:click="start_devices"         value="Start visit")
-    //- input#button_network_scan(type="button" v-on:click="stop_download_devices" value="Stop visit and download")
-    
-    //- p#text {{selected}}
-
-  //- - var i = 0;
-  //- ul
-  //-   while i < tag_number
-  //-     li= i
-  //-     = i++
-
-  //- div#components-demo
-  //-   button-counter
-
-
-  //- ol
-  //-   todo-item
 
 block vue_handler
     script(src="/builds/management.js")

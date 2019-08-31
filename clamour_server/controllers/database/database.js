@@ -2,8 +2,6 @@ const mysql = require('mysql2');
 const config = require('../../configuration/database.json');
 const initializer = require('./query_init');
 const tags = require('./table_tags');
-const visits = require('./table_visits');
-const points = require('./table_points');
 
 // Database connection
 var connection;
@@ -31,5 +29,4 @@ module.exports.close = async function () {
 // Table query accessors
 module.exports.query = {
     tags: tags,
-    visits: visits
 };

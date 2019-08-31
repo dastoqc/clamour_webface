@@ -26,39 +26,3 @@ module.exports.test_tag_queries = async function (req, res, next) {
     res.render('index', { title: 'Test tags table functions' });
     return;
 }
-
-module.exports.test_visits_queries = async function (req, res, next) {
-    var test_date = new Date(2019, 7 - 1, 20);
-
-    var test_start_date = new Date(2019, 7 -1, 20);
-    try {
-        // Test addition of visits
-        console.log(await db.query.visits.add('test_0x1008_2019-07-20-16:00.csv'));
-        console.log(await db.query.visits.add('visit0x1008_2019-07-20-14:57.csv'));
-
-        // // Test the fetching of data
-        // // console.log(await db.query.visits.get_all_equal_field({ visit_number: 38 }));
-        // // console.log(await db.query.visits.get_all_equal_field({ tag_id: 4104 }));
-        // // console.log(await db.query.visits.get_all_equal_field({ mode: 'test' }));
-        // // console.log(test_date);
-        // // console.log(await db.query.visits.get_all_if_equal_field({ date: test_date }));
-
-        // // Test the fetching of data
-        // console.log(await db.query.visits.get_equal_field_time_restricted({ visit_number: 38 }));
-        // console.log(await db.query.visits.get_equal_field_time_restricted({ tag_id: 4104 }));
-        // console.log(await db.query.visits.get_equal_field_time_restricted({ mode: 'test' }, test_start_date));
-        // console.log(test_date);
-        // console.log(await db.query.visits.get_equal_field_time_restricted({ date: test_date }));
-
-        // console.log(await db.query.visits.delete_equal_field({ mode: 'test' }, test_start_date));
-
-        // console.log(await db.query.visits.get_points(1));
-
-        console.log(await db.query.visits.delete_equal_field(1));
-
-    } catch (err) {
-        console.log(`Error while testing the visits table functions :\n${err}`.red);
-    }
-    res.render('index', { title: 'Test visits table functions' });
-    return;
-}
