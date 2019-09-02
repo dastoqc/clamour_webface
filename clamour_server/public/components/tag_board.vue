@@ -8,10 +8,15 @@
         li {{log_message_4}}
         li {{log_message_5}}
         h2 Selected device : {{selected_device.tag.tag_id}}
-      tag_setter(v-if="is_advanced_mode")
+
+      tag_setter( v-if="is_advanced_mode" 
+                  v-on:log_message="update_message"
+                  v-on:update_board="populate_board")
+
       button(v-on:click="scan_network") Scan network
       button(v-on:click="start_localization") Activate device
       button(v-on:click="stop_download_localization") Stop and download
+
       p#test_text This is the tag board
       ul
         tag_summary(v-for="tag in known_device_list" 
@@ -111,29 +116,42 @@ module.exports = {
           script_status: undefined
         },
         detected: false
-      }
+      };
     },
 
     check_status: async function(specified_device) {
       try {
         // Sending request and parsing response
-        this.update_message(`Checking the status of tag ${specified_device.tag.tag_id}, waiting for answer...`);
-        var response = await axios.get(`check_script_status/ip_address/${specified_device.tag.ip_address}`);
+        this.update_message(
+          `Checking the status of tag ${specified_device.tag.tag_id}, waiting for answer...`
+        );
+        var response = await axios.get(
+          `check_script_status/ip_address/${specified_device.tag.ip_address}`
+        );
         var isActivated = response.data.status.isActivated;
 
         // Displaying result
-        var status = (isActivated == "ON") ? "ON" : "OFF";
-        this.update_message(`Status found on the tag ${specified_device.tag.tag_id} : ${status}`);
+        var status = isActivated == "ON" ? "ON" : "OFF";
+        this.update_message(
+          `Status found on the tag ${specified_device.tag.tag_id} : ${status}`
+        );
 
         // Updating the board
         for (i in this.known_device_list) {
-          if (this.known_device_list[i].tag.tag_id === specified_device.tag.tag_id)
+          if (
+            this.known_device_list[i].tag.tag_id === specified_device.tag.tag_id
+          )
             this.known_device_list[i].tag.script_status = status;
         }
       } catch (err) {
         // Error handling
-        alert(`An error occured while trying to check the status of tag ${specified_device.tag_id}\n`, err);
-        this.update_message(`Status check up failed on tag ${specified_device.tag_id}`);
+        alert(
+          `An error occured while trying to check the status of tag ${specified_device.tag_id}\n`,
+          err
+        );
+        this.update_message(
+          `Status check up failed on tag ${specified_device.tag_id}`
+        );
         console.warn(`Error during http call :\n`, err);
       }
     },
@@ -147,7 +165,9 @@ module.exports = {
         var detected_id = this.get_list_id(this.detected_device_list);
 
         // Displaying result
-        this.update_message(`Network scan finished, detected device(s) : ${detected_id}`);
+        this.update_message(
+          `Network scan finished, detected device(s) : ${detected_id}`
+        );
 
         // Updating board
         this.unselect_device();
@@ -180,27 +200,40 @@ module.exports = {
         }
 
         // Sending request and parsing response
-        this.update_message(`Starting the localization on device ${this.selected_device.tag.tag_id}...`);
-        var response = await axios.get(`start_script/ip_address/${this.selected_device.tag.ip_address}/mode/visit`);
+        this.update_message(
+          `Starting the localization on device ${this.selected_device.tag.tag_id}...`
+        );
+        var response = await axios.get(
+          `start_script/ip_address/${this.selected_device.tag.ip_address}/mode/visit`
+        );
         var change = response.data.change;
         var tag = response.data.tag;
 
         // Displaying result
-        if(change === "TURNED ON")
+        if (change === "TURNED ON")
           this.update_message(`Localization started on tag ${tag.tag_id}`);
-        else if(change === "ALREADY TURNED ON")
-          this.update_message(`Localization already running on tag ${tag.tag_id}`);
-        
+        else if (change === "ALREADY TURNED ON")
+          this.update_message(
+            `Localization already running on tag ${tag.tag_id}`
+          );
+
         // Updating the board
         for (i in this.known_device_list) {
-          if (this.known_device_list[i].tag.tag_id === this.selected_device.tag.tag_id)
+          if (
+            this.known_device_list[i].tag.tag_id ===
+            this.selected_device.tag.tag_id
+          )
             this.known_device_list[i].tag = tag;
         }
-
       } catch (err) {
         // Error handling
-        alert(`An error occured while trying to activate the localization\n`, err);
-        this.update_message(`Localization activation failed on tag ${this.selected_device.tag.tag_id}`);
+        alert(
+          `An error occured while trying to activate the localization\n`,
+          err
+        );
+        this.update_message(
+          `Localization activation failed on tag ${this.selected_device.tag.tag_id}`
+        );
         console.warn(`Error during http call :\n`, err);
       }
     },
@@ -214,28 +247,59 @@ module.exports = {
         }
 
         // Sending request and parsing response
-        this.update_message(`Stoping the localization on device ${this.selected_device.tag.tag_id}...`);
-        var response = await axios.get(`stop_download/ip_address/${this.selected_device.tag.ip_address}`);
+        this.update_message(
+          `Stoping the localization on device ${this.selected_device.tag.tag_id}...`
+        );
+        var response = await axios.get(
+          `stop_download/ip_address/${this.selected_device.tag.ip_address}`
+        );
         var tag = response.data.tag;
         var downloaded_files = response.data.downloaded_files;
 
         // Displaying result
-        this.update_message(`Device stoped and files retreived : ${downloaded_files}`);
+        this.update_message(
+          `Device stoped and files retreived : ${downloaded_files}`
+        );
 
         // Updating the board
         for (i in this.known_device_list) {
-          if (this.known_device_list[i].tag.tag_id === this.selected_device.tag.tag_id)
+          if (
+            this.known_device_list[i].tag.tag_id ===
+            this.selected_device.tag.tag_id
+          )
             this.known_device_list[i].tag = tag;
         }
-
       } catch (err) {
         // Error handling
-        alert(`An error occured while trying to stop the localization and load files\n`, err);
-        this.update_message(`Localization deactivation failed on tag ${this.selected_device.tag.tag_id}`);
+        alert(
+          `An error occured while trying to stop the localization and load files\n`,
+          err
+        );
+        this.update_message(
+          `Localization deactivation failed on tag ${this.selected_device.tag.tag_id}`
+        );
+        console.warn(`Error during http call :\n`, err);
+      }
+    },
+
+    populate_board: async function() {
+      // Populating the page
+      try {
+        while (this.known_device_list.length) await this.known_device_list.pop();
+        var response = await axios.get("../tags");
+        for (var index in response.data) {
+          this.known_device_list.push({
+            tag: response.data[index],
+            detected: false
+          });
+        }
+      } catch (err) {
+        // Error handling
+        alert(`An error occured while trying to get the list of tags\n`, err);
+        this.update_message(`There is a problem with the server`);
         console.warn(`Error during http call :\n`, err);
       }
     }
-
   },
 
   created: async function() {
@@ -245,13 +309,7 @@ module.exports = {
       this.detected_device_list.pop();
 
       // Populating the page
-      var response = await axios.get("../tags");
-      for (var index in response.data) {
-        this.known_device_list.push({
-          tag: response.data[index],
-          detected: false
-        });
-      }
+      await this.populate_board();
     } catch (err) {
       alert(`An error occured while trying to fetch the lis of devices\n`, err);
       console.warn(`Error during http call :\n`, err);

@@ -29,19 +29,31 @@ module.exports = {
 
   data() {
     return {
-      new_tag_id: "",
-      new_ip_address: "",
-      new_password: "",
-      log_message: "Manage the settings of the devices from this board"
+      new_tag_id: undefined,
+      new_ip_address: undefined,
+      new_password: undefined
     };
   },
 
   methods: {
+    update_message: function(message) {
+      this.$emit("log_message", message);
+    },
+
+    update_board: function() {
+      this.$emit("update_board");
+    },
+
+    reset_input: function() {
+      this.new_tag_id = undefined;
+      this.new_ip_address = undefined;
+      this.new_password = undefined;
+    },
+
     add_device: async function() {
       try {
-        console.log(this.new_tag_id);
-        console.log(this.new_ip_address);
-        console.log(this.new_password);
+        // Sending request and parsing response
+        this.update_message(`Adding a device to the list of known devices ...`);
         var response = await axios.post("../tags", {
           data: {
             tag_id: this.new_tag_id,
@@ -49,17 +61,31 @@ module.exports = {
             password: this.new_password
           }
         });
+        console.log(response.data);
+        // Parsing the response to know if the query was successful or failed
+        if (response.data.code)
+          this.update_message(
+            `Server couldn't add the device : ${response.data.sqlMessage}`
+          );
+        else {
+          this.update_message(
+            `Tag ${this.new_tag_id} (IP: ${this.new_ip_address}) added`
+          );
+          this.reset_input();
+          await this.update_board();
+        }
       } catch (err) {
         // Error handling
-        alert(
-          `An error occured while trying to add a device to the server\n`,
-          err
-        );
-        //this.update_message(`Device addition failed`);
+        alert(`An error occured while trying to add a device\n`, err);
+        this.update_message(`Device addition failed`);
         console.warn(`Error during http call :\n`, err);
       }
     },
-    update_device: function(selected_tag) {},
+
+    update_device: function(selected_tag) {
+      this.update_message("Test réussi");
+    },
+
     delete_device: function(selected_tag) {}
   }
 };

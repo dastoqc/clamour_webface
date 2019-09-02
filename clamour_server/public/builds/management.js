@@ -9103,6 +9103,11 @@ var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("body {\n
 //
 //
 //
+//
+//
+//
+//
+//
 
 var axios = require("axios/dist/axios.min.js");
 var Tag = require("../components/tag_summary.vue");
@@ -9194,29 +9199,42 @@ module.exports = {
           script_status: undefined
         },
         detected: false
-      }
+      };
     },
 
     check_status: async function(specified_device) {
       try {
         // Sending request and parsing response
-        this.update_message(`Checking the status of tag ${specified_device.tag.tag_id}, waiting for answer...`);
-        var response = await axios.get(`check_script_status/ip_address/${specified_device.tag.ip_address}`);
+        this.update_message(
+          `Checking the status of tag ${specified_device.tag.tag_id}, waiting for answer...`
+        );
+        var response = await axios.get(
+          `check_script_status/ip_address/${specified_device.tag.ip_address}`
+        );
         var isActivated = response.data.status.isActivated;
 
         // Displaying result
-        var status = (isActivated == "ON") ? "ON" : "OFF";
-        this.update_message(`Status found on the tag ${specified_device.tag.tag_id} : ${status}`);
+        var status = isActivated == "ON" ? "ON" : "OFF";
+        this.update_message(
+          `Status found on the tag ${specified_device.tag.tag_id} : ${status}`
+        );
 
         // Updating the board
         for (i in this.known_device_list) {
-          if (this.known_device_list[i].tag.tag_id === specified_device.tag.tag_id)
+          if (
+            this.known_device_list[i].tag.tag_id === specified_device.tag.tag_id
+          )
             this.known_device_list[i].tag.script_status = status;
         }
       } catch (err) {
         // Error handling
-        alert(`An error occured while trying to check the status of tag ${specified_device.tag_id}\n`, err);
-        this.update_message(`Status check up failed on tag ${specified_device.tag_id}`);
+        alert(
+          `An error occured while trying to check the status of tag ${specified_device.tag_id}\n`,
+          err
+        );
+        this.update_message(
+          `Status check up failed on tag ${specified_device.tag_id}`
+        );
         console.warn(`Error during http call :\n`, err);
       }
     },
@@ -9230,7 +9248,9 @@ module.exports = {
         var detected_id = this.get_list_id(this.detected_device_list);
 
         // Displaying result
-        this.update_message(`Network scan finished, detected device(s) : ${detected_id}`);
+        this.update_message(
+          `Network scan finished, detected device(s) : ${detected_id}`
+        );
 
         // Updating board
         this.unselect_device();
@@ -9263,27 +9283,40 @@ module.exports = {
         }
 
         // Sending request and parsing response
-        this.update_message(`Starting the localization on device ${this.selected_device.tag.tag_id}...`);
-        var response = await axios.get(`start_script/ip_address/${this.selected_device.tag.ip_address}/mode/visit`);
+        this.update_message(
+          `Starting the localization on device ${this.selected_device.tag.tag_id}...`
+        );
+        var response = await axios.get(
+          `start_script/ip_address/${this.selected_device.tag.ip_address}/mode/visit`
+        );
         var change = response.data.change;
         var tag = response.data.tag;
 
         // Displaying result
-        if(change === "TURNED ON")
+        if (change === "TURNED ON")
           this.update_message(`Localization started on tag ${tag.tag_id}`);
-        else if(change === "ALREADY TURNED ON")
-          this.update_message(`Localization already running on tag ${tag.tag_id}`);
-        
+        else if (change === "ALREADY TURNED ON")
+          this.update_message(
+            `Localization already running on tag ${tag.tag_id}`
+          );
+
         // Updating the board
         for (i in this.known_device_list) {
-          if (this.known_device_list[i].tag.tag_id === this.selected_device.tag.tag_id)
+          if (
+            this.known_device_list[i].tag.tag_id ===
+            this.selected_device.tag.tag_id
+          )
             this.known_device_list[i].tag = tag;
         }
-
       } catch (err) {
         // Error handling
-        alert(`An error occured while trying to activate the localization\n`, err);
-        this.update_message(`Localization activation failed on tag ${this.selected_device.tag.tag_id}`);
+        alert(
+          `An error occured while trying to activate the localization\n`,
+          err
+        );
+        this.update_message(
+          `Localization activation failed on tag ${this.selected_device.tag.tag_id}`
+        );
         console.warn(`Error during http call :\n`, err);
       }
     },
@@ -9297,28 +9330,59 @@ module.exports = {
         }
 
         // Sending request and parsing response
-        this.update_message(`Stoping the localization on device ${this.selected_device.tag.tag_id}...`);
-        var response = await axios.get(`stop_download/ip_address/${this.selected_device.tag.ip_address}`);
+        this.update_message(
+          `Stoping the localization on device ${this.selected_device.tag.tag_id}...`
+        );
+        var response = await axios.get(
+          `stop_download/ip_address/${this.selected_device.tag.ip_address}`
+        );
         var tag = response.data.tag;
         var downloaded_files = response.data.downloaded_files;
 
         // Displaying result
-        this.update_message(`Device stoped and files retreived : ${downloaded_files}`);
+        this.update_message(
+          `Device stoped and files retreived : ${downloaded_files}`
+        );
 
         // Updating the board
         for (i in this.known_device_list) {
-          if (this.known_device_list[i].tag.tag_id === this.selected_device.tag.tag_id)
+          if (
+            this.known_device_list[i].tag.tag_id ===
+            this.selected_device.tag.tag_id
+          )
             this.known_device_list[i].tag = tag;
         }
-
       } catch (err) {
         // Error handling
-        alert(`An error occured while trying to stop the localization and load files\n`, err);
-        this.update_message(`Localization deactivation failed on tag ${this.selected_device.tag.tag_id}`);
+        alert(
+          `An error occured while trying to stop the localization and load files\n`,
+          err
+        );
+        this.update_message(
+          `Localization deactivation failed on tag ${this.selected_device.tag.tag_id}`
+        );
+        console.warn(`Error during http call :\n`, err);
+      }
+    },
+
+    populate_board: async function() {
+      // Populating the page
+      try {
+        while (this.known_device_list.length) await this.known_device_list.pop();
+        var response = await axios.get("../tags");
+        for (var index in response.data) {
+          this.known_device_list.push({
+            tag: response.data[index],
+            detected: false
+          });
+        }
+      } catch (err) {
+        // Error handling
+        alert(`An error occured while trying to get the list of tags\n`, err);
+        this.update_message(`There is a problem with the server`);
         console.warn(`Error during http call :\n`, err);
       }
     }
-
   },
 
   created: async function() {
@@ -9328,13 +9392,7 @@ module.exports = {
       this.detected_device_list.pop();
 
       // Populating the page
-      var response = await axios.get("../tags");
-      for (var index in response.data) {
-        this.known_device_list.push({
-          tag: response.data[index],
-          detected: false
-        });
-      }
+      await this.populate_board();
     } catch (err) {
       alert(`An error occured while trying to fetch the lis of devices\n`, err);
       console.warn(`Error during http call :\n`, err);
@@ -9346,7 +9404,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h1',[_vm._v("Device management board")]),_c('ul',[_c('li',[_vm._v(_vm._s(_vm.log_message_1))]),_c('li',[_vm._v(_vm._s(_vm.log_message_2))]),_c('li',[_vm._v(_vm._s(_vm.log_message_3))]),_c('li',[_vm._v(_vm._s(_vm.log_message_4))]),_c('li',[_vm._v(_vm._s(_vm.log_message_5))]),_c('h2',[_vm._v("Selected device : "+_vm._s(_vm.selected_device.tag.tag_id))])]),(_vm.is_advanced_mode)?_c('tag_setter'):_vm._e(),_c('button',{on:{"click":_vm.scan_network}},[_vm._v("Scan network")]),_c('button',{on:{"click":_vm.start_localization}},[_vm._v("Activate device")]),_c('button',{on:{"click":_vm.stop_download_localization}},[_vm._v("Stop and download")]),_c('p',{attrs:{"id":"test_text"}},[_vm._v("This is the tag board")]),_c('ul',_vm._l((_vm.known_device_list),function(tag){return _c('tag_summary',{attrs:{"known_device":tag},on:{"select_tag":function($event){return _vm.select_device($event)},"check_status":function($event){return _vm.check_status($event)}}})}),1)],1)}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h1',[_vm._v("Device management board")]),_c('ul',[_c('li',[_vm._v(_vm._s(_vm.log_message_1))]),_c('li',[_vm._v(_vm._s(_vm.log_message_2))]),_c('li',[_vm._v(_vm._s(_vm.log_message_3))]),_c('li',[_vm._v(_vm._s(_vm.log_message_4))]),_c('li',[_vm._v(_vm._s(_vm.log_message_5))]),_c('h2',[_vm._v("Selected device : "+_vm._s(_vm.selected_device.tag.tag_id))])]),(_vm.is_advanced_mode)?_c('tag_setter',{on:{"log_message":_vm.update_message,"update_board":_vm.populate_board}}):_vm._e(),_c('button',{on:{"click":_vm.scan_network}},[_vm._v("Scan network")]),_c('button',{on:{"click":_vm.start_localization}},[_vm._v("Activate device")]),_c('button',{on:{"click":_vm.stop_download_localization}},[_vm._v("Stop and download")]),_c('p',{attrs:{"id":"test_text"}},[_vm._v("This is the tag board")]),_c('ul',_vm._l((_vm.known_device_list),function(tag){return _c('tag_summary',{attrs:{"known_device":tag},on:{"select_tag":function($event){return _vm.select_device($event)},"check_status":function($event){return _vm.check_status($event)}}})}),1)],1)}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -9393,19 +9451,31 @@ module.exports = {
 
   data() {
     return {
-      new_tag_id: "",
-      new_ip_address: "",
-      new_password: "",
-      log_message: "Manage the settings of the devices from this board"
+      new_tag_id: undefined,
+      new_ip_address: undefined,
+      new_password: undefined
     };
   },
 
   methods: {
+    update_message: function(message) {
+      this.$emit("log_message", message);
+    },
+
+    update_board: function() {
+      this.$emit("update_board");
+    },
+
+    reset_input: function() {
+      this.new_tag_id = undefined;
+      this.new_ip_address = undefined;
+      this.new_password = undefined;
+    },
+
     add_device: async function() {
       try {
-        console.log(this.new_tag_id);
-        console.log(this.new_ip_address);
-        console.log(this.new_password);
+        // Sending request and parsing response
+        this.update_message(`Adding a device to the list of known devices ...`);
         var response = await axios.post("../tags", {
           data: {
             tag_id: this.new_tag_id,
@@ -9413,17 +9483,31 @@ module.exports = {
             password: this.new_password
           }
         });
+        console.log(response.data);
+        // Parsing the response to know if the query was successful or failed
+        if (response.data.code)
+          this.update_message(
+            `Server couldn't add the device : ${response.data.sqlMessage}`
+          );
+        else {
+          this.update_message(
+            `Tag ${this.new_tag_id} (IP: ${this.new_ip_address}) added`
+          );
+          this.reset_input();
+          await this.update_board();
+        }
       } catch (err) {
         // Error handling
-        alert(
-          `An error occured while trying to add a device to the server\n`,
-          err
-        );
-        //this.update_message(`Device addition failed`);
+        alert(`An error occured while trying to add a device\n`, err);
+        this.update_message(`Device addition failed`);
         console.warn(`Error during http call :\n`, err);
       }
     },
-    update_device: function(selected_tag) {},
+
+    update_device: function(selected_tag) {
+      this.update_message("Test réussi");
+    },
+
     delete_device: function(selected_tag) {}
   }
 };
@@ -9442,7 +9526,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-0e492a66", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-0e492a66", __vue__options__)
+    hotAPI.reload("data-v-0e492a66", __vue__options__)
   }
 })()}
 },{"axios/dist/axios.min.js":1,"vue":7,"vue-hot-reload-api":4,"vueify/lib/insert-css":9}],13:[function(require,module,exports){
