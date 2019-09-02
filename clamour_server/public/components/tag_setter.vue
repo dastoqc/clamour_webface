@@ -61,7 +61,6 @@ module.exports = {
             password: this.new_password
           }
         });
-        console.log(response.data);
         // Parsing the response to know if the query was successful or failed
         if (response.data.code)
           this.update_message(
@@ -82,11 +81,38 @@ module.exports = {
       }
     },
 
-    update_device: function(selected_tag) {
+    update_device: async function(selected_tag) {
       this.update_message("Test réussi");
     },
 
-    delete_device: function(selected_tag) {}
+    delete_device: async function(selected_tag) {
+      try {
+        // Sending request and parsing response
+        this.update_message(
+          `Erasing the device identified by the ID ${this.new_tag_id} ...`
+        );
+        var response = await axios.delete(`../tags/${this.new_tag_id}`);
+
+        // Parsing the response to know if the query was successful or failed
+        console.log(response.data);
+        if (response.data.code) {
+          this.update_message(
+            `Server couldn't delete the device : ${response.data.sqlMessage}`
+          );
+        } else if (response.data.affectedRows) {
+          this.update_message(`Tag with ID ${this.new_tag_id} deleted`);
+          this.reset_input();
+          await this.update_board();
+        } else {
+          this.update_message(`There was no tag with ID ${this.new_tag_id}`);
+        }
+      } catch (err) {
+        // Error handling
+        alert(`An error occured while trying to delete a device\n`, err);
+        this.update_message(`Device deletion failed`);
+        console.warn(`Error during http call :\n`, err);
+      }
+    }
   }
 };
 </script>

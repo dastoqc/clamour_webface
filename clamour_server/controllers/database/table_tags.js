@@ -10,7 +10,7 @@ module.exports.init_table = function (connection) {
         sql =
             `CREATE TABLE IF NOT EXISTS \`tags\` (
             \`tag_id\` 		    SMALLINT UNSIGNED NOT NULL,
-            \`ip_address\` 	    INT UNSIGNED NULL,
+            \`ip_address\` 	    INT UNSIGNED NOT NULL,
             \`password\` 	    VARCHAR(20) NULL,
             \`script_status\` 	VARCHAR(7) NULL DEFAULT 'UNKNOWN',
             PRIMARY KEY (\`tag_id\`),
@@ -217,7 +217,7 @@ module.exports.delete = function (tag = {tag_id : -1, ip_address : '0.0.0.0'}) {
     return promise;
 }
 
-module.exports.delete = function () {
+module.exports.delete_all_tags = function () {
     var promise = new Promise((resolve, reject) => {
         sql = `DELETE FROM tags`;
         db_connection.query(sql, (err, results, fields) => {

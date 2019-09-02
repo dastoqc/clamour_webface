@@ -9,6 +9,8 @@ module.exports.get_all_tags = async function (req, res, next) {
     }
 }
 
+// Successful entry response :  
+// Failed database query format : {code: "ER_DUP_ENTRY", errno: 1062, sqlState: "23000", sqlMessage: "Duplicate entry '2' for key 'PRIMARY'"}
 module.exports.create_tag = async function (req, res, next) {
     try {
         result = await db.query.tags.add({ 
