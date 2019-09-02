@@ -30,7 +30,7 @@ module.exports.add = function (tag = {tag_id : -1, ip_address : '0.0.0.0'}) {
     var promise = new Promise((resolve, reject) => {
         sql =
             `INSERT INTO tags (tag_id, ip_address) 
-            VALUES (?, INET_ATON(?), ?)`;
+            VALUES (?, INET_ATON(?))`;
         param = [tag.tag_id, tag.ip_address];
         db_connection.query(sql, param, (err, results, fields) => {
             if (err) {
