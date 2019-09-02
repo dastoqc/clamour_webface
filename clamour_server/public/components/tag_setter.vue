@@ -1,6 +1,7 @@
 <template lang="pug">
   div
     h1 Device setting
+
     div
       button(v-on:click="add_device") Add device
       p ID to add:
@@ -9,16 +10,29 @@
       input(v-model="ip_address_to_add")
       p Password to add:
       input(type="password" v-model="password_to_add")
+
     div
       button(v-on:click="update_device") Update device
       p ID of the tag to update:
       input(v-model="tag_id_to_update")
-      p New ID:
-      input(v-model="new_tag_id")
-      p New IP address: 
-      input(v-model="new_ip_address")
-      p New password:
-      input(type="password" v-model="new_password")
+      
+      div
+        select(v-model="selected_parameter")
+          option(disabled value="") Selec the parameter to change
+          option(value="tag_id") ID
+          option(value="ip_address") IP address
+          option(value="password") Password
+
+        div(v-if="selected_parameter === 'tag_id'")
+          p New ID:
+          input(v-model="new_tag_id")
+        div(v-if="selected_parameter === 'ip_address'")
+          p New IP address: 
+          input(v-model="new_ip_address")
+        div(v-if="selected_parameter === 'password'")
+          p New password:
+          input(type="password" v-model="new_password")
+
     div
       button(v-on:click="delete_device") Delete device
       p ID of the tag to delete:
@@ -45,6 +59,7 @@ module.exports = {
       password_to_add: undefined,
 
       tag_id_to_update: undefined,
+      selected_parameter: "",
       new_tag_id: undefined,
       new_ip_address: undefined,
       new_password: undefined,
