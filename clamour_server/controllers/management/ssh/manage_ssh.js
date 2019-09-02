@@ -2,6 +2,7 @@ var Client = require('ssh2').Client;
 var color = require('colors');
 
 var ssh = require('./client_ssh');
+var db = require('../../database/database');
 
 var con = require('../../../configuration/default_ssh.json')
 
@@ -81,26 +82,26 @@ module.exports.check_script_status = async function (ip_address) {
 
 // Internal function
 const connect_with_tag = function (ip_address) {
-    var promise = new Promise(function (resolve, reject) {
+    var promise = new Promise(async function (resolve, reject) {
         var ssh_client = new Client();
         try {
             ssh_client.connect({
                 host: ip_address,
-                port: 22,
-                username: 'pi',
-                password: '!clamour'
+                port: con.port,
+                username: con.username,
+                password: con.password
             });
         } catch (error) {
             console.log(`An error occured during the SSH connection attempt on ip address ${ip_address}`.red);
             console.log(error);
-            return;
+            resolve(`Couldn't connect to address ${ip_address}`.red);
         }
 
         // Error handling
         ssh_client.on('error', function (err) {
             console.log(`SSH Client on tag ${ip_address} :: An error occured in the SSH connection with tag`.red);
-            console.log(`Level: ${err.level} \n${err.stack}`.red)
-            return;
+            console.log(`Level: ${err.level} \n${err.message}`.red);
+            reject(`Couldn't connect to address ${ip_address}`.red);
         });
 
         // End of communication

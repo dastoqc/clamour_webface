@@ -13,7 +13,6 @@ module.exports.render_page = async function (req, res, next) {
 //     "change": String,
 //     "tag":{"tag_id": Number,"ip_address": String,"script_status": String}
 // }
-//
 // Example :
 // {
 //     "change":"ALREADY TURNED ON",
@@ -37,7 +36,6 @@ module.exports.start_script = async function (req, res, next) {
 //    "tag": {"tag_id": Number,"ip_address": String ,"script_status": String },
 //    "downloaded_files": [ String ]
 // }
-//
 // Example :
 // { 
 //    "tag": {"tag_id":4096,"ip_address":"192.168.4.200","script_status":"OFF"},
@@ -60,7 +58,6 @@ module.exports.stop_tag_download_csv = async function (req, res, next) {
 
 // Response format :
 // { "status": {"isActivated": String,"pid": String}}
-//
 // Example :
 // {"status":{"isActivated":"ON","pid":"1488"}}
 module.exports.get_script_status = async function (req, res, next) {
@@ -75,16 +72,13 @@ module.exports.get_script_status = async function (req, res, next) {
 
 // Response format :
 // { "detected_tag_list" : [{"tag_id" : Number , "ip_address": String , "script_status": String }] }
-// 
 // Example :
 // { "detected_tag_list":
 //     [
 //          {"tag_id":4100,"ip_address":"192.168.4.21","script_status":"ON"},
 //          {"tag_id":4101,"ip_address":"192.168.4.22","script_status":"OFF"},
 //          {"tag_id":4102,"ip_address":"192.168.4.23","script_status":"OFF"},
-//          {"tag_id":4103,"ip_address":"192.168.4.24","script_status":"OFF"},
-//          {"tag_id":4105,"ip_address":"192.168.4.25","script_status":"OFF"},
-//          {"tag_id":4096,"ip_address":"192.168.4.200","script_status":"ON"}
+//          {"tag_id":4103,"ip_address":"192.168.4.24","script_status":"OFF"}
 //     ]
 // }
 module.exports.scan_network = async function (req, res, next) {
@@ -95,9 +89,7 @@ module.exports.scan_network = async function (req, res, next) {
             await ssh_manager.check_script_status(tag_ip_address_list[i]);
             tag_list.push((await db.query.tags.get_from_ip_address(tag_ip_address_list[i]))[0]);
         };
-        res.json({
-            detected_tag_list: tag_list
-        });
+        res.json({detected_tag_list: tag_list});
     } catch (err) {
         console.log(`Error during the network scanning :\n${err}`.red);
         res.send({ error: err });
