@@ -9543,7 +9543,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h1',[_vm._v("Device setting")]),_c('div',[_c('button',{on:{"click":_vm.add_device}},[_vm._v("Add device")]),_c('button',{on:{"click":_vm.update_device}},[_vm._v("Update device")]),_c('button',{on:{"click":_vm.delete_device}},[_vm._v("Delete device")])]),_c('div',[_c('p',[_vm._v("New ID:")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.new_tag_id),expression:"new_tag_id"}],domProps:{"value":(_vm.new_tag_id)},on:{"input":function($event){if($event.target.composing){ return; }_vm.new_tag_id=$event.target.value}}}),_c('p',[_vm._v("New IP address: ")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.new_ip_address),expression:"new_ip_address"}],domProps:{"value":(_vm.new_ip_address)},on:{"input":function($event){if($event.target.composing){ return; }_vm.new_ip_address=$event.target.value}}}),_c('p',[_vm._v("Password:")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.new_password),expression:"new_password"}],domProps:{"value":(_vm.new_password)},on:{"input":function($event){if($event.target.composing){ return; }_vm.new_password=$event.target.value}}})])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h1',[_vm._v("Device setting")]),_c('div',[_c('button',{on:{"click":_vm.add_device}},[_vm._v("Add device")]),_c('button',{on:{"click":_vm.update_device}},[_vm._v("Update device")]),_c('button',{on:{"click":_vm.delete_device}},[_vm._v("Delete device")])]),_c('div',[_c('p',[_vm._v("New ID:")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.new_tag_id),expression:"new_tag_id"}],domProps:{"value":(_vm.new_tag_id)},on:{"input":function($event){if($event.target.composing){ return; }_vm.new_tag_id=$event.target.value}}}),_c('p',[_vm._v("New IP address: ")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.new_ip_address),expression:"new_ip_address"}],domProps:{"value":(_vm.new_ip_address)},on:{"input":function($event){if($event.target.composing){ return; }_vm.new_ip_address=$event.target.value}}}),_c('p',[_vm._v("Password:")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.new_password),expression:"new_password"}],attrs:{"type":"password"},domProps:{"value":(_vm.new_password)},on:{"input":function($event){if($event.target.composing){ return; }_vm.new_password=$event.target.value}}})])])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -9553,7 +9553,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-0e492a66", __vue__options__)
   } else {
-    hotAPI.reload("data-v-0e492a66", __vue__options__)
+    hotAPI.rerender("data-v-0e492a66", __vue__options__)
   }
 })()}
 },{"axios/dist/axios.min.js":1,"vue":7,"vue-hot-reload-api":4,"vueify/lib/insert-css":9}],13:[function(require,module,exports){

@@ -11,7 +11,7 @@
       p New IP address: 
       input(v-model="new_ip_address")
       p Password:
-      input(v-model="new_password")
+      input(type="password" v-model="new_password")
 </template>
 
 <script>
