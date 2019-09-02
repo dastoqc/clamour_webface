@@ -14,8 +14,6 @@
       input(v-model="tag_id_to_add")
       p IP address to add: 
       input(v-model="ip_address_to_add")
-      p Password to add:
-      input(type="password" v-model="password_to_add")
 
     div(v-if="option === 'update'")
       button(v-on:click="update_device") Update device
@@ -27,7 +25,6 @@
           option(disabled value="") Select the parameter to change
           option(value="tag_id") ID
           option(value="ip_address") IP address
-          option(value="password") Password
 
         div(v-if="selected_parameter === 'tag_id'")
           p New ID:
@@ -35,9 +32,6 @@
         div(v-if="selected_parameter === 'ip_address'")
           p New IP address: 
           input(v-model="new_ip_address")
-        div(v-if="selected_parameter === 'password'")
-          p New password:
-          input(type="password" v-model="new_password")
 
     div(v-if="option === 'delete'")
       button(v-on:click="delete_device") Delete device
@@ -64,13 +58,11 @@ module.exports = {
 
       tag_id_to_add: undefined,
       ip_address_to_add: undefined,
-      password_to_add: undefined,
 
       selected_parameter: "",
       tag_id_to_update: undefined,
       new_tag_id: undefined,
       new_ip_address: undefined,
-      new_password: undefined,
 
       tag_id_to_delete: undefined
     };
@@ -88,14 +80,12 @@ module.exports = {
     reset_add_input: function() {
       this.new_tag_id = undefined;
       this.new_ip_address = undefined;
-      this.new_password = undefined;
     },
 
     reset_update_input: function() {
       this.tag_id_to_update = undefined;
       this.new_tag_id = undefined;
       this.new_ip_address = undefined;
-      this.new_password = undefined;
     },
 
     reset_delete_input: function() {
@@ -110,7 +100,6 @@ module.exports = {
           data: {
             tag_id: this.tag_id_to_add,
             ip_address: this.ip_address_to_add,
-            password: this.password_to_add
           }
         });
         // Parsing the response to know if the query was successful or failed
@@ -141,8 +130,6 @@ module.exports = {
           request_content = { data: { tag_id: this.new_tag_id } };
         else if (this.selected_parameter === "ip_address")
           request_content = { data: { ip_address: this.new_ip_address } };
-        else if (this.selected_parameter === "password")
-          request_content = { data: { password: this.new_password } };
 
         // Sending request and parsing response
         this.update_message(`Adding a device to the list of known devices ...`);

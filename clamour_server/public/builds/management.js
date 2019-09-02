@@ -9462,12 +9462,6 @@ var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("body {\n
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 var axios = require("axios/dist/axios.min.js");
 
@@ -9487,13 +9481,11 @@ module.exports = {
 
       tag_id_to_add: undefined,
       ip_address_to_add: undefined,
-      password_to_add: undefined,
 
       selected_parameter: "",
       tag_id_to_update: undefined,
       new_tag_id: undefined,
       new_ip_address: undefined,
-      new_password: undefined,
 
       tag_id_to_delete: undefined
     };
@@ -9511,14 +9503,12 @@ module.exports = {
     reset_add_input: function() {
       this.new_tag_id = undefined;
       this.new_ip_address = undefined;
-      this.new_password = undefined;
     },
 
     reset_update_input: function() {
       this.tag_id_to_update = undefined;
       this.new_tag_id = undefined;
       this.new_ip_address = undefined;
-      this.new_password = undefined;
     },
 
     reset_delete_input: function() {
@@ -9533,7 +9523,6 @@ module.exports = {
           data: {
             tag_id: this.tag_id_to_add,
             ip_address: this.ip_address_to_add,
-            password: this.password_to_add
           }
         });
         // Parsing the response to know if the query was successful or failed
@@ -9564,8 +9553,6 @@ module.exports = {
           request_content = { data: { tag_id: this.new_tag_id } };
         else if (this.selected_parameter === "ip_address")
           request_content = { data: { ip_address: this.new_ip_address } };
-        else if (this.selected_parameter === "password")
-          request_content = { data: { password: this.new_password } };
 
         // Sending request and parsing response
         this.update_message(`Adding a device to the list of known devices ...`);
@@ -9634,7 +9621,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h1',[_vm._v("Device setting")]),_c('select',{directives:[{name:"model",rawName:"v-model",value:(_vm.option),expression:"option"}],on:{"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.option=$event.target.multiple ? $$selectedVal : $$selectedVal[0]}}},[_c('option',{attrs:{"disabled":"disabled","value":""}},[_vm._v("Select the option")]),_c('option',{attrs:{"value":"add"}},[_vm._v("Add a new device")]),_c('option',{attrs:{"value":"update"}},[_vm._v("Update an existing device")]),_c('option',{attrs:{"value":"delete"}},[_vm._v("Delete an existing device")])]),(_vm.option === 'add')?_c('div',[_c('button',{on:{"click":_vm.add_device}},[_vm._v("Add device")]),_c('p',[_vm._v("ID to add:")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.tag_id_to_add),expression:"tag_id_to_add"}],domProps:{"value":(_vm.tag_id_to_add)},on:{"input":function($event){if($event.target.composing){ return; }_vm.tag_id_to_add=$event.target.value}}}),_c('p',[_vm._v("IP address to add: ")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.ip_address_to_add),expression:"ip_address_to_add"}],domProps:{"value":(_vm.ip_address_to_add)},on:{"input":function($event){if($event.target.composing){ return; }_vm.ip_address_to_add=$event.target.value}}}),_c('p',[_vm._v("Password to add:")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.password_to_add),expression:"password_to_add"}],attrs:{"type":"password"},domProps:{"value":(_vm.password_to_add)},on:{"input":function($event){if($event.target.composing){ return; }_vm.password_to_add=$event.target.value}}})]):_vm._e(),(_vm.option === 'update')?_c('div',[_c('button',{on:{"click":_vm.update_device}},[_vm._v("Update device")]),_c('p',[_vm._v("ID of the tag to update:")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.tag_id_to_update),expression:"tag_id_to_update"}],domProps:{"value":(_vm.tag_id_to_update)},on:{"input":function($event){if($event.target.composing){ return; }_vm.tag_id_to_update=$event.target.value}}}),_c('div',[_c('select',{directives:[{name:"model",rawName:"v-model",value:(_vm.selected_parameter),expression:"selected_parameter"}],on:{"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.selected_parameter=$event.target.multiple ? $$selectedVal : $$selectedVal[0]}}},[_c('option',{attrs:{"disabled":"disabled","value":""}},[_vm._v("Select the parameter to change")]),_c('option',{attrs:{"value":"tag_id"}},[_vm._v("ID")]),_c('option',{attrs:{"value":"ip_address"}},[_vm._v("IP address")]),_c('option',{attrs:{"value":"password"}},[_vm._v("Password")])]),(_vm.selected_parameter === 'tag_id')?_c('div',[_c('p',[_vm._v("New ID:")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.new_tag_id),expression:"new_tag_id"}],domProps:{"value":(_vm.new_tag_id)},on:{"input":function($event){if($event.target.composing){ return; }_vm.new_tag_id=$event.target.value}}})]):_vm._e(),(_vm.selected_parameter === 'ip_address')?_c('div',[_c('p',[_vm._v("New IP address: ")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.new_ip_address),expression:"new_ip_address"}],domProps:{"value":(_vm.new_ip_address)},on:{"input":function($event){if($event.target.composing){ return; }_vm.new_ip_address=$event.target.value}}})]):_vm._e(),(_vm.selected_parameter === 'password')?_c('div',[_c('p',[_vm._v("New password:")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.new_password),expression:"new_password"}],attrs:{"type":"password"},domProps:{"value":(_vm.new_password)},on:{"input":function($event){if($event.target.composing){ return; }_vm.new_password=$event.target.value}}})]):_vm._e()])]):_vm._e(),(_vm.option === 'delete')?_c('div',[_c('button',{on:{"click":_vm.delete_device}},[_vm._v("Delete device")]),_c('p',[_vm._v("ID of the tag to delete:")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.tag_id_to_delete),expression:"tag_id_to_delete"}],domProps:{"value":(_vm.tag_id_to_delete)},on:{"input":function($event){if($event.target.composing){ return; }_vm.tag_id_to_delete=$event.target.value}}})]):_vm._e()])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h1',[_vm._v("Device setting")]),_c('select',{directives:[{name:"model",rawName:"v-model",value:(_vm.option),expression:"option"}],on:{"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.option=$event.target.multiple ? $$selectedVal : $$selectedVal[0]}}},[_c('option',{attrs:{"disabled":"disabled","value":""}},[_vm._v("Select the option")]),_c('option',{attrs:{"value":"add"}},[_vm._v("Add a new device")]),_c('option',{attrs:{"value":"update"}},[_vm._v("Update an existing device")]),_c('option',{attrs:{"value":"delete"}},[_vm._v("Delete an existing device")])]),(_vm.option === 'add')?_c('div',[_c('button',{on:{"click":_vm.add_device}},[_vm._v("Add device")]),_c('p',[_vm._v("ID to add:")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.tag_id_to_add),expression:"tag_id_to_add"}],domProps:{"value":(_vm.tag_id_to_add)},on:{"input":function($event){if($event.target.composing){ return; }_vm.tag_id_to_add=$event.target.value}}}),_c('p',[_vm._v("IP address to add: ")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.ip_address_to_add),expression:"ip_address_to_add"}],domProps:{"value":(_vm.ip_address_to_add)},on:{"input":function($event){if($event.target.composing){ return; }_vm.ip_address_to_add=$event.target.value}}})]):_vm._e(),(_vm.option === 'update')?_c('div',[_c('button',{on:{"click":_vm.update_device}},[_vm._v("Update device")]),_c('p',[_vm._v("ID of the tag to update:")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.tag_id_to_update),expression:"tag_id_to_update"}],domProps:{"value":(_vm.tag_id_to_update)},on:{"input":function($event){if($event.target.composing){ return; }_vm.tag_id_to_update=$event.target.value}}}),_c('div',[_c('select',{directives:[{name:"model",rawName:"v-model",value:(_vm.selected_parameter),expression:"selected_parameter"}],on:{"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.selected_parameter=$event.target.multiple ? $$selectedVal : $$selectedVal[0]}}},[_c('option',{attrs:{"disabled":"disabled","value":""}},[_vm._v("Select the parameter to change")]),_c('option',{attrs:{"value":"tag_id"}},[_vm._v("ID")]),_c('option',{attrs:{"value":"ip_address"}},[_vm._v("IP address")])]),(_vm.selected_parameter === 'tag_id')?_c('div',[_c('p',[_vm._v("New ID:")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.new_tag_id),expression:"new_tag_id"}],domProps:{"value":(_vm.new_tag_id)},on:{"input":function($event){if($event.target.composing){ return; }_vm.new_tag_id=$event.target.value}}})]):_vm._e(),(_vm.selected_parameter === 'ip_address')?_c('div',[_c('p',[_vm._v("New IP address: ")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.new_ip_address),expression:"new_ip_address"}],domProps:{"value":(_vm.new_ip_address)},on:{"input":function($event){if($event.target.composing){ return; }_vm.new_ip_address=$event.target.value}}})]):_vm._e()])]):_vm._e(),(_vm.option === 'delete')?_c('div',[_c('button',{on:{"click":_vm.delete_device}},[_vm._v("Delete device")]),_c('p',[_vm._v("ID of the tag to delete:")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.tag_id_to_delete),expression:"tag_id_to_delete"}],domProps:{"value":(_vm.tag_id_to_delete)},on:{"input":function($event){if($event.target.composing){ return; }_vm.tag_id_to_delete=$event.target.value}}})]):_vm._e()])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -9644,7 +9631,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-0e492a66", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-0e492a66", __vue__options__)
+    hotAPI.reload("data-v-0e492a66", __vue__options__)
   }
 })()}
 },{"axios/dist/axios.min.js":1,"vue":7,"vue-hot-reload-api":4,"vueify/lib/insert-css":9}],13:[function(require,module,exports){

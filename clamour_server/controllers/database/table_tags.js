@@ -11,7 +11,6 @@ module.exports.init_table = function (connection) {
             `CREATE TABLE IF NOT EXISTS \`tags\` (
             \`tag_id\` 		    SMALLINT UNSIGNED NOT NULL,
             \`ip_address\` 	    INT UNSIGNED NOT NULL,
-            \`password\` 	    VARCHAR(20) NULL,
             \`script_status\` 	VARCHAR(7) NULL DEFAULT 'UNKNOWN',
             PRIMARY KEY (\`tag_id\`),
             UNIQUE INDEX \`tag_id_UNIQUE\` (\`tag_id\` ASC),
@@ -27,12 +26,12 @@ module.exports.init_table = function (connection) {
     return promise;
 }
 
-module.exports.add = function (tag = {tag_id : -1, ip_address : '0.0.0.0', password: ''}) {
+module.exports.add = function (tag = {tag_id : -1, ip_address : '0.0.0.0'}) {
     var promise = new Promise((resolve, reject) => {
         sql =
-            `INSERT INTO tags (tag_id, ip_address, password) 
+            `INSERT INTO tags (tag_id, ip_address) 
             VALUES (?, INET_ATON(?), ?)`;
-        param = [tag.tag_id, tag.ip_address, tag.password];
+        param = [tag.tag_id, tag.ip_address];
         db_connection.query(sql, param, (err, results, fields) => {
             if (err) {
                 reject(err);
@@ -109,42 +108,6 @@ module.exports.get_from_ip_address = function (ip_address) {
     return promise;
 }
 
-module.exports.get_password_from_ip_address = function (ip_address) {
-    var promise = new Promise((resolve, reject) => {
-        sql =
-            `SELECT password
-            FROM tags
-            WHERE ip_address = INET_ATON(?)`;
-        param = [ip_address];
-        db_connection.query(sql, param, (err, results, fields) => {
-            if (err) {
-                reject(err)
-                return;
-            };
-            resolve(results);
-        });
-    });
-    return promise;
-}
-
-module.exports.get_password_from_id = function (id) {
-    var promise = new Promise((resolve, reject) => {
-        sql =
-            `SELECT password
-            FROM tags
-            WHERE tag_id = ?`;
-        param = [id];
-        db_connection.query(sql, param, (err, results, fields) => {
-            if (err) {
-                reject(err)
-                return;
-            };
-            resolve(results);
-        });
-    });
-    return promise;
-}
-
 module.exports.update_id = function (tag = {tag_id : -1, ip_address : '0.0.0.0'}, new_id = 0) {
     var promise = new Promise((resolve, reject) => {
         sql =
@@ -170,24 +133,6 @@ module.exports.update_ip_address = function (tag = {tag_id : -1, ip_address : '0
             SET ip_address = INET_ATON(?)
             WHERE tag_id = ? OR ip_address = INET_ATON(?)`;
         param = [new_ip_address, tag.tag_id, tag.ip_address];
-        db_connection.query(sql, param, (err, results, fields) => {
-            if (err) {
-                reject(err)
-                return;
-            };
-            resolve(results);
-        });
-    });
-    return promise;
-}
-
-module.exports.update_password = function (tag = {tag_id : -1, ip_address : '0.0.0.0'}, new_password = '') {
-    var promise = new Promise((resolve, reject) => {
-        sql =
-            `UPDATE tags
-            SET password = ?
-            WHERE tag_id = ? OR ip_address = INET_ATON(?)`;
-        param = [new_password, tag.tag_id, tag.ip_address];
         db_connection.query(sql, param, (err, results, fields) => {
             if (err) {
                 reject(err)

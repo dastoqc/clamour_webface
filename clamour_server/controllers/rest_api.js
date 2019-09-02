@@ -16,7 +16,6 @@ module.exports.create_tag = async function (req, res, next) {
         var result = await db.query.tags.add({ 
             tag_id: req.body.data.tag_id, 
             ip_address: req.body.data.ip_address, 
-            password: req.body.data.password 
         });
         res.json(result);
     } catch (err) {
@@ -49,8 +48,6 @@ module.exports.update_tag = async function (req, res, next) {
             result = await db.query.tags.update_id({ tag_id: req.params.tag_id }, req.body.data.tag_id);
         else if (req.body.data.ip_address)
             result = await db.query.tags.update_ip_address({ tag_id: req.params.tag_id }, req.body.data.ip_address);
-        else if (req.body.data.password)
-            result = await db.query.tags.update_password({ tag_id: req.params.tag_id }, req.body.data.password);
         else
             throw "No parameter to update was specified in the request"
         res.json(result);
