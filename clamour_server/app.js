@@ -5,7 +5,6 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var managementRouter = require('./routes/management');
-var test_router = require('./routes/test');
 
 var db = require('./controllers/database/database');
 var csv_manager = require('./controllers/csv_organizer/repository_initializer')
@@ -31,7 +30,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Main routes
 app.use('/', indexRouter);
 app.use('/management', managementRouter);
-app.use('/test', test_router);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

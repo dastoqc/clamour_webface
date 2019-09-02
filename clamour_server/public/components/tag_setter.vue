@@ -78,8 +78,8 @@ module.exports = {
     },
 
     reset_add_input: function() {
-      this.new_tag_id = undefined;
-      this.new_ip_address = undefined;
+      this.tag_id_to_add = undefined;
+      this.ip_address_to_add = undefined;
     },
 
     reset_update_input: function() {

@@ -9501,8 +9501,8 @@ module.exports = {
     },
 
     reset_add_input: function() {
-      this.new_tag_id = undefined;
-      this.new_ip_address = undefined;
+      this.tag_id_to_add = undefined;
+      this.ip_address_to_add = undefined;
     },
 
     reset_update_input: function() {
@@ -9631,7 +9631,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-0e492a66", __vue__options__)
   } else {
-    hotAPI.reload("data-v-0e492a66", __vue__options__)
+    hotAPI.rerender("data-v-0e492a66", __vue__options__)
   }
 })()}
 },{"axios/dist/axios.min.js":1,"vue":7,"vue-hot-reload-api":4,"vueify/lib/insert-css":9}],13:[function(require,module,exports){
