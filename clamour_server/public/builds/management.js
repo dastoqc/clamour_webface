@@ -9437,6 +9437,17 @@ var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("body {\n
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var axios = require("axios/dist/axios.min.js");
 
@@ -9452,9 +9463,16 @@ module.exports = {
 
   data() {
     return {
+      tag_id_to_add: undefined,
+      ip_address_to_add: undefined,
+      password_to_add: undefined,
+
+      tag_id_to_update: undefined,
       new_tag_id: undefined,
       new_ip_address: undefined,
-      new_password: undefined
+      new_password: undefined,
+
+      tag_id_to_delete: undefined
     };
   },
 
@@ -9467,10 +9485,21 @@ module.exports = {
       this.$emit("update_board");
     },
 
-    reset_input: function() {
+    reset_add_input: function() {
       this.new_tag_id = undefined;
       this.new_ip_address = undefined;
       this.new_password = undefined;
+    },
+
+    reset_update_input: function() {
+      this.tag_id_to_update = undefined;
+      this.new_tag_id = undefined;
+      this.new_ip_address = undefined;
+      this.new_password = undefined;
+    },
+
+    reset_delete_input: function() {
+      this.tag_id_to_delete = undefined;
     },
 
     add_device: async function() {
@@ -9479,9 +9508,9 @@ module.exports = {
         this.update_message(`Adding a device to the list of known devices ...`);
         var response = await axios.post("../tags", {
           data: {
-            tag_id: this.new_tag_id,
-            ip_address: this.new_ip_address,
-            password: this.new_password
+            tag_id: this.tag_id_to_add,
+            ip_address: this.ip_address_to_add,
+            password: this.password_to_add
           }
         });
         // Parsing the response to know if the query was successful or failed
@@ -9491,9 +9520,9 @@ module.exports = {
           );
         else {
           this.update_message(
-            `Tag ${this.new_tag_id} (IP: ${this.new_ip_address}) added`
+            `Tag ${this.tag_id_to_add} (IP: ${this.ip_address_to_add}) added`
           );
-          this.reset_input();
+          this.reset_add_input();
           await this.update_board();
         }
       } catch (err) {
@@ -9504,30 +9533,58 @@ module.exports = {
       }
     },
 
-    update_device: async function(selected_tag) {
-      this.update_message("Test réussi");
+    update_device: async function() {
+      //   try {
+      //     // Sending request and parsing response
+      //     this.update_message(`Adding a device to the list of known devices ...`);
+      //     var response = await axios.post("../tags", {
+      //       data: {
+      //         tag_id: this.new_tag_id,
+      //         ip_address: this.new_ip_address,
+      //         password: this.new_password
+      //       }
+      //     });
+      //     // Parsing the response to know if the query was successful or failed
+      //     if (response.data.code)
+      //       this.update_message(
+      //         `Server couldn't add the device : ${response.data.sqlMessage}`
+      //       );
+      //     else {
+      //       this.update_message(
+      //         `Tag ${this.new_tag_id} (IP: ${this.new_ip_address}) added`
+      //       );
+      //       this.reset_input();
+      //       await this.update_board();
+      //     }
+      //   } catch (err) {
+      //     // Error handling
+      //     alert(`An error occured while trying to add a device\n`, err);
+      //     this.update_message(`Device addition failed`);
+      //     console.warn(`Error during http call :\n`, err);
+      //   }
     },
 
-    delete_device: async function(selected_tag) {
+    delete_device: async function() {
       try {
         // Sending request and parsing response
         this.update_message(
-          `Erasing the device identified by the ID ${this.new_tag_id} ...`
+          `Erasing the device identified by the ID ${this.tag_id_to_delete} ...`
         );
-        var response = await axios.delete(`../tags/${this.new_tag_id}`);
+        var response = await axios.delete(`../tags/${this.tag_id_to_delete}`);
 
         // Parsing the response to know if the query was successful or failed
-        console.log(response.data);
         if (response.data.code) {
           this.update_message(
             `Server couldn't delete the device : ${response.data.sqlMessage}`
           );
         } else if (response.data.affectedRows) {
-          this.update_message(`Tag with ID ${this.new_tag_id} deleted`);
-          this.reset_input();
+          this.update_message(`Tag with ID ${this.tag_id_to_delete} deleted`);
+          this.reset_delete_input();
           await this.update_board();
         } else {
-          this.update_message(`There was no tag with ID ${this.new_tag_id}`);
+          this.update_message(
+            `There was no tag with ID ${this.tag_id_to_delete}`
+          );
         }
       } catch (err) {
         // Error handling
@@ -9543,7 +9600,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h1',[_vm._v("Device setting")]),_c('div',[_c('button',{on:{"click":_vm.add_device}},[_vm._v("Add device")]),_c('button',{on:{"click":_vm.update_device}},[_vm._v("Update device")]),_c('button',{on:{"click":_vm.delete_device}},[_vm._v("Delete device")])]),_c('div',[_c('p',[_vm._v("New ID:")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.new_tag_id),expression:"new_tag_id"}],domProps:{"value":(_vm.new_tag_id)},on:{"input":function($event){if($event.target.composing){ return; }_vm.new_tag_id=$event.target.value}}}),_c('p',[_vm._v("New IP address: ")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.new_ip_address),expression:"new_ip_address"}],domProps:{"value":(_vm.new_ip_address)},on:{"input":function($event){if($event.target.composing){ return; }_vm.new_ip_address=$event.target.value}}}),_c('p',[_vm._v("Password:")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.new_password),expression:"new_password"}],attrs:{"type":"password"},domProps:{"value":(_vm.new_password)},on:{"input":function($event){if($event.target.composing){ return; }_vm.new_password=$event.target.value}}})])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h1',[_vm._v("Device setting")]),_c('div',[_c('button',{on:{"click":_vm.add_device}},[_vm._v("Add device")]),_c('p',[_vm._v("ID to add:")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.tag_id_to_add),expression:"tag_id_to_add"}],domProps:{"value":(_vm.tag_id_to_add)},on:{"input":function($event){if($event.target.composing){ return; }_vm.tag_id_to_add=$event.target.value}}}),_c('p',[_vm._v("IP address to add: ")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.ip_address_to_add),expression:"ip_address_to_add"}],domProps:{"value":(_vm.ip_address_to_add)},on:{"input":function($event){if($event.target.composing){ return; }_vm.ip_address_to_add=$event.target.value}}}),_c('p',[_vm._v("Password to add:")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.password_to_add),expression:"password_to_add"}],attrs:{"type":"password"},domProps:{"value":(_vm.password_to_add)},on:{"input":function($event){if($event.target.composing){ return; }_vm.password_to_add=$event.target.value}}})]),_c('div',[_c('button',{on:{"click":_vm.update_device}},[_vm._v("Update device")]),_c('p',[_vm._v("ID of the tag to update:")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.tag_id_to_update),expression:"tag_id_to_update"}],domProps:{"value":(_vm.tag_id_to_update)},on:{"input":function($event){if($event.target.composing){ return; }_vm.tag_id_to_update=$event.target.value}}}),_c('p',[_vm._v("New ID:")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.new_tag_id),expression:"new_tag_id"}],domProps:{"value":(_vm.new_tag_id)},on:{"input":function($event){if($event.target.composing){ return; }_vm.new_tag_id=$event.target.value}}}),_c('p',[_vm._v("New IP address: ")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.new_ip_address),expression:"new_ip_address"}],domProps:{"value":(_vm.new_ip_address)},on:{"input":function($event){if($event.target.composing){ return; }_vm.new_ip_address=$event.target.value}}}),_c('p',[_vm._v("New password:")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.new_password),expression:"new_password"}],attrs:{"type":"password"},domProps:{"value":(_vm.new_password)},on:{"input":function($event){if($event.target.composing){ return; }_vm.new_password=$event.target.value}}})]),_c('div',[_c('button',{on:{"click":_vm.delete_device}},[_vm._v("Delete device")]),_c('p',[_vm._v("ID of the tag to delete:")]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.tag_id_to_delete),expression:"tag_id_to_delete"}],domProps:{"value":(_vm.tag_id_to_delete)},on:{"input":function($event){if($event.target.composing){ return; }_vm.tag_id_to_delete=$event.target.value}}})])])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
