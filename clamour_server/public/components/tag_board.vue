@@ -20,7 +20,8 @@
       p#test_text This is the tag board
       ul
         tag_summary(v-for="tag in known_device_list" 
-                    v-bind:known_device="tag" 
+                    v-bind:known_device="tag"
+                    v-bind:is_advanced_mode="is_advanced_mode"
                     v-on:select_tag="select_device($event)"
                     v-on:check_status="check_status($event)")
 </template>

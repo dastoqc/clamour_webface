@@ -1,10 +1,11 @@
 <template lang="pug">
     li
       button#title( v-bind:disabled="!known_device.detected" 
-                    v-on:click="$emit('select_tag', known_device)") Tag : {{known_device.tag.tag_id}}
+                    v-on:click="$emit('select_tag', known_device)")   Tag : {{known_device.tag.tag_id}}
       button#status(v-bind:disabled="!known_device.detected" 
                     v-on:click="$emit('check_status', known_device)") Status : {{known_device.tag.script_status}}
       h2#network Detection : {{known_device.detected}}
+      p#ip_address(v-if="is_advanced_mode") {{known_device.tag.ip_address}}
 </template>
 
 <script>
@@ -16,7 +17,8 @@ module.exports = {
       type: Object,
       required: true
     },
-    selected: false
+    selected: false,
+    is_advanced_mode: Boolean
   },
 
   data() {

@@ -9108,6 +9108,7 @@ var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("body {\n
 //
 //
 //
+//
 
 var axios = require("axios/dist/axios.min.js");
 var Tag = require("../components/tag_summary.vue");
@@ -9404,7 +9405,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h1',[_vm._v("Device management board")]),_c('ul',[_c('li',[_vm._v(_vm._s(_vm.log_message_1))]),_c('li',[_vm._v(_vm._s(_vm.log_message_2))]),_c('li',[_vm._v(_vm._s(_vm.log_message_3))]),_c('li',[_vm._v(_vm._s(_vm.log_message_4))]),_c('li',[_vm._v(_vm._s(_vm.log_message_5))]),_c('h2',[_vm._v("Selected device : "+_vm._s(_vm.selected_device.tag.tag_id))])]),(_vm.is_advanced_mode)?_c('tag_setter',{on:{"log_message":_vm.update_message,"update_board":_vm.populate_board}}):_vm._e(),_c('button',{on:{"click":_vm.scan_network}},[_vm._v("Scan network")]),_c('button',{on:{"click":_vm.start_localization}},[_vm._v("Activate device")]),_c('button',{on:{"click":_vm.stop_download_localization}},[_vm._v("Stop and download")]),_c('p',{attrs:{"id":"test_text"}},[_vm._v("This is the tag board")]),_c('ul',_vm._l((_vm.known_device_list),function(tag){return _c('tag_summary',{attrs:{"known_device":tag},on:{"select_tag":function($event){return _vm.select_device($event)},"check_status":function($event){return _vm.check_status($event)}}})}),1)],1)}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h1',[_vm._v("Device management board")]),_c('ul',[_c('li',[_vm._v(_vm._s(_vm.log_message_1))]),_c('li',[_vm._v(_vm._s(_vm.log_message_2))]),_c('li',[_vm._v(_vm._s(_vm.log_message_3))]),_c('li',[_vm._v(_vm._s(_vm.log_message_4))]),_c('li',[_vm._v(_vm._s(_vm.log_message_5))]),_c('h2',[_vm._v("Selected device : "+_vm._s(_vm.selected_device.tag.tag_id))])]),(_vm.is_advanced_mode)?_c('tag_setter',{on:{"log_message":_vm.update_message,"update_board":_vm.populate_board}}):_vm._e(),_c('button',{on:{"click":_vm.scan_network}},[_vm._v("Scan network")]),_c('button',{on:{"click":_vm.start_localization}},[_vm._v("Activate device")]),_c('button',{on:{"click":_vm.stop_download_localization}},[_vm._v("Stop and download")]),_c('p',{attrs:{"id":"test_text"}},[_vm._v("This is the tag board")]),_c('ul',_vm._l((_vm.known_device_list),function(tag){return _c('tag_summary',{attrs:{"known_device":tag,"is_advanced_mode":_vm.is_advanced_mode},on:{"select_tag":function($event){return _vm.select_device($event)},"check_status":function($event){return _vm.check_status($event)}}})}),1)],1)}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -9414,7 +9415,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-5b252c62", __vue__options__)
   } else {
-    hotAPI.reload("data-v-5b252c62", __vue__options__)
+    hotAPI.rerender("data-v-5b252c62", __vue__options__)
   }
 })()}
 },{"../components/tag_setter.vue":12,"../components/tag_summary.vue":13,"axios/dist/axios.min.js":1,"vue":7,"vue-hot-reload-api":4,"vueify/lib/insert-css":9}],12:[function(require,module,exports){
@@ -9567,6 +9568,7 @@ var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("body {\n
 //
 //
 //
+//
 
 module.exports = {
   components: {},
@@ -9576,7 +9578,8 @@ module.exports = {
       type: Object,
       required: true
     },
-    selected: false
+    selected: false,
+    is_advanced_mode: Boolean
   },
 
   data() {
@@ -9594,7 +9597,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',[_c('button',{attrs:{"id":"title","disabled":!_vm.known_device.detected},on:{"click":function($event){return _vm.$emit('select_tag', _vm.known_device)}}},[_vm._v("Tag : "+_vm._s(_vm.known_device.tag.tag_id))]),_c('button',{attrs:{"id":"status","disabled":!_vm.known_device.detected},on:{"click":function($event){return _vm.$emit('check_status', _vm.known_device)}}},[_vm._v("Status : "+_vm._s(_vm.known_device.tag.script_status))]),_c('h2',{attrs:{"id":"network"}},[_vm._v("Detection : "+_vm._s(_vm.known_device.detected))])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',[_c('button',{attrs:{"id":"title","disabled":!_vm.known_device.detected},on:{"click":function($event){return _vm.$emit('select_tag', _vm.known_device)}}},[_vm._v("  Tag : "+_vm._s(_vm.known_device.tag.tag_id))]),_c('button',{attrs:{"id":"status","disabled":!_vm.known_device.detected},on:{"click":function($event){return _vm.$emit('check_status', _vm.known_device)}}},[_vm._v("Status : "+_vm._s(_vm.known_device.tag.script_status))]),_c('h2',{attrs:{"id":"network"}},[_vm._v("Detection : "+_vm._s(_vm.known_device.detected))]),(_vm.is_advanced_mode)?_c('p',{attrs:{"id":"ip_address"}},[_vm._v(_vm._s(_vm.known_device.tag.ip_address))]):_vm._e()])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
