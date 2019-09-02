@@ -8,11 +8,15 @@ var managementRouter = require('./routes/management');
 var test_router = require('./routes/test');
 
 var db = require('./controllers/database/database');
+var csv_manager = require('./controllers/csv_organizer/repository_initializer')
 
 var app = express();
 
 // Setting up the database
 db.init();
+
+// Setting up the repository
+csv_manager.generate_file_structure();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
