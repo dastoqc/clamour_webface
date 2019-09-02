@@ -181,6 +181,24 @@ module.exports.update_ip_address = function (tag = {tag_id : -1, ip_address : '0
     return promise;
 }
 
+module.exports.update_password = function (tag = {tag_id : -1, ip_address : '0.0.0.0'}, new_password = '') {
+    var promise = new Promise((resolve, reject) => {
+        sql =
+            `UPDATE tags
+            SET password = ?
+            WHERE tag_id = ? OR ip_address = INET_ATON(?)`;
+        param = [new_password, tag.tag_id, tag.ip_address];
+        db_connection.query(sql, param, (err, results, fields) => {
+            if (err) {
+                reject(err)
+                return;
+            };
+            resolve(results);
+        });
+    });
+    return promise;
+}
+
 module.exports.update_status = function (tag = {tag_id : -1, ip_address : '0.0.0.0'}, status = 'UNKNOWN') {
     var promise = new Promise((resolve, reject) => {
         sql =

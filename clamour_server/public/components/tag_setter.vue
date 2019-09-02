@@ -2,7 +2,13 @@
   div
     h1 Device setting
 
-    div
+    select(v-model="option")
+      option(disabled value="") Select the option
+      option(value="add") Add a new device
+      option(value="update") Update an existing device
+      option(value="delete") Delete an existing device
+
+    div(v-if="option === 'add'")
       button(v-on:click="add_device") Add device
       p ID to add:
       input(v-model="tag_id_to_add")
@@ -11,14 +17,14 @@
       p Password to add:
       input(type="password" v-model="password_to_add")
 
-    div
+    div(v-if="option === 'update'")
       button(v-on:click="update_device") Update device
       p ID of the tag to update:
       input(v-model="tag_id_to_update")
       
       div
         select(v-model="selected_parameter")
-          option(disabled value="") Selec the parameter to change
+          option(disabled value="") Select the parameter to change
           option(value="tag_id") ID
           option(value="ip_address") IP address
           option(value="password") Password
@@ -33,7 +39,7 @@
           p New password:
           input(type="password" v-model="new_password")
 
-    div
+    div(v-if="option === 'delete'")
       button(v-on:click="delete_device") Delete device
       p ID of the tag to delete:
       input(v-model="tag_id_to_delete")
@@ -54,12 +60,14 @@ module.exports = {
 
   data() {
     return {
+      option: "",
+
       tag_id_to_add: undefined,
       ip_address_to_add: undefined,
       password_to_add: undefined,
 
-      tag_id_to_update: undefined,
       selected_parameter: "",
+      tag_id_to_update: undefined,
       new_tag_id: undefined,
       new_ip_address: undefined,
       new_password: undefined,
@@ -126,34 +134,45 @@ module.exports = {
     },
 
     update_device: async function() {
-      //   try {
-      //     // Sending request and parsing response
-      //     this.update_message(`Adding a device to the list of known devices ...`);
-      //     var response = await axios.post("../tags", {
-      //       data: {
-      //         tag_id: this.new_tag_id,
-      //         ip_address: this.new_ip_address,
-      //         password: this.new_password
-      //       }
-      //     });
-      //     // Parsing the response to know if the query was successful or failed
-      //     if (response.data.code)
-      //       this.update_message(
-      //         `Server couldn't add the device : ${response.data.sqlMessage}`
-      //       );
-      //     else {
-      //       this.update_message(
-      //         `Tag ${this.new_tag_id} (IP: ${this.new_ip_address}) added`
-      //       );
-      //       this.reset_input();
-      //       await this.update_board();
-      //     }
-      //   } catch (err) {
-      //     // Error handling
-      //     alert(`An error occured while trying to add a device\n`, err);
-      //     this.update_message(`Device addition failed`);
-      //     console.warn(`Error during http call :\n`, err);
-      //   }
+      try {
+        // Adjusting the sent data according to the selected parameter
+        var request_content;
+        if (this.selected_parameter === "tag_id")
+          request_content = { data: { tag_id: this.new_tag_id } };
+        else if (this.selected_parameter === "ip_address")
+          request_content = { data: { ip_address: this.new_ip_address } };
+        else if (this.selected_parameter === "password")
+          request_content = { data: { password: this.new_password } };
+
+        // Sending request and parsing response
+        this.update_message(`Adding a device to the list of known devices ...`);
+        var response = await axios.put(
+          `../tags/${this.tag_id_to_update}`,
+          request_content
+        );
+
+        // Parsing the response to know if the query was successful or failed
+        if (response.data.code) {
+          this.update_message(
+            `Server couldn't update the device : ${response.data.sqlMessage}`
+          );
+        } else if (response.data.affectedRows) {
+          this.update_message(
+            `Tag ${this.tag_id_to_update} : the parameter ${this.selected_parameter} was updated`
+          );
+          this.reset_update_input();
+          await this.update_board();
+        } else {
+          this.update_message(
+            `There was no tag with ID ${this.tag_id_to_update}`
+          );
+        }
+      } catch (err) {
+        // Error handling
+        alert(`An error occured while trying to update a device\n`, err);
+        this.update_message(`Device update failed`);
+        console.warn(`Error during http call :\n`, err);
+      }
     },
 
     delete_device: async function() {
