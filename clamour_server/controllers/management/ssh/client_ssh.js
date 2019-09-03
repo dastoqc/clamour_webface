@@ -128,7 +128,7 @@ module.exports.delete_csv = function (ssh_client, ip_address, csv_list) {
 
 module.exports.get_script_status = function (ssh_client, ip_address) {
 
-    let commands = ['echo "<status>" && pgrep -f clamour.py'];
+    let commands = [`echo "<status>" && pgrep -f ${dir.executable_name}`];
     var status;
     var next_data_is_status = { isActivated: "UNKNOWN", pid: "-1" };
 
@@ -182,7 +182,8 @@ module.exports.get_script_status = function (ssh_client, ip_address) {
 
 module.exports.stop_script = function (ssh_client, ip_address) {
 
-    let commands = ['kill $(pgrep -f clamour.py)'];
+    let commands = [`cd ${dir.remote_path.executable}`,
+                    `docker-compose down`];
 
     var promise = new Promise(function (resolve, reject) {
 
@@ -209,6 +210,7 @@ module.exports.stop_script = function (ssh_client, ip_address) {
 
             // Searching for the csv names within the commands
             stream.on('data', function (data) {
+                console.log(`${data}`.blue);
             });
 
             // End of the Shell session
@@ -224,7 +226,8 @@ module.exports.stop_script = function (ssh_client, ip_address) {
 
 module.exports.start_script = function (ssh_client, ip_address, arguments = { mode: 'test' }) {
 
-    let commands = [`nohup python3 ${dir.remote_path.executable}/clamour.py & mode:${arguments.mode}`];
+    let commands = [`cd ${dir.remote_path.executable}`,
+                    `docker-compose up -d`];
 
     var promise = new Promise(function (resolve, reject) {
 
