@@ -130,11 +130,19 @@ module.exports = {
         var response = await axios.get(
           `ping/ip_address/${selected_device.tag.ip_address}`
         );
+
+        // Error handling
+        if (response.data.error) {
+          this.update_message(
+            `The detection failed for tag ${selected_device.tag.tag_id} : ${response.data.error}`
+          );
+          return;
+        }
         var is_detected = response.data.detected;
         var tag = response.data.tag;
 
         // Displaying result
-        var detetection_result = (is_detected) ? 'detected' : 'not detected'
+        var detetection_result = is_detected ? "detected" : "not detected";
         this.update_message(
           `Detection result for tag ${selected_device.tag.tag_id}: ${detetection_result}`
         );

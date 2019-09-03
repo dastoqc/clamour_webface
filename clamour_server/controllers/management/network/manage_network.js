@@ -49,7 +49,8 @@ module.exports.ping_ip_address = function (ip_address) {
             var quickscan = new nmap.QuickScan(ip_address);
             quickscan.startScan();
         } else {
-            reject("The IP address id not within the network, thus the ping cannot be performed");
+            reject(`The IP address ${ip_address} not within the network, thus the ping cannot be performed`);
+            return;
         }
 
         // Once the ping is attempted 
