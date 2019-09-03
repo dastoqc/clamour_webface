@@ -23,7 +23,8 @@
                     v-bind:known_device="tag"
                     v-bind:is_advanced_mode="is_advanced_mode"
                     v-on:select_tag="select_device($event)"
-                    v-on:check_status="check_status($event)")
+                    v-on:check_status="check_status($event)"
+                    v-on:ping_ip_address="ping_ip_address($event)")
 </template>
 
 <script>
@@ -118,6 +119,46 @@ module.exports = {
         },
         detected: false
       };
+    },
+
+    ping_ip_address: async function(selected_device) {
+      try {
+        // Sending request and parsing response
+        this.update_message(
+          `Attempting to detect tag ${selected_device.tag.tag_id}, waiting for answer...`
+        );
+        var response = await axios.get(
+          `ping/ip_address/${selected_device.tag.ip_address}`
+        );
+        var is_detected = response.data.detected;
+        var tag = response.data.tag;
+
+        // Displaying result
+        var detetection_result = (is_detected) ? 'detected' : 'not detected'
+        this.update_message(
+          `Detection result for tag ${selected_device.tag.tag_id}: ${detetection_result}`
+        );
+
+        // Updating the board
+        for (i in this.known_device_list) {
+          if (
+            this.known_device_list[i].tag.tag_id === selected_device.tag.tag_id
+          ) {
+            this.known_device_list[i].tag = tag;
+            this.known_device_list[i].detected = is_detected;
+          }
+        }
+      } catch (err) {
+        // Error handling
+        alert(
+          `An error occured while trying to detect device ${selected_device.tag_id}\n`,
+          err
+        );
+        this.update_message(
+          `Device detection failed on tag ${selected_device.tag_id}`
+        );
+        console.warn(`Error during http call :\n`, err);
+      }
     },
 
     check_status: async function(specified_device) {
@@ -286,7 +327,8 @@ module.exports = {
     populate_board: async function() {
       // Populating the page
       try {
-        while (this.known_device_list.length) await this.known_device_list.pop();
+        while (this.known_device_list.length)
+          await this.known_device_list.pop();
         var response = await axios.get("../tags");
         for (var index in response.data) {
           this.known_device_list.push({
