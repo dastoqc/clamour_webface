@@ -98,14 +98,14 @@ module.exports.scan_network = async function (req, res, next) {
 // Response format :
 // { "detected" : Boolean, tag: {"tag_id" : Number , "ip_address": String , "script_status": String } }
 // Example :
-// { "detected" : true, tag: {"tag_id" : 1234 , "ip_address": 192.168.4.20 , "script_status": OFF } }
+// {"detected":false,"tag":{"tag_id":1,"ip_address":"192.168.4.161","script_status":"OFF"}}
 module.exports.ping_ip_address = async function (req, res, next) {
     try {
         var is_detected = await network_manager.ping_ip_address(req.params.ip_address);
         if (is_detected) {
             await ssh_manager.check_script_status(req.params.ip_address);
         }
-        res.json({ detected: is_detected, tag: await db.query.tags.get_from_ip_address(req.params.ip_address) });
+        res.json({ detected: is_detected, tag: (await db.query.tags.get_from_ip_address(req.params.ip_address))[0] });
     } catch (err) {
         console.log(`Error during the network scanning :\n${err}`.red);
         res.send({ error: err });
