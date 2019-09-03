@@ -4,8 +4,7 @@ var db = require('../database/database');
 var csv_classifier = require('../csv_organizer/csv_classifier')
 
 module.exports.render_page = async function (req, res, next) {
-    var tag_number = await db.query.tags.get_number();
-    res.render('management', { tag_number: tag_number });
+    res.render('management');
 }
 
 // Response format
@@ -89,7 +88,24 @@ module.exports.scan_network = async function (req, res, next) {
             await ssh_manager.check_script_status(tag_ip_address_list[i]);
             tag_list.push((await db.query.tags.get_from_ip_address(tag_ip_address_list[i]))[0]);
         };
-        res.json({detected_tag_list: tag_list});
+        res.json({ detected_tag_list: tag_list });
+    } catch (err) {
+        console.log(`Error during the network scanning :\n${err}`.red);
+        res.send({ error: err });
+    }
+}
+
+// Response format :
+// { "detected" : Boolean, tag: {"tag_id" : Number , "ip_address": String , "script_status": String } }
+// Example :
+// { "detected" : true, tag: {"tag_id" : 1234 , "ip_address": 192.168.4.20 , "script_status": OFF } }
+module.exports.ping_ip_address = async function (req, res, next) {
+    try {
+        var is_detected = await network_manager.ping_ip_address(req.params.ip_address);
+        if (is_detected) {
+            await ssh_manager.check_script_status(req.params.ip_address);
+        }
+        res.json({ detected: is_detected, tag: await db.query.tags.get_from_ip_address(req.params.ip_address) });
     } catch (err) {
         console.log(`Error during the network scanning :\n${err}`.red);
         res.send({ error: err });

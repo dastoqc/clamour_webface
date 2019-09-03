@@ -1,19 +1,7 @@
 var nmap = require('node-nmap');
 var os = require('os');
 var db = require('../../database/database');
-
-// Settings
-var ifaces = os.networkInterfaces();
-
-// Get the first wlan IP address
-module.exports.get_self_wlan_ip_address = async function () {
-    var wlan_interface_name;
-    for (var iface in ifaces) {
-        if (/^wl/.test(iface))
-            wlan_interface_name = iface;
-    }
-    return ifaces[wlan_interface_name][0].address;
-};
+var network = require('../../../configuration/network.json');
 
 // Take the result of the nmap scan and retreive only the list of IP addresses
 module.exports.get_ip_addresses_from_scan = async function (scan_data) {
@@ -39,4 +27,15 @@ module.exports.filter_known_tags_ip_addresses = async function (ip_address_list)
         }
     });
     return promise;
+}
+
+// Verifying if the ip address only differs from it's last value to see if it's within the local network
+module.exports.is_within_local_network = function (param) {
+    var reference = network.local_network.split('.');
+    var ip_address = param.split('.');
+    for (var i = 0; i < 3; i++) {
+        if (reference[i] !== ip_address[i])
+            return false
+    }
+    return true;
 }

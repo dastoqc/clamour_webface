@@ -9,6 +9,9 @@ router.get('/', management.render_page);
 // Scan for network
 router.get('/scan_network', management.scan_network);
 
+// Ping an IP address to see if it is within reach
+router.get('/ping/ip_address/:ip_address', management.ping_ip_address);
+
 // Stoping the localization script and downloading the .csv files
 router.get('/start_script/ip_address/:ip_address/mode/:mode', management.start_script);
 
