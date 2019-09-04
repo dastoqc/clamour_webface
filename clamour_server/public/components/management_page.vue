@@ -1,11 +1,13 @@
 <template lang="pug">
-    div
+    div(class="container-fluid")
       h1#title Device Management
       button#management_mode(v-on:click="toggle_mode") {{mode_toggle_button}}
       tag_board(v-bind:is_advanced_mode="is_advanced_mode")
 </template>
 
 <script>
+var Bootstrap = require("bootstrap/dist/js/bootstrap");
+
 var Tag_board = require("../components/tag_board.vue");
 
 module.exports = {
