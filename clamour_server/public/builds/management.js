@@ -26730,7 +26730,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-1169d94e", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-1169d94e", __vue__options__)
+    hotAPI.reload("data-v-1169d94e", __vue__options__)
   }
 })()}
 },{"../components/tag_board.vue":14,"bootstrap/dist/js/bootstrap":2,"vue":10,"vue-hot-reload-api":7,"vueify/lib/insert-css":12}],14:[function(require,module,exports){
@@ -27120,7 +27120,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-5b252c62", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-5b252c62", __vue__options__)
+    hotAPI.reload("data-v-5b252c62", __vue__options__)
   }
 })()}
 },{"../components/tag_setter.vue":15,"../components/tag_summary.vue":16,"axios/dist/axios.min.js":1,"vue":10,"vue-hot-reload-api":7,"vueify/lib/insert-css":12}],15:[function(require,module,exports){
@@ -27390,23 +27390,15 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-4ad3324f", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-4ad3324f", __vue__options__)
+    hotAPI.reload("data-v-4ad3324f", __vue__options__)
   }
 })()}
 },{"vue":10,"vue-hot-reload-api":7,"vueify/lib/insert-css":12}],17:[function(require,module,exports){
 var Vue = require("vue/dist/vue.min.js");
-var Bootstrap = require("bootstrap/dist/js/bootstrap");
-//var BootstrapVue = require('bootstrap-vue/dist/bootstrap-vue');
 
-// var AppCss = require('../assets/app.scss');
-// var BootstrapCss = require('bootstrap/dist/css/bootstrap.css');
-// var BootstrapVueCss = require('bootstrap-vue/dist/bootstrap-vue.css');
-
-
-//Vue.use(BootstrapVue);
 Vue.component("management_page", require("../components/management_page.vue"));
 
 const app = new Vue({
   el: "#app"
 });
-},{"../components/management_page.vue":13,"bootstrap/dist/js/bootstrap":2,"vue/dist/vue.min.js":8}]},{},[17]);
+},{"../components/management_page.vue":13,"vue/dist/vue.min.js":8}]},{},[17]);
