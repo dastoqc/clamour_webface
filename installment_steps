@@ -1,0 +1,30 @@
+Different steps :
+
+// Preparing for installation
+sudo apt-get update && sudo apt-get upgrade
+sudo apt-get install npm -y
+
+// Downloading the files
+git clone https://git.mistlab.ca/amorinvil/clamour_server.git/
+cd clamour_server/clamour_server
+
+// Download packages for the project
+npm install
+
+// Install the database system
+sudo apt-get install mariadb-server -y
+
+
+// Reset the MariaDB Root Password
+sudo mysql -u root
+SET PASSWORD FOR 'root'@'localhost' = PASSWORD('');
+flush privileges;
+exit;
+
+
+// Running the server
+cd clamour_server/clamour_server
+npm run start &
+
+
+
