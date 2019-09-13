@@ -1,5 +1,11 @@
 extends layout
 
 block content
-  h1 Chambord device manager
-  a(href="/management/") Management page
+  .splash
+    .splash__bg
+      img(src="/images/chambord-image-blanc.jpg", alt="" class="splash__bg__img")
+    .splash__infos
+      h1.splash__title Point d.origine
+      a(href="/management/", class="splash__button") Management
+    .splash__logos
+      img(src="/images/logos@2x.png", alt="" class="splash__logos__img")
