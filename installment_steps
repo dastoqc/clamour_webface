@@ -21,6 +21,21 @@ SET PASSWORD FOR 'root'@'localhost' = PASSWORD('');
 flush privileges;
 exit;
 
+// Troubleshooting with mysql 8+ (Client does not support authentication protocol requested by server)
+sudo apt-get remove --purge mariadb-server -y
+sudo apt-get autoremove
+sudo add-apt-repository --remove 'deb [arch=amd64,arm64,ppc64el] http://sfo1.mirrors.digitalocean.com/mariadb/repo/10.1/ubuntu bionic main'
+sudo add-apt-repository 'deb [arch=amd64,arm64,ppc64el] http://sfo1.mirrors.digitalocean.com/mariadb/repo/10.3/ubuntu bionic main'
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys F1656F24C74CD1D8
+sudo apt-get update && sudo apt-get install mariadb-server -y
+sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf
+-- add below [mysqld]
+plugin-load-add = auth_socket.so
+sudo systemctl restart mariadb.service
+sudo mysql -u root
+SET PASSWORD FOR 'root'@'localhost' = PASSWORD('');
+flush privileges;
+exit;
 
 // Running the server
 cd clamour_server/clamour_server
