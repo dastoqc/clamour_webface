@@ -48,7 +48,7 @@ module.exports.stop_tag_download_csv = async function (req, res, next) {
             tag: (await db.query.tags.get_from_ip_address(req.params.ip_address))[0],
             downloaded_files: downloaded_csv_files
         });
-        csv_classifier.move_files();
+        csv_classifier.move_files(req.params.ip_address);
     } catch (err) {
         console.log(`Error while trying stop a tag and download its csv files:\n ${err}`.red);
         res.json({ error: err });
