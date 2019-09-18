@@ -172,7 +172,7 @@
         <div class="modal__row">
           <div class="modal__column__full">
             <label for="password">Password</label>
-            <input name="password" type="text" v-model="password" />
+            <input name="password" type="password" v-model="password" />
           </div>
         </div>
         <button class="modal__button" @click="access">Access</button>
