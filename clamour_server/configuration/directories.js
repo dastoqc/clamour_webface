@@ -6,7 +6,7 @@ var local_path_csv_buffer   = path.join(local_path_base, 'csv_buffer');
 var local_path_csv_sorted   = path.join(local_path_base, 'csv_sorted');
 var remote_path_base        = '/home/pi/clamour_data';
 var remote_path_csv_buffer  = path.join(remote_path_base, 'csv_buffer');
-var remote_path_excecutable = '/home/pi/clamour';
+var remote_path_excecutable = '/home/pi/clamour/src';
 
 // Module export
 module.exports = {

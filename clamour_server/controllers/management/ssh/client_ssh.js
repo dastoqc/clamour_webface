@@ -227,7 +227,7 @@ module.exports.stop_script = function (ssh_client, ip_address) {
 module.exports.start_script = function (ssh_client, ip_address, arguments = { mode: 'test' }) {
 
     let commands = [`cd ${dir.remote_path.executable}`,
-                    `docker-compose up -d`];
+                    `python3 clamour.py "0"`];
 
     var promise = new Promise(function (resolve, reject) {
 
