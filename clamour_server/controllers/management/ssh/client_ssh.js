@@ -210,8 +210,8 @@ module.exports.stop_script = function (ssh_client, ip_address) {
             stream.on('data', function (data) {
                 if (next_data_is_status) {
                     if (output_parser.found_script_status(data)) {
-                        console.log(`PIDs ${data}`);
                         pid = String(data).trim();
+                        console.log(`PIDs ${data}|${pid}`);
                     }
                 }
                 next_data_is_status = output_parser.found_status_cue(data);
@@ -220,7 +220,7 @@ module.exports.stop_script = function (ssh_client, ip_address) {
             // End of the Shell session
             stream.on('close', function () {
                 console.log(`SSH Client on tag ${ip_address} :: End of the shell session`.magenta);
-                resolve(status);
+                resolve();
             });
         });
 
