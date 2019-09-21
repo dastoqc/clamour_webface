@@ -196,7 +196,7 @@ module.exports.stop_script = function (ssh_client, ip_address) {
                 return;
             }
             // Bash commands sent to the tag
-            stream.end(commands.join('\n').concat(`\nexit\n`), function () {
+            stream.end(commands_scan.join('\n').concat(`\nexit\n`), function () {
                 console.log(`SSH Client on tag ${ip_address} :: Shell commands sent to check the run status`.magenta);
             });
             // Error handling
