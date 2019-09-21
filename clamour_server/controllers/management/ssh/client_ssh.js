@@ -182,8 +182,7 @@ module.exports.get_script_status = function (ssh_client, ip_address) {
 
 module.exports.stop_script = function (ssh_client, ip_address) {
 
-    let commands = [`cd ${dir.remote_path.executable}`,
-                    `docker-compose down`];
+    let commands = [`cd ${dir.remote_path.executable}`];
 
     var promise = new Promise(function (resolve, reject) {
 
@@ -226,8 +225,9 @@ module.exports.stop_script = function (ssh_client, ip_address) {
 
 module.exports.start_script = function (ssh_client, ip_address, arguments = { mode: 'test' }) {
 
-    let commands = [`cd ${dir.remote_path.executable}`,
-                    `python3 clamour.py 0 0`];
+    let commands = [`cd ${dir.executable}`,`screen -S snd`,
+                    `python3 ${dir.executable_name}${dir.args}`];
+    console.log(`Starting python3 ${dir.executable_name}${dir.args} in ${dir.executable}`);
 
     var promise = new Promise(function (resolve, reject) {
 

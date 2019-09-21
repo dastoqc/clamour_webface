@@ -11,6 +11,7 @@ var remote_path_excecutable = '/home/pi/clamour/src';
 // Module export
 module.exports = {
     executable_name  : "clamour.py",
+    args : " 0 1 > /home/pi/log.txt",
     
     "local_path"  : {
         "base"       : local_path_base,
