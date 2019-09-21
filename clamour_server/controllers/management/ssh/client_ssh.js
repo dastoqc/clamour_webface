@@ -185,6 +185,7 @@ module.exports.stop_script = function (ssh_client, ip_address) {
     let commands_scan = [`echo "<status>" && pgrep -f ${dir.executable_name}`];
     let commands = [`cd ${dir.remote_path.executable}`];
     var pid = "-1";
+    var next_data_is_status = "-1";
 
     var promise = new Promise(function (resolve, reject) {
 
