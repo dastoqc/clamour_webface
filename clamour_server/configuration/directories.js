@@ -4,7 +4,7 @@ const path = require('path');
 var local_path_base         = path.join(process.env.HOME || process.env.USERPROFILE, 'clamour_data');
 var local_path_csv_buffer   = path.join(local_path_base, 'csv_buffer');
 var local_path_csv_sorted   = path.join(local_path_base, 'csv_sorted');
-var remote_path_base        = '/home/pi/clamour_data';
+var remote_path_base        = '/home/pi/clamour';
 var remote_path_csv_buffer  = path.join(remote_path_base, 'csv_buffer');
 var remote_path_excecutable = '/home/pi/clamour/src';
 
@@ -21,7 +21,7 @@ module.exports = {
 
     "remote_path" : {
         "base"       : remote_path_base,
-        "csv_buffer" : remote_path_csv_buffer,
+        "csv_buffer" : remote_path_base,
         "executable" : remote_path_excecutable
     }
 };

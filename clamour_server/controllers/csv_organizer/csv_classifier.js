@@ -15,7 +15,7 @@ tag_id_name = async function (ip_address) {
 
 today_name = function () {
     var today = new Date();
-    return `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+    return `${today.getMonth() + 1}-${today.getDate()}-${today.getHours()}-${today.getMinutes()}`;
 }
 
 get_folder = async function (ip_address) {

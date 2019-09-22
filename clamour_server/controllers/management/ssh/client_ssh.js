@@ -9,7 +9,7 @@ var dir = require('../../../configuration/directories');
 module.exports.list_csv = function (ssh_client, ip_address) {
 
     var promise = new Promise(function (resolve, reject) {
-        let commands = ['cd ~/clamour_data/csv_buffer', 'ls *.csv']
+        let commands = [`cd ${dir.remote_path.csv_buffer}`, 'ls *.csv']
         var csv_list = [];
 
         // Shell command line
@@ -87,7 +87,7 @@ module.exports.download_csv = function (ssh_client, ip_address, csv_list) {
 
 module.exports.delete_csv = function (ssh_client, ip_address, csv_list) {
 
-    let commands = ['cd ~/clamour_data/csv_buffer'];
+    let commands = [`cd ${dir.remote_path.csv_buffer}`];
     csv_list.forEach(function (element) {
         commands.push(`rm ${element}`);
     })
@@ -182,47 +182,9 @@ module.exports.get_script_status = function (ssh_client, ip_address) {
 
 module.exports.stop_script = function (ssh_client, ip_address) {
 
-    let commands_scan = [`echo "<status>" && pgrep -f ${dir.executable_name}`];
-    let commands = [`cd ${dir.remote_path.executable}`];
-    var pid = "-1";
-    var next_data_is_status = "-1";
+    let commands = [`pkill python3`];
 
     var promise = new Promise(function (resolve, reject) {
-
-        // Shell command line 
-        ssh_client.shell(function (err, stream) {
-            if (err) {
-                console.log(`SSH Client on tag ${ip_address} :: Error in shell session while trying to check the run status :\n${err}`.red);
-                reject(err);
-                return;
-            }
-            // Bash commands sent to the tag
-            stream.end(commands_scan.join('\n').concat(`\nexit\n`), function () {
-                console.log(`SSH Client on tag ${ip_address} :: Shell commands sent to check the run status`.magenta);
-            });
-            // Error handling
-            stream.on('error', function (err) {
-                console.log(`SSH Client on tag ${ip_address} :: An error while trying to check the run status of the script :\n${err}`.red);
-                reject(err);
-                return;
-            });
-            // Searching for the csv names within the commands
-            stream.on('data', function (data) {
-                if (next_data_is_status) {
-                    if (output_parser.found_script_status(data)) {
-                        pid = String(data).trim();
-                        console.log(`PIDs ${data}|${pid}`);
-                    }
-                }
-                next_data_is_status = output_parser.found_status_cue(data);
-            });
-
-            // End of the Shell session
-            stream.on('close', function () {
-                console.log(`SSH Client on tag ${ip_address} :: End of the shell session`.magenta);
-                resolve();
-            });
-        });
 
         // Shell command line 
         ssh_client.shell(function (err, stream) {
@@ -238,7 +200,7 @@ module.exports.stop_script = function (ssh_client, ip_address) {
                 return;
             });
             // Bash commands sent to the tag
-            stream.end(commands.join('\n').concat(`\nkill ${pid}\n`), function () {
+            stream.end(commands.join('\n').concat('\nexit\n'), function () {
                 console.log(`SSH Client on tag ${ip_address} :: Shell commands sent to stop the script`.magenta);
             });
             // Searching for the csv names within the commands
