@@ -15,7 +15,7 @@ module.exports.scan_for_tag_ip_address = function () {
         // Scan on local network
         console.log(`Network scan ongoing for ${ip_address}/24 ...`.cyan);
         var quickscan = new nmap.QuickScan(ip_address + '/24');
-        quickscan.scanTimeout = 60;
+        quickscan.scanTimeout = "60000";
         quickscan.startScan();
 
         // Once the scan is complete, 
