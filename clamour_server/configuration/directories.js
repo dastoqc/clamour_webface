@@ -21,7 +21,7 @@ module.exports = {
 
     "remote_path" : {
         "base"       : remote_path_base,
-        "csv_buffer" : remote_path_base,
+        "csv_buffer" : remote_path_excecutable,
         "executable" : remote_path_excecutable
     }
 };
