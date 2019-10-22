@@ -36,6 +36,10 @@ module.exports.scan_for_tag_ip_address = function () {
         quickscan.on('error', function (err) {
             console.log(`An error occured while trying to scan the network :\n${err}`.red);
         });
+	quickscan.on('uncaughtException', function (err) {
+            console.error(err.stack);
+            console.log("Node NOT Exiting...");
+        });
     })
     return promise;
 };
@@ -74,6 +78,10 @@ module.exports.ping_ip_address = function (ip_address) {
         // Error handling
         quickscan.on('error', function (err) {
             console.log(`An error occured while trying to ping the IP address ${ip_address} :\n${err}`.red);
+        });
+	quickscan.on('uncaughtException', function (err) {
+            console.error(err.stack);
+            console.log("Node NOT Exiting...");
         });
     })
     return promise;
