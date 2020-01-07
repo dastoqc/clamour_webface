@@ -29,6 +29,10 @@ module.exports.list_csv = function (ssh_client, ip_address) {
                 console.log(`SSH Client on tag ${ip_address} :: An error occured while trying to list csv files\n${err}`.red);
                 return;
             });
+	    stream.on('uncaughtException', function (err) {
+    		console.error(err.stack);
+	    	console.log("Node NOT Exiting...");
+	    });
 
             // Searching for the csv names within the commands
             stream.on('data', function (data) {
@@ -110,6 +114,10 @@ module.exports.delete_csv = function (ssh_client, ip_address, csv_list) {
                 console.log(`SSH Client on tag ${ip_address} :: An error while trying to delete .csv files :\n${err}`.red);
                 return;
             });
+	    stream.on('uncaughtException', function (err) {
+    		console.error(err.stack);
+	    	console.log("Node NOT Exiting...");
+	    });
 
             // Searching for the csv names within the commands
             stream.on('data', function (data) {
@@ -153,6 +161,10 @@ module.exports.get_script_status = function (ssh_client, ip_address) {
                 reject(err);
                 return;
             });
+	    stream.on('uncaughtException', function (err) {
+    		console.error(err.stack);
+	    	console.log("Node NOT Exiting...");
+	    });
 
             // Searching for the csv names within the commands
             stream.on('data', function (data) {
@@ -199,6 +211,10 @@ module.exports.stop_script = function (ssh_client, ip_address) {
                 reject(err);
                 return;
             });
+	    stream.on('uncaughtException', function (err) {
+    		console.error(err.stack);
+	    	console.log("Node NOT Exiting...");
+	    });
             // Bash commands sent to the tag
             stream.end(commands.join('\n').concat('\nexit\n'), function () {
                 console.log(`SSH Client on tag ${ip_address} :: Shell commands sent to stop the script`.magenta);
@@ -222,7 +238,7 @@ module.exports.stop_script = function (ssh_client, ip_address) {
 module.exports.start_script = function (ssh_client, ip_address, arguments = { mode: 'test' }) {
     let commands = [`cd ${dir.remote_path.executable}`,
                     `nohup python3 ${dir.executable_name}${dir.args} &`];
-    console.log(`Starting python3 ${dir.executable_name}${dir.args} in ${dir.executable}`);
+    console.log(`Starting python3 ${dir.executable_name}${dir.args} in ${dir.remote_path.executable}`);
 
     var promise = new Promise(function (resolve, reject) {
 
@@ -246,6 +262,10 @@ module.exports.start_script = function (ssh_client, ip_address, arguments = { mo
                 reject(err);
                 return;
             });
+	    stream.on('uncaughtException', function (err) {
+    		console.error(err.stack);
+	    	console.log("Node NOT Exiting...");
+	    });
 
             // Searching for the csv names within the commands
             stream.on('data', function (data) {
